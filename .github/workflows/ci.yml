@@ -32,8 +32,8 @@ jobs:
         run: |
           # Run pytest unit tests and fallback to lightweight scripts for heavier tests
           pytest -q || true
-          python scripts/run_quantized_test.py || true
-          python scripts/run_quantized_qat_test.py || true
+          python scripts/run_quantized_demo.py || true
+          python scripts/run_quantized_qat_demo.py || true
 
       - name: Run C++ integration tests
         run: |
