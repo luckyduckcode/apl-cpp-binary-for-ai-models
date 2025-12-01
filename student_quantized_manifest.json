@@ -1,0 +1,77 @@
+{
+  "embedding.weight": {
+    "packed": "embedding.weight_1bit.bin",
+    "shape": [
+      1000,
+      64
+    ],
+    "scales": "embedding.weight_scales.npy"
+  },
+  "transformer.layers.0.self_attn.in_proj_weight": {
+    "packed": "transformer.layers.0.self_attn.in_proj_weight_1bit.bin",
+    "shape": [
+      192,
+      64
+    ],
+    "scales": "transformer.layers.0.self_attn.in_proj_weight_scales.npy"
+  },
+  "transformer.layers.0.self_attn.in_proj_bias": {
+    "fp32": "transformer.layers.0.self_attn.in_proj_bias_fp32.npy"
+  },
+  "transformer.layers.0.self_attn.out_proj.weight": {
+    "packed": "transformer.layers.0.self_attn.out_proj.weight_1bit.bin",
+    "shape": [
+      64,
+      64
+    ],
+    "scales": "transformer.layers.0.self_attn.out_proj.weight_scales.npy"
+  },
+  "transformer.layers.0.self_attn.out_proj.bias": {
+    "fp32": "transformer.layers.0.self_attn.out_proj.bias_fp32.npy"
+  },
+  "transformer.layers.0.linear1.weight": {
+    "packed": "transformer.layers.0.linear1.weight_1bit.bin",
+    "shape": [
+      2048,
+      64
+    ],
+    "scales": "transformer.layers.0.linear1.weight_scales.npy"
+  },
+  "transformer.layers.0.linear1.bias": {
+    "fp32": "transformer.layers.0.linear1.bias_fp32.npy"
+  },
+  "transformer.layers.0.linear2.weight": {
+    "packed": "transformer.layers.0.linear2.weight_1bit.bin",
+    "shape": [
+      64,
+      2048
+    ],
+    "scales": "transformer.layers.0.linear2.weight_scales.npy"
+  },
+  "transformer.layers.0.linear2.bias": {
+    "fp32": "transformer.layers.0.linear2.bias_fp32.npy"
+  },
+  "transformer.layers.0.norm1.weight": {
+    "fp32": "transformer.layers.0.norm1.weight_fp32.npy"
+  },
+  "transformer.layers.0.norm1.bias": {
+    "fp32": "transformer.layers.0.norm1.bias_fp32.npy"
+  },
+  "transformer.layers.0.norm2.weight": {
+    "fp32": "transformer.layers.0.norm2.weight_fp32.npy"
+  },
+  "transformer.layers.0.norm2.bias": {
+    "fp32": "transformer.layers.0.norm2.bias_fp32.npy"
+  },
+  "fc.weight": {
+    "packed": "fc.weight_1bit.bin",
+    "shape": [
+      1000,
+      64
+    ],
+    "scales": "fc.weight_scales.npy"
+  },
+  "fc.bias": {
+    "fp32": "fc.bias_fp32.npy"
+  }
+}
