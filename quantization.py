@@ -67,7 +67,7 @@ def unpack_binarized(packed, scales, shape, per_channel_axis=0):
     # unpackbits returns shape (bytes*8, ) - need to trim
     rows = []
     for i, prow in enumerate(packed):
-        bits = np.unpackbits(prow)
+        bits = np.unpackbits(prow, bitorder='big')
         bits = bits[:_in]
         sign = np.where(bits == 1, 1.0, -1.0)
         if per_channel_axis == 0:

@@ -240,3 +240,37 @@ We present a complete prototype showing how 1-bit weight-only quantization can b
 ### Appendix: Pseudocode and Algorithms
 
 See the pseudocode snippets in Section 5. Full implementation and tests are in the codebase.
+
+## 11. Multi-Model Support Roadmap (1-bit Retained)
+
+The same 1-bit FTP/Q pipeline can power a broader family of decoder-only transformers (Mistral 7B, DeepSeek-R1, Code Llama 7B/13B/34B/70B, Gemma, Qwen) by layering structural metadata on top of the packed weights. We keep the quantization core untouched and extend manifests, runtimes, and validation harnesses.
+
+### 11.1 Manifest blueprint
+
+- Extend `student_quantized_manifest.json` to carry both `quantization` (bit-width, packing order, per-layer scale blobs, zero-point metadata) and `architecture` (layer count, dims, head shapes, KV groups, RoPE/base parameters, activation type, norm type, attention mask strategy).
+- `export_quantized_for_apl.py` now emits `format_version: 2` manifests with `model`, `architecture`, `quantization`, and `weights` sections and exposes CLI flags to label the target families (Mistral, DeepSeek-R1, Code Llama, Gemma, Qwen) while keeping the legacy top-level keys for compatibility.
+- Model-specific keys:
+    - **Mistral 7B**: `attn.type="gqa"`, `kv_groups=8`, `window_size=4096`, `activation="swiglu"`.
+    - **DeepSeek-R1**: `attn.type="moe"` with router weights and expert bank descriptors; fall back to dense for validation.
+    - **Code Llama**: `rope_theta`, `context_length`, `vocab_size` overrides per variant.
+    - **Gemma**: `norm="rms"`, `kv_heads=1` (MQA), `rope_scale` factors.
+    - **Qwen**: `rope_per_head` array, optional `alibi=true`, `kv_groups` per version.
+- Exporter (`export_quantized_for_apl.py`) reads checkpoints, runs existing 1-bit packing, then emits manifest sections describing the structural knobs without repacking bytes.
+
+### 11.2 Runtime refactor plan
+
+- `llama.apl` loads the manifest, iterates over `layers`, and dispatches helpers:
+    - `ROPE_APPLY` uses manifest-provided theta/scale, supports per-head factors.
+    - `ATTENTION_BLOCK` switches among dense, GQA, MQA, sliding-window, or ALiBi-masked paths.
+    - `FFN_BLOCK` selects ReLU, SwiGLU, or Gemma/Qwen variants while consuming the same unpacked 1-bit matrices.
+    - `NORM_BLOCK` toggles LayerNorm vs RMSNorm via manifest flag.
+- Backend (`cpp/backend_1bit.cpp`) leverages the same packed buffers but reshapes outputs according to layer metadata (e.g., broadcasting single KV heads for Gemma, grouped heads for Mistral/Qwen) before matmul.
+- Loader (`cpp/call_backend.py`) maps manifest entries to backend calls so APL and Python share behavior gates.
+
+### 11.3 Validation + test strategy
+
+- `scripts/apl_validate.py` gains `--manifest` and `--model-family` to pick the right numpy reference runner and iterate through representative layers, reporting max/mean diffs per family.
+- PyTest adds parametrized slices (single layer or block) for each family with small exported NPZ bundles, verifying that backend + APL outputs match PyTorch/NumPy references within tolerances.
+- CI matrix (optional heavy stage) sets `MODEL_FAMILY` to run selected validations nightly, ensuring the shared 1-bit kernel remains consistent across all manifests.
+
+This roadmap lets us ship multi-model binaries without sacrificing the 1-bit advantages: quantized tensors never change, only the metadata describing how the runtime assembles them for each architecture.

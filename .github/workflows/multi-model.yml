@@ -1,0 +1,230 @@
+name: Multi-Model Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  multi-model-export:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        model-family:
+          - llama
+          - mistral
+          - deepseek-r1
+          - code-llama
+          - gemma
+          - qwen
+        include:
+          - model-family: llama
+            num-heads: 32
+            context-length: 4096
+            attention-variant: full
+            activation: swiglu
+            norm-type: rmsnorm
+            rope-base: 10000
+          - model-family: mistral
+            num-heads: 32
+            kv-groups: 8
+            context-length: 32768
+            attention-variant: sliding-window
+            window-size: 4096
+            activation: swiglu
+            norm-type: rmsnorm
+            rope-base: 10000
+          - model-family: deepseek-r1
+            num-heads: 32
+            kv-groups: 8
+            context-length: 65536
+            attention-variant: gqa
+            activation: swiglu
+            norm-type: rmsnorm
+            rope-base: 10000
+          - model-family: code-llama
+            num-heads: 32
+            context-length: 16384
+            attention-variant: full
+            activation: swiglu
+            norm-type: rmsnorm
+            rope-base: 1000000
+          - model-family: gemma
+            num-heads: 16
+            kv-groups: 1
+            context-length: 8192
+            attention-variant: mqa
+            activation: geglu
+            norm-type: rmsnorm
+            rope-base: 10000
+          - model-family: qwen
+            num-heads: 32
+            kv-groups: 32
+            context-length: 32768
+            attention-variant: full
+            activation: swiglu
+            norm-type: rmsnorm
+            rope-base: 1000000
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pytest
+
+      - name: Create toy quantized NPZ
+        run: |
+          python -c "
+          import numpy as np
+          data = {}
+          hidden_size = 64
+          num_layers = 2
+          
+          # Embedding
+          data['embedding.weight'] = np.random.randn(1000, hidden_size).astype(np.float32)
+          
+          # Transformer layers
+          for layer in range(num_layers):
+              prefix = f'transformer.layers.{layer}'
+              
+              # Self-attention
+              in_proj_shape = (3 * hidden_size, hidden_size)
+              packed = np.packbits(np.random.randint(0, 2, in_proj_shape, dtype=np.uint8), axis=1)
+              data[f'{prefix}.self_attn.in_proj_weight_1bit'] = packed
+              data[f'{prefix}.self_attn.in_proj_weight_shape'] = np.array(in_proj_shape)
+              data[f'{prefix}.self_attn.in_proj_weight_scales'] = np.random.rand(in_proj_shape[0]).astype(np.float32) * 0.1
+              
+              out_proj_shape = (hidden_size, hidden_size)
+              packed = np.packbits(np.random.randint(0, 2, out_proj_shape, dtype=np.uint8), axis=1)
+              data[f'{prefix}.self_attn.out_proj.weight_1bit'] = packed
+              data[f'{prefix}.self_attn.out_proj.weight_shape'] = np.array(out_proj_shape)
+              data[f'{prefix}.self_attn.out_proj.weight_scales'] = np.random.rand(out_proj_shape[0]).astype(np.float32) * 0.1
+              
+              # FFN
+              ffn_shape = (hidden_size * 4, hidden_size)
+              packed = np.packbits(np.random.randint(0, 2, ffn_shape, dtype=np.uint8), axis=1)
+              data[f'{prefix}.linear1.weight_1bit'] = packed
+              data[f'{prefix}.linear1.weight_shape'] = np.array(ffn_shape)
+              data[f'{prefix}.linear1.weight_scales'] = np.random.rand(ffn_shape[0]).astype(np.float32) * 0.1
+              
+              ffn2_shape = (hidden_size, hidden_size * 4)
+              packed = np.packbits(np.random.randint(0, 2, ffn2_shape, dtype=np.uint8), axis=1)
+              data[f'{prefix}.linear2.weight_1bit'] = packed
+              data[f'{prefix}.linear2.weight_shape'] = np.array(ffn2_shape)
+              data[f'{prefix}.linear2.weight_scales'] = np.random.rand(ffn2_shape[0]).astype(np.float32) * 0.1
+          
+          # Output FC
+          fc_shape = (1000, hidden_size)
+          packed = np.packbits(np.random.randint(0, 2, fc_shape, dtype=np.uint8), axis=1)
+          data['fc.weight_1bit'] = packed
+          data['fc.weight_shape'] = np.array(fc_shape)
+          data['fc.weight_scales'] = np.random.rand(fc_shape[0]).astype(np.float32) * 0.1
+          
+          np.savez('test_quantized.npz', **data)
+          print('Created test_quantized.npz')
+          "
+
+      - name: Export with model family config
+        run: |
+          EXPORT_CMD="python export_quantized_for_apl.py \
+            --npz test_quantized.npz \
+            --out_manifest test_manifest_${{ matrix.model-family }}.json \
+            --model-family ${{ matrix.model-family }} \
+            --num-heads ${{ matrix.num-heads }} \
+            --context-length ${{ matrix.context-length }} \
+            --attention-variant ${{ matrix.attention-variant }} \
+            --activation ${{ matrix.activation }} \
+            --norm-type ${{ matrix.norm-type }} \
+            --rope-base ${{ matrix.rope-base }}"
+          
+          if [ -n "${{ matrix.kv-groups }}" ]; then
+            EXPORT_CMD="$EXPORT_CMD --kv-groups ${{ matrix.kv-groups }}"
+          fi
+          
+          if [ -n "${{ matrix.window-size }}" ]; then
+            EXPORT_CMD="$EXPORT_CMD --window-size ${{ matrix.window-size }}"
+          fi
+          
+          eval $EXPORT_CMD
+
+      - name: Validate manifest structure
+        run: |
+          python -c "
+          import json
+          import sys
+          
+          with open('test_manifest_${{ matrix.model-family }}.json') as f:
+              manifest = json.load(f)
+          
+          # Check format version
+          assert manifest.get('format_version') == 2, 'format_version should be 2'
+          
+          # Check model section
+          model = manifest.get('model', {})
+          assert model.get('primary_family') == '${{ matrix.model-family }}', f'primary_family should be ${{ matrix.model-family }}'
+          
+          # Check architecture section
+          arch = manifest.get('architecture', {})
+          attn = arch.get('attention', {})
+          assert attn.get('num_heads') == ${{ matrix.num-heads }}, 'num_heads mismatch'
+          assert arch.get('context_length') == ${{ matrix.context-length }}, 'context_length mismatch'
+          assert attn.get('variant') == '${{ matrix.attention-variant }}', 'attention variant mismatch'
+          assert arch.get('activation') == '${{ matrix.activation }}', 'activation mismatch'
+          assert arch.get('norm') == '${{ matrix.norm-type }}', 'norm_type mismatch'
+          
+          # Check weights section
+          weights = manifest.get('weights', {})
+          assert len(weights) > 0, 'weights section should not be empty'
+          assert 'fc.weight' in weights, 'fc.weight should be in weights'
+          
+          print(f'Manifest for ${{ matrix.model-family }} validated successfully')
+          "
+
+      - name: Generate APL manifest
+        run: |
+          python scripts/manifest_to_apl.py \
+            --manifest test_manifest_${{ matrix.model-family }}.json \
+            --out_apl apl/generated_${{ matrix.model-family }}.apl
+          
+          # Verify architecture variables are present
+          grep -q "MODEL_FAMILY ← '${{ matrix.model-family }}'" apl/generated_${{ matrix.model-family }}.apl
+          grep -q "NUM_HEADS ←" apl/generated_${{ matrix.model-family }}.apl
+          grep -q "ATTENTION_VARIANT ←" apl/generated_${{ matrix.model-family }}.apl
+          echo "APL manifest for ${{ matrix.model-family }} generated and validated"
+
+      - name: Upload manifest artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: manifest-${{ matrix.model-family }}
+          path: |
+            test_manifest_${{ matrix.model-family }}.json
+            apl/generated_${{ matrix.model-family }}.apl
+
+  pytest-multi-family:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pytest
+
+      - name: Run multi-family tests
+        run: |
+          pytest tests/test_multi_family.py -v --tb=short
