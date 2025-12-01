@@ -6,8 +6,15 @@
 manifest ← 'student_quantized_manifest.json'
 input_path ← 'test_input.txt'
 
+⍝ Generate an APL-friendly snippet from the manifest so demos can use simple variables
+cmd_gen ← 'python3 scripts/manifest_to_apl.py --manifest ' , manifest , ' --out_apl apl/generated_manifest.apl'
+] sh cmd_gen
+
+⍝ Show generated APL variables for quick debugging
+cmd_cat ← 'cat apl/generated_manifest.apl'
+] sh cmd_cat
+
 ⍝ Invoke the Python wrapper which calls the shared library backend_1bit
 cmd ← 'python3 cpp/call_backend.py --manifest ' , manifest , ' --input ' , input_path
-⍝ Print command then invoke it
 cmd
 '] sh cmd

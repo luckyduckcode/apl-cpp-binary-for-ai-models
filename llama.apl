@@ -16,9 +16,11 @@
   pos ← (⍳seq_len) POS_EMBEDDING pos_mat
   X ← X + pos
   
-  ⍝ Transformer layers (assume 2 layers for simplicity)
-  X ← X TRANSFORMER_BLOCK layers[1;]
-  X ← X TRANSFORMER_BLOCK layers[2;]
+  ⍝ Transformer layers (iterate over configured layers)
+  n_layers ← ⍴layers
+  :For i :In (⍳ n_layers)
+    X ← X TRANSFORMER_BLOCK layers[i;]
+  :EndFor
   
   ⍝ Output projection
   logits ← X +.× output_proj
@@ -44,7 +46,19 @@
   K ← X +.× WK
   V ← X +.× WV
   
-  ATT_OUT ← Q SELF_ATT K V
+  ⍝ Pass explicit number of heads if available in layer weights; default to 8
+  H ← (⍬)  ⍝ default empty
+  ⍝ If the weight structure includes 'NHEADS', use that field.
+  :If (⍴LAYER_WEIGHTS) > 0
+    :Try
+      H ← LAYER_WEIGHTS.NHEADS
+    :Catch
+      H ← 8
+    :EndTry
+  :Else
+    H ← 8
+  :EndIf
+  ATT_OUT ← Q SELF_ATT K V H
   ATT_OUT ← ATT_OUT +.× WO
   
   X ← X LAYER_NORM GAMMA1 BETA1 + ATT_OUT

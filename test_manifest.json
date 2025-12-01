@@ -15,7 +15,8 @@
       64
     ],
     "scales": "transformer.layers.0.self_attn.in_proj_weight_scales.npy",
-    "scales_txt": "transformer.layers.0.self_attn.in_proj_weight_scales.txt"
+    "scales_txt": "transformer.layers.0.self_attn.in_proj_weight_scales.txt",
+    "NHEADS": 3
   },
   "transformer.layers.0.self_attn.in_proj_bias": {
     "fp32": "transformer.layers.0.self_attn.in_proj_bias_fp32.npy"

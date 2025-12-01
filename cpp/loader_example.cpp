@@ -62,6 +62,21 @@ int main(int argc, char** argv){
     }
     cout << "Packed: " << packed << " scales: " << scales << endl;
 
+    // Print some architecture metadata if available for user feedback
+    auto famPos = json.find("\"model\"");
+    if(famPos != string::npos){
+        // crude find for primary_family
+        auto pfKey = json.find("\"primary_family\"", famPos);
+        if(pfKey != string::npos){
+            auto colon = json.find(':', pfKey);
+            auto quote1 = json.find('"', colon+1);
+            auto quote2 = json.find('"', quote1+1);
+            if(quote1 != string::npos && quote2 != string::npos){
+                cout << "Model family: " << json.substr(quote1+1, quote2-quote1-1) << endl;
+            }
+        }
+    }
+
     // dlopen backend
     void* handle = dlopen(libpath.c_str(), RTLD_LAZY);
     if(!handle){ cerr << "dlopen failed: " << dlerror() << endl; return 3; }
