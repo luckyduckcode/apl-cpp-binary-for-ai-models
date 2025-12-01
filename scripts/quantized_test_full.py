@@ -1,21 +1,14 @@
+#!/usr/bin/env python3
 import numpy as np
 import torch
 import torch.nn as nn
 from distillation import StudentModel
-from quantization import unpack_binarized, replace_linears_with_qat
-
+from quantization import unpack_binarized
 
 def main():
     # Load FP32 student
-    saved_state = torch.load('student_fp32.pth')
-    is_qat_saved = any(k.endswith('.scale') or k.endswith('.scale') for k in saved_state.keys())
-    if is_qat_saved:
-        student_fp32 = StudentModel(1000, 64, 4, 1)
-        replace_linears_with_qat(student_fp32, per_channel_axis=0)
-        student_fp32.load_state_dict(saved_state)
-    else:
-        student_fp32 = StudentModel(1000, 64, 4, 1)
-        student_fp32.load_state_dict(saved_state)
+    student_fp32 = StudentModel(1000, 64, 4, 1)
+    student_fp32.load_state_dict(torch.load('student_fp32.pth'))
     student_fp32.eval()
 
     # Dummy input
@@ -23,8 +16,8 @@ def main():
     with torch.no_grad():
         fp_out = student_fp32(dummy_data).numpy()
 
-    # Load QAT quantized npz
-    npz = np.load('student_quantized_1bit_qat.npz')
+    # Load quantized npz
+    npz = np.load('student_quantized_1bit.npz')
 
     # Build a new student and populate with dequantized weights
     student_q = StudentModel(1000, 64, 4, 1)
@@ -49,9 +42,6 @@ def main():
                 else:
                     raise ValueError(
                         f"Can't infer per-channel axis for {base}: scales len {scales.shape[0]} vs shape {shape}")
-            # Debug print shapes
-            print(
-                f"Key {key_1bit}, packed shape: {packed.shape}, scales shape: {scales.shape}, weight shape: {shape}, pc_axis={pc_axis}")
             mat = unpack_binarized(packed, scales, shape, per_channel_axis=pc_axis)
             state[k] = torch.tensor(mat, dtype=torch.float32)
         elif key_fp32 in npz:
@@ -79,7 +69,7 @@ def main():
     if diff.max() < 1e-3:
         print('Quantized (1-bit) dequantized model matches FP32 closely')
     else:
-        print('Quantized model deviates, QAT may or may not have improved it')
+        print('Quantized model deviates, consider QAT or per-channel scaling improvements')
 
 
 if __name__ == '__main__':

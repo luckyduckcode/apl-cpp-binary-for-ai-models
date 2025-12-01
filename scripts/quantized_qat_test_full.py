@@ -1,12 +1,13 @@
+#!/usr/bin/env python3
 import numpy as np
 import torch
 import torch.nn as nn
 from distillation import StudentModel
 from quantization import unpack_binarized, replace_linears_with_qat
 
-
 def main():
     # Load FP32 student
+    # Load FP32 student state dict; if QAT was used, state dict includes extra 'scale' params and we replace linears
     saved_state = torch.load('student_fp32.pth')
     is_qat_saved = any(k.endswith('.scale') or k.endswith('.scale') for k in saved_state.keys())
     if is_qat_saved:
