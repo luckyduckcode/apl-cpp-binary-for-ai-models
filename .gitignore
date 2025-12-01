@@ -17,4 +17,21 @@ __pycache__/
 .ipynb_checkpoints/
 *.egg-info/
 .vscode/
+
+# APL build artifacts
+apl-1.8/src/*.o
+apl-1.8/src/.libs/
+apl-1.8/src/.deps/
+apl-1.8/src/apl
+apl-1.8/src/*.a
+apl-1.8/src/*.so
+apl-1.8/apl-1.8.tar.gz
+
+# Virtual env and python artifacts
+.venv/
+*.pth
+
+# Build outputs and artifacts
+backend.so
+.venv
 /.DS_Store
