@@ -6,6 +6,7 @@ import os
 parser = argparse.ArgumentParser()
 parser.add_argument('--npz', type=str, default='student_quantized_1bit.npz', help='Path to quantized npz file')
 parser.add_argument('--out_manifest', type=str, default='student_quantized_manifest.json', help='Manifest output JSON')
+parser.add_argument('--nhead', type=int, default=None, help='Optional number of attention heads to embed per-layer as NHEADS')
 args = parser.parse_args()
 
 npz = np.load(args.npz)
@@ -26,6 +27,8 @@ for k, v in npz.items():
         txt = f"{name}_scales.txt"
         np.savetxt(txt, npz[f"{name}_scales"]) 
         manifest[name]['scales_txt'] = txt
+        if args.nhead is not None:
+            manifest[name]['NHEADS'] = int(args.nhead)
     elif k.endswith("_fp32"):
         name = k[:-5]
         fname = f"{name}_fp32.npy"

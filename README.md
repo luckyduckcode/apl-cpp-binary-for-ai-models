@@ -29,8 +29,6 @@ This project implements a Llama-like model in APL with binary optimization and k
 - Train with distillation, then quantize and export to ONNX.
 
 ## C++ Kernel and Integration
-- `cpp/bitmatmul.cpp`: simple dequantized fallback kernel for bitpacked weights.
-- `cpp/bitmatmul_xnor.cpp`: optimized prototype kernel for binary activations (XNOR+popcount) with OpenMP for multi-threading.
 
 Compile & run examples:
 
@@ -43,6 +41,23 @@ python3 cpp/integration_test.py
 g++ -O3 -march=native -std=c++17 -fopenmp -o cpp/bitmatmul_xnor cpp/bitmatmul_xnor.cpp
 python3 cpp/run_bitmatmul_xnor_test.py
 ```
+## Quickstart & Priorities
+
+Short-term (days):
+- Run `./scripts/build_backend.sh` to build the backend
+- Run `./scripts/ci_runner.sh` to build and exercise the demo tests
+- Use `apl/loader_demo.apl` to verify the APL demo that calls the Python wrapper for the C++ backend
+
+Mid-term (weeks):
+- Finalize multi-head attention in `llama.apl` and add unit tests for end-to-end correctness
+- Add a more robust APL FFI (a C extension or a loadable APL native function) to call the backend directly
+- Finalize stable QAT training scripts and benchmark grid for accuracy vs. memory/latency trade-offs
+
+Long-term (months):
+- Implement AVX2/AVX512 & GPU kernels for larger scale models
+- Full release & CI to run reproducible benchmarks and QAT training runs
+
+If you are interested, I can start by finalizing `llama.apl` and adding comprehensive tests for the attention & ffn blocks — or set up CI to make the repo more robust.
 
 Notes:
 - The XNOR kernel demonstrates substantial speedups when activations are binarized (sign-only). For weight-only quantization (float activations), the dequantized fallback is still used. Integration into an APL runtime requires exporting the packed weight files and scales as was implemented in `export_quantized_for_apl.py`.

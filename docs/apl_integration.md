@@ -53,4 +53,24 @@ Example integration steps:
 )system ./cpp/loader_example student_quantized_manifest.json cpp/backend_1bit.so
 ```
 
+### Using `apl/loader_demo.apl`
+
+There is a minimal example at `apl/loader_demo.apl` to demonstrate a simple, robust approach
+to call the Python wrapper that invokes the compiled runtime. This is a practical starting point
+until a full FFI extension is implemented.
+
+1. Build and export quantized weights:
+
+```bash
+./scripts/build_backend.sh
+python3 export_quantized_for_apl.py --npz student_quantized_1bit_qat.npz --out_manifest student_quantized_manifest.json
+```
+
+2. Run APL (if installed) and execute the loader demo:
+
+```bash
+apl -f apl/loader_demo.apl
+```
+
+
 This approach is robust and avoids deep changes in APL integration while exploring and validating quantized artifacts and runtime performance.
