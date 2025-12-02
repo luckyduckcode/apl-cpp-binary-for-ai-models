@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Simple PyInstaller build script for APL Chat Interface
-Builds standalone executable without console window
+Builds standalone executable with console for debugging
 """
 
 import subprocess
@@ -11,19 +11,18 @@ from pathlib import Path
 def main():
     workspace = Path(__file__).parent
     
-    # Simplified PyInstaller command
+    # Simplified PyInstaller command - show console to help debug issues
     cmd = [
         sys.executable, '-m', 'PyInstaller',
         '--onefile',
-        '--windowed',
+        '--console',  # Show console window for debugging
         '--name', 'APL-Chat',
         '--add-data', f"{workspace / 'apl_chat.html'};.",
         '--hidden-import=flask',
         '--hidden-import=torch',
         '--hidden-import=transformers',
         '--hidden-import=numpy',
-        '--hidden-import=gradio',
-        '--collect-all=gradio',
+        '--collect-all=flask',
         str(workspace / 'launch_chat.py'),
     ]
     
@@ -47,6 +46,7 @@ def main():
                 print(f"Size: {size_mb:.1f} MB")
                 print("\nTo run: APL-Chat.exe")
                 print("Or double-click from File Explorer")
+                print("\nNote: Console window shows logs for debugging")
                 return 0
         
         print("\nBuild failed or executable not found")
@@ -58,3 +58,4 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+

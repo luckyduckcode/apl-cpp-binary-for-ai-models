@@ -11,6 +11,8 @@ from pathlib import Path
 import webbrowser
 import time
 import platform
+import socket
+import os
 
 def check_python_version():
     """Check Python version."""
@@ -18,6 +20,20 @@ def check_python_version():
         print("❌ Python 3.8+ required")
         sys.exit(1)
     print(f"✓ Python {sys.version.split()[0]}")
+
+def is_port_in_use(port=5000):
+    """Check if port is already in use."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        result = s.connect_ex(('localhost', port))
+        return result == 0
+
+def kill_existing_server():
+    """Kill any existing Flask server process."""
+    try:
+        if platform.system() == 'Windows':
+            os.system('taskkill /f /im python.exe /fi "WINDOWTITLE eq*Flask*" 2>nul')
+    except:
+        pass
 
 def install_dependencies():
     """Install required packages."""
@@ -28,7 +44,6 @@ def install_dependencies():
         'flask_cors': 'Flask-CORS',
         'torch': 'PyTorch',
         'transformers': 'Transformers',
-        'gradio': 'Gradio (optional)',
     }
     
     missing = []
@@ -43,9 +58,8 @@ def install_dependencies():
     
     if missing:
         print(f"\nInstalling missing packages: {', '.join(missing)}")
-        # Note: In production, would run pip install here
-        print("Run: pip install flask flask-cors torch transformers")
-        print("Optional: pip install gradio")
+        subprocess.run([sys.executable, '-m', 'pip', 'install', '-q'] + 
+                      ['flask', 'flask-cors', 'torch', 'transformers'])
 
 def check_models():
     """Check if quantized models exist."""
@@ -65,44 +79,50 @@ def check_models():
             size_kb = model_path.stat().st_size / 1024
             print(f"  ✓ {model} ({size_kb:.0f} KB)")
         else:
-            print(f"  ✗ {model} - NOT FOUND")
+            print(f"  ✗ {model} - NOT FOUND (will download on first use)")
             all_found = False
-    
-    if not all_found:
-        print("\n⚠️  Some models missing. Run:")
-        print("  python scripts/convert_models_automated.py tinyllama --bits 4")
-        print("  python scripts/convert_models_automated.py mistral-7b --bits 4")
     
     return all_found
 
-def launch_server(use_gradio=False):
+def launch_server():
     """Launch the chat server."""
     print("\n🚀 Starting APL Chat Server...")
     print("=" * 60)
     
-    if use_gradio:
-        print("\n📱 Launching Gradio interface...")
-        subprocess.run([sys.executable, "apl_chat_ui.py"])
-    else:
-        print("\n📱 Launching Flask server...")
-        print("Open browser at: http://localhost:5000")
-        print("Press Ctrl+C to stop\n")
-        
-        # Try to open browser after a short delay
-        def open_browser():
-            time.sleep(2)
-            try:
-                webbrowser.open('http://localhost:5000')
-            except:
-                pass
-        
-        import threading
-        threading.Thread(target=open_browser, daemon=True).start()
-        
+    # Kill any existing instances first
+    kill_existing_server()
+    
+    # Check if port is in use
+    if is_port_in_use(5000):
+        print("\n⚠️  Port 5000 already in use. Attempting to clear...")
+        kill_existing_server()
+        time.sleep(1)
+    
+    print("\n📱 Launching Flask server...")
+    print("Open browser at: http://localhost:5000")
+    print("Press Ctrl+C to stop\n")
+    
+    # Try to open browser after a short delay
+    def open_browser():
+        time.sleep(2)
         try:
-            subprocess.run([sys.executable, "apl_chat_server.py"])
-        except KeyboardInterrupt:
-            print("\n\n👋 Shutting down...")
+            webbrowser.open('http://localhost:5000')
+        except:
+            pass
+    
+    import threading
+    threading.Thread(target=open_browser, daemon=True).start()
+    
+    try:
+        # Run in foreground mode (don't auto-restart)
+        proc = subprocess.Popen([sys.executable, "apl_chat_server.py"])
+        proc.wait()  # Wait for process to finish
+    except KeyboardInterrupt:
+        print("\n\n👋 Shutting down...")
+        try:
+            proc.terminate()
+        except:
+            pass
 
 def main():
     """Main entry point."""
@@ -112,15 +132,10 @@ def main():
     
     check_python_version()
     install_dependencies()
-    models_ok = check_models()
+    check_models()
     
-    if not models_ok:
-        print("\n⚠️  Models not found. Please convert models first:")
-        print("  python scripts/convert_models_automated.py tinyllama --bits 4")
-        print("\nContinuing with HuggingFace model auto-download...")
-    
-    # Auto-launch Flask server (no menu when run from exe)
-    launch_server(use_gradio=False)
+    # Auto-launch Flask server
+    launch_server()
 
 if __name__ == "__main__":
     try:
@@ -129,4 +144,7 @@ if __name__ == "__main__":
         print("\n\n👋 Goodbye!")
     except Exception as e:
         print(f"\n❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
+
