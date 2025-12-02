@@ -2,7 +2,42 @@
 #include <immintrin.h>
 #include <omp.h>
 
+// GPU support (optional; controlled at build time)
+#ifdef ENABLE_GPU
+extern int gpu_init();
+extern int gpu_cleanup();
+extern int gpu_available();
+extern int matmul_q_gpu(const void*, int, const float*, const int*, const float*, float*, int, int, int, int);
+extern int matmul_1bit_gpu(const char*, const char*, const float*, float*, int, int, int);
+static bool gpu_initialized = false;
+#endif
+
 extern "C" {
+
+// Initialize GPU if available
+int init_gpu() {
+#ifdef ENABLE_GPU
+    if (!gpu_initialized && gpu_available()) {
+        gpu_initialized = (gpu_init() == 0);
+        return gpu_initialized ? 0 : -1;
+    }
+    return gpu_available() ? 0 : -1;
+#else
+    return -1;  // No GPU support compiled
+#endif
+}
+
+// Cleanup GPU resources
+int cleanup_gpu() {
+#ifdef ENABLE_GPU
+    if (gpu_initialized) {
+        gpu_cleanup();
+        gpu_initialized = false;
+        return 0;
+    }
+#endif
+    return 0;
+}
 
 // Simplified C API to compute matmul with packed 1-bit weights and float activation
 // packed_file: path to packed weights (out x ceil(in/8) bytes)
