@@ -239,7 +239,19 @@ curl -X POST http://localhost:5000/api/chat \
 
 ## What's Changed From Previous Versions
 
-### New in v1.0.0
+### New in v1.0.0 (Latest Dec 2, 2025)
+✅ **Enhanced User Interface**
+- Loading spinner animation during model loading
+- Real-time response timer showing generation speed
+- Performance metrics with each response
+- Clear status feedback messages
+
+✅ **Stability & Reliability**
+- Auto-install all dependencies on first launch
+- Prevent multiple localhost instances
+- Graceful CPU/GPU fallback support
+- Better error handling and recovery
+
 ✅ **Full NVIDIA GPU Support**
 - TF32 tensor math (3x speedup)
 - FP16 autocast optimization
@@ -374,9 +386,38 @@ python apl_chat_server.py
 python check_gpu.py
 ```
 
+## Latest Fixes & Improvements
+
+**v1.0.0 Final Release (Dec 2, 2025) - Enhanced UI & Performance**
+
+✅ **New UI Features**:
+- Loading GIF spinner when switching models
+- Response time timer showing generation speed
+- Real-time elapsed time counter during thinking
+- Status messages for model loading/success/error
+
+✅ **Critical Fixes**:
+- Auto-install all dependencies on first launch (Flask, PyTorch, transformers, accelerate)
+- Prevent multiple localhost instances spawning
+- Graceful fallback from Int8 to FP16 quantization on CPU
+- Better error messages and logging
+
+✅ **Performance Optimizations**:
+- KV cache enabled for faster token generation
+- Automatic GPU detection with optimized device mapping
+- Lazy model loading (load only when needed)
+- Port conflict detection and cleanup
+
+✅ **What Now Works**:
+- Click APL-Chat.exe → Dependencies auto-install → Server starts → Browser opens
+- No manual pip installs needed
+- Handles missing packages gracefully
+- Console window shows what's happening for debugging
+- Visual feedback for all operations
+
 ---
 
-## Troubleshooting & Performance Tips
+## Latest Features (Dec 2, 2025)
 
 ### Is It Running Slowly?
 
