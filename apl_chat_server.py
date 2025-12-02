@@ -20,12 +20,15 @@ import logging
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
 import subprocess
-
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+import warnings
 
 # Suppress warnings
+warnings.filterwarnings('ignore')
 logging.getLogger('transformers').setLevel(logging.ERROR)
 logging.getLogger('torch').setLevel(logging.ERROR)
+logging.getLogger('bitsandbytes').setLevel(logging.ERROR)
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 app = Flask(__name__, template_folder='.', static_folder='.')
 CORS(app)
@@ -110,8 +113,9 @@ def load_model(model_name: str) -> dict:
             return {"status": "ok", "message": f"{model_name} already loaded"}
         
         repo = MODELS[model_name]["repo"]
-        print(f"Loading {model_name} from {repo}...")
-        print(f"Device: {device} | Quantization: 4-bit NF4 | Workers: {max_workers}")
+        print(f"\n[LOAD] {model_name}")
+        print(f"  Repo: {repo}")
+        print(f"  Device: {device} | Workers: {max_workers}")
         
         current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
         
@@ -122,29 +126,44 @@ def load_model(model_name: str) -> dict:
         }
         
         if device == "cuda":
-            # Use 4-bit quantization on GPU
+            # Use 4-bit quantization on GPU with accelerate
             quant_config = get_quantization_config()
             load_kwargs["quantization_config"] = quant_config
             load_kwargs["device_map"] = "auto"
+            print("  Using: 4-bit NF4 quantization (GPU)")
             current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
         else:
             # On CPU, use int8 quantization for speed + memory efficiency
-            load_kwargs["load_in_8bit"] = True
-            load_kwargs["device_map"] = "cpu"
-            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            try:
+                load_kwargs["load_in_8bit"] = True
+                load_kwargs["device_map"] = "cpu"
+                print("  Using: Int8 quantization (CPU)")
+                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            except Exception as e:
+                # Fallback: load without quantization
+                print(f"  Int8 failed: {str(e)[:50]}...")
+                print("  Using: FP32 (CPU, slower)")
+                load_kwargs.pop("load_in_8bit", None)
+                load_kwargs.pop("device_map", None)
+                load_kwargs["torch_dtype"] = torch.float32
+                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+                current_model = current_model.to(device)
         
         current_model.eval()
         current_model_name = model_name
         
         if device == "cuda":
             torch.cuda.empty_cache()
-            print(f"[GPU] Memory allocated: {torch.cuda.memory_allocated() / 1e9:.2f}GB")
+            mem_gb = torch.cuda.memory_allocated() / 1e9
+            print(f"  ✓ GPU Memory: {mem_gb:.2f}GB")
         else:
-            print(f"[CPU] Model loaded with Int8 quantization for faster inference")
+            print(f"  ✓ Model ready for inference")
         
-        return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()} (4-bit/Int8)"}
+        return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()}"}
     except Exception as e:
-        return {"status": "error", "message": f"Failed to load model: {str(e)}"}
+        error_msg = str(e)
+        print(f"[ERROR] {error_msg[:100]}")
+        return {"status": "error", "message": f"Failed to load model: {error_msg[:200]}"}
 
 
 def generate_response(
