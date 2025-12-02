@@ -162,9 +162,9 @@ def load_model(model_name: str) -> dict:
         if device == "cuda":
             torch.cuda.empty_cache()
             mem_gb = torch.cuda.memory_allocated() / 1e9
-            print(f"  ✓ GPU Memory: {mem_gb:.2f}GB")
+            print(f"  [OK] GPU Memory: {mem_gb:.2f}GB")
         else:
-            print(f"  ✓ Model ready for inference on CPU ({quantization_used})")
+            print(f"  [OK] Model ready for inference on CPU ({quantization_used})")
         
         return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()} ({quantization_used})"}
     except Exception as e:
