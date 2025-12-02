@@ -144,7 +144,7 @@ def load_model(model_name: str) -> dict:
             print("  Using: 4-bit NF4 quantization (GPU)")
         else:
             # On CPU, avoid device_map and low_cpu_mem_usage (these can cause issues)
-            load_kwargs["torch_dtype"] = torch.float32  # Use FP32 on CPU for stability
+            load_kwargs["dtype"] = torch.float32  # Use FP32 on CPU for stability
             print("  Using: FP32 (CPU)")
         
         print("  Loading model (this may take a moment)...")
