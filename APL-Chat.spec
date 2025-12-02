@@ -1,19 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
-from PyInstaller.utils.hooks import collect_all
-
-datas = [('C:\\Users\\tenna\\Documents\\code\\apl-cpp-binary-for-ai-models\\apl_chat.html', '.')]
-binaries = []
-hiddenimports = ['flask', 'torch', 'transformers', 'numpy', 'gradio']
-tmp_ret = collect_all('gradio')
-datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
 
 a = Analysis(
-    ['C:\\Users\\tenna\\Documents\\code\\apl-cpp-binary-for-ai-models\\launch_chat.py'],
+    ['launch_chat.py'],
     pathex=[],
-    binaries=binaries,
-    datas=datas,
-    hiddenimports=hiddenimports,
+    binaries=[],
+    datas=[('apl_chat.html', '.')],
+    hiddenimports=[],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -36,7 +29,7 @@ exe = EXE(
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
-    console=False,
+    console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,

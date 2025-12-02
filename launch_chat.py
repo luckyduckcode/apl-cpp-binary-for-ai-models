@@ -63,12 +63,8 @@ def launch_server():
     print("🚀 Starting APL Chat Server...")
     print("=" * 60)
     
-    # Kill any existing instances first
-    kill_existing_server()
-    time.sleep(1)
-    
-    # Check if port is in use
-    if is_port_in_use(5000):
+    # Kill any existing instances first (Windows only has multi-instance issues)
+    if platform.system() == 'Windows' and is_port_in_use(5000):
         print("⚠️  Port 5000 in use. Clearing...")
         kill_existing_server()
         time.sleep(2)
@@ -91,15 +87,19 @@ def launch_server():
     threading.Thread(target=open_browser, daemon=True).start()
     
     try:
-        # Run server in blocking mode
-        subprocess.run(
-            [sys.executable, "apl_chat_server.py"],
-            check=False
-        )
+        # Import and run server directly (works with PyInstaller bundles)
+        from apl_chat_server import run_server
+        run_server()
     except KeyboardInterrupt:
         print("\n\n👋 Shutting down...")
+    except Exception as e:
+        print(f"❌ Server error: {e}")
+        import traceback
+        traceback.print_exc()
+        time.sleep(5)
     finally:
-        kill_existing_server()
+        if platform.system() == 'Windows':
+            kill_existing_server()
 
 def main():
     """Main entry point."""

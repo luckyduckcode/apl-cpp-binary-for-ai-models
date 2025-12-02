@@ -310,7 +310,8 @@ def health():
     return jsonify(health_data)
 
 
-if __name__ == '__main__':
+def run_server():
+    """Run the Flask server (called from launcher)."""
     # Display startup info
     print("\n" + "=" * 60)
     print("[INIT] APL Chat Server - GPU Optimized")
@@ -336,3 +337,7 @@ if __name__ == '__main__':
     print("=" * 60 + "\n")
     
     app.run(host='127.0.0.1', port=5000, debug=False, threaded=True)
+
+
+if __name__ == '__main__':
+    run_server()
