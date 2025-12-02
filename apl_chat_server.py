@@ -128,10 +128,10 @@ def load_model(model_name: str) -> dict:
             load_kwargs["device_map"] = "auto"
             current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
         else:
-            # On CPU, use float32 but enable memory optimization
-            load_kwargs["torch_dtype"] = torch.float32
+            # On CPU, use int8 quantization for speed + memory efficiency
+            load_kwargs["load_in_8bit"] = True
+            load_kwargs["device_map"] = "cpu"
             current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
-            current_model = current_model.to(device)
         
         current_model.eval()
         current_model_name = model_name
@@ -139,8 +139,10 @@ def load_model(model_name: str) -> dict:
         if device == "cuda":
             torch.cuda.empty_cache()
             print(f"[GPU] Memory allocated: {torch.cuda.memory_allocated() / 1e9:.2f}GB")
+        else:
+            print(f"[CPU] Model loaded with Int8 quantization for faster inference")
         
-        return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()} (4-bit)"}
+        return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()} (4-bit/Int8)"}
     except Exception as e:
         return {"status": "error", "message": f"Failed to load model: {str(e)}"}
 
@@ -169,7 +171,7 @@ def generate_response(
         inputs = current_tokenizer(full_prompt, return_tensors="pt").to(device)
         input_length = inputs['input_ids'].shape[1]
         
-        # Generate with GPU acceleration
+        # Generate with optimizations for fast inference
         with torch.no_grad():
             output_ids = current_model.generate(
                 inputs['input_ids'],
@@ -180,6 +182,8 @@ def generate_response(
                 eos_token_id=current_tokenizer.eos_token_id,
                 pad_token_id=current_tokenizer.pad_token_id,
                 num_beams=1,  # Parallel decoding
+                use_cache=True,  # Enable KV cache for faster generation
+                repetition_penalty=1.1,  # Prevent repetition
             )
         
         # Decode response

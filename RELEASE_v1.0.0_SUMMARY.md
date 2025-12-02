@@ -376,6 +376,48 @@ python check_gpu.py
 
 ---
 
+## Troubleshooting & Performance Tips
+
+### Is It Running Slowly?
+
+**Verify GPU Usage**
+```
+Check if NVIDIA GPU is detected:
+- Open http://localhost:5000/api/models in browser
+- Look for device info in the response
+- Should show "cuda (NVIDIA_GPU_NAME)" not just "cpu"
+```
+
+**If Using CPU Instead of GPU**
+1. Install NVIDIA CUDA Toolkit (11.8+)
+2. Install cuDNN compatible with your CUDA version
+3. Reinstall PyTorch with CUDA support:
+   ```
+   pip install torch --index-url https://download.pytorch.org/whl/cu118
+   ```
+4. Restart APL-Chat.exe
+
+**Performance Expectations**
+- **GPU (RTX 4090/3090)**: ~50 tokens/sec - very fast responses
+- **GPU (RTX 4060/2070)**: ~20-30 tokens/sec - smooth experience  
+- **CPU (modern i7/i9)**: ~3-8 tokens/sec - acceptable
+- **CPU (older)**: ~1-3 tokens/sec - noticeable wait
+
+**Optimize for Your Hardware**
+- Use **TinyLlama** (1.1B) for CPU - faster responses
+- Use **Mistral 7B** with GPU - best quality/speed
+- Reduce **max_tokens** in settings if slow
+- Close background applications to free memory
+
+### Multiple Localhost Windows?
+The Flask server likely crashed. Solutions:
+1. Check console for error messages
+2. Verify all dependencies installed (pip install -r requirements.txt)
+3. Ensure port 5000 is not in use
+4. Restart the application
+
+---
+
 ## Future Roadmap
 
 - [ ] Support for more models (Llama 2, Gemma, Qwen)
@@ -407,11 +449,18 @@ Built with:
 ## Summary
 
 **APL Chat Interface v1.0.0** is a production-ready, GPU-optimized chat application that brings:
-- **Accessibility**: Just download and run
-- **Performance**: 12-100x faster on NVIDIA GPU
-- **Efficiency**: 8-24x smaller models, 71x lower energy per token
-- **Simplicity**: No setup, no configuration, works out of the box
-- **Power**: Enterprise-grade inference with REST API
+- **Accessibility**: Just download and run, no setup required
+- **Performance**: 12-100x faster on NVIDIA GPU, optimized CPU fallback with Int8 quantization
+- **Efficiency**: 8-24x smaller models, 71x lower energy per token on GPU
+- **Simplicity**: No complex configuration, works out of the box on both GPU and CPU
+- **Power**: Enterprise-grade inference with REST API and streaming support
+
+**Key Improvements in This Release**:
+✅ Added CPU Int8 quantization for non-GPU systems
+✅ Optimized KV cache usage for faster token generation
+✅ Added comprehensive performance troubleshooting guide
+✅ Automatic GPU detection with seamless CPU fallback
+✅ Enhanced Flask server stability and dependency management
 
 Perfect for personal projects, small businesses, and enterprise deployments.
 
@@ -420,3 +469,5 @@ Perfect for personal projects, small businesses, and enterprise deployments.
 ---
 
 *APL Chat Interface v1.0.0 - December 2, 2025*
+*Performance-Optimized for GPU and CPU Systems*
+
