@@ -85,16 +85,14 @@ current_tokenizer = None
 current_model_name = "TinyLlama 1.1B"
 
 # 4-bit quantization config for GPU (BitsAndBytes)
-def get_quantization_config():
-    """Get 4-bit quantization config for efficient GPU inference."""
-    if device == "cuda":
-        return BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_compute_dtype=torch.float16,
-            bnb_4bit_use_double_quant=True,  # Double quantization for extra compression
-            bnb_4bit_quant_type="nf4",  # NormalFloat4 - optimal for LLMs
-        )
-    return None
+def get_quantization_config(device_type="cuda"):
+    """Get 4-bit quantization config for efficient inference."""
+    return BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.float16,
+        bnb_4bit_use_double_quant=True,  # Double quantization for extra compression
+        bnb_4bit_quant_type="nf4",  # NormalFloat4 - optimal for LLMs
+    )
 
 def get_gpu_info():
     """Get GPU information."""
@@ -138,14 +136,22 @@ def load_model(model_name: str) -> dict:
         if device == "cuda":
             # Use 4-bit quantization on GPU with accelerate
             load_kwargs["low_cpu_mem_usage"] = True
-            quant_config = get_quantization_config()
+            quant_config = get_quantization_config("cuda")
             load_kwargs["quantization_config"] = quant_config
             load_kwargs["device_map"] = "auto"
             print("  Using: 4-bit NF4 quantization (GPU)")
         else:
-            # On CPU, avoid device_map and low_cpu_mem_usage (these can cause issues)
-            load_kwargs["dtype"] = torch.float32  # Use FP32 on CPU for stability
-            print("  Using: FP32 (CPU)")
+            # On CPU, try 4-bit quantization first, fall back to FP32 if it fails
+            try:
+                print("  Trying: 4-bit NF4 quantization (CPU)...")
+                quant_config = get_quantization_config("cpu")
+                load_kwargs["quantization_config"] = quant_config
+                # Note: device_map should NOT be used on CPU
+            except Exception as quant_err:
+                print(f"  ⚠️  4-bit quantization not available on CPU: {str(quant_err)[:100]}")
+                print("  Falling back to: FP32 (CPU)")
+                load_kwargs.pop("quantization_config", None)
+                load_kwargs["dtype"] = torch.float32  # Use FP32 on CPU for stability
         
         print("  Loading model (this may take a moment)...")
         current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
