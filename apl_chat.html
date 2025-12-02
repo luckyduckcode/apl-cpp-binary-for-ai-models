@@ -166,6 +166,13 @@
             border-bottom-left-radius: 4px;
         }
 
+        .message-timer {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
         .input-section {
             padding: 20px;
             border-top: 1px solid var(--border);
@@ -752,16 +759,28 @@
             if (emptyState) emptyState.remove();
 
             // Add loading indicator
+            const startTime = Date.now();
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'message assistant';
+            loadingDiv.id = 'response-loading';
             loadingDiv.innerHTML = `
                 <div class="message-avatar">🤖</div>
                 <div class="message-content">
                     <div class="loading-spinner"></div> Thinking...
+                    <div class="message-timer" id="response-timer">⏱️ 0s</div>
                 </div>
             `;
             chatContainer.appendChild(loadingDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Update timer every 100ms
+            const timerInterval = setInterval(() => {
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                const timerEl = document.getElementById('response-timer');
+                if (timerEl) {
+                    timerEl.textContent = `⏱️ ${elapsed}s`;
+                }
+            }, 100);
 
             try {
                 const response = await fetch(`${API_BASE}/chat`, {
@@ -775,20 +794,30 @@
                     })
                 });
 
+                clearInterval(timerInterval);
+                const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
                 const data = await response.json();
 
                 if (data.status === 'ok') {
                     // Remove loading indicator
-                    loadingDiv.remove();
+                    const loadingEl = document.getElementById('response-loading');
+                    if (loadingEl) loadingEl.remove();
 
-                    // Add assistant response
-                    addMessage('assistant', data.response);
+                    // Add assistant response with timer
+                    addMessageWithTimer('assistant', data.response, totalTime);
                 } else {
-                    loadingDiv.querySelector('.message-content').innerHTML = `Error: ${data.message}`;
+                    const loadingEl = document.getElementById('response-loading');
+                    if (loadingEl) {
+                        loadingEl.querySelector('.message-content').innerHTML = `Error: ${data.message}`;
+                    }
                 }
             } catch (error) {
+                clearInterval(timerInterval);
                 console.error('Failed to get response:', error);
-                loadingDiv.querySelector('.message-content').innerHTML = `Error: ${error.message}`;
+                const loadingEl = document.getElementById('response-loading');
+                if (loadingEl) {
+                    loadingEl.querySelector('.message-content').innerHTML = `Error: ${error.message}`;
+                }
             } finally {
                 isLoading = false;
                 messageInput.focus();
@@ -805,6 +834,25 @@
             messageDiv.innerHTML = `
                 <div class="message-avatar">${avatar}</div>
                 <div class="message-content">${escapeHtml(content)}</div>
+            `;
+
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Add message with response timer
+        function addMessageWithTimer(role, content, timeSeconds) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+
+            const avatar = role === 'user' ? '👤' : '🤖';
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    ${escapeHtml(content)}
+                    <div class="message-timer">⏱️ Generated in ${timeSeconds}s</div>
+                </div>
             `;
 
             chatContainer.appendChild(messageDiv);
