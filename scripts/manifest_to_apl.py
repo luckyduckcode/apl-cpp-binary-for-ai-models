@@ -110,11 +110,21 @@ def main():
     for key, entry in weights.items():
         var = safe_apl_name(key)
         packed = entry.get('packed', None)
+        # q-bit integer quantization paths
+        q_np = entry.get('q', None)
+        q_scales = entry.get('q_scales', None) or entry.get('q_scales_txt', None)
+        q_zero_point = entry.get('q_zero_point', None)
         scales_txt = entry.get('scales_txt') or entry.get('scales') or None
         shape = entry.get('shape') or None
         if packed:
             # Normalize the path to POSIX so APL demos are more portable on Windows/WSL
             outp.append(f"{var}_packed ← '{Path(packed).as_posix()}'")
+        if q_np:
+            outp.append(f"{var}_q ← '{Path(q_np).as_posix()}'")
+            if q_scales:
+                outp.append(f"{var}_q_scales ← '{Path(q_scales).as_posix()}'")
+            if q_zero_point:
+                outp.append(f"{var}_q_zero_point ← '{Path(q_zero_point).as_posix()}'")
         if scales_txt:
             outp.append(f"{var}_scales_txt ← '{Path(scales_txt).as_posix()}'")
         # If an fp32 (dequantized) path exists, include it as well.

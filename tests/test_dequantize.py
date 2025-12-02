@@ -35,7 +35,10 @@ def test_dequantize_and_manifest_update(tmp_path: Path):
     manifest_path.write_text(json.dumps(manifest, indent=2))
 
     # Run dequantize (updates manifest)
-    runner = subprocess.run(["python", "scripts/dequantize_manifest_weights.py", "--manifest", str(manifest_path), "--update-manifest"], cwd=os.getcwd(), capture_output=True, text=True)
+    repo_root = Path(__file__).resolve().parents[1]
+    env = os.environ.copy()
+    env['PYTHONPATH'] = str(repo_root)
+    runner = subprocess.run(["python", "scripts/dequantize_manifest_weights.py", "--manifest", str(manifest_path), "--update-manifest"], cwd=str(repo_root), capture_output=True, text=True, env=env)
     assert runner.returncode == 0, f"dequantize script failed: {runner.stderr}"
 
     # Manifest should have been updated with fp32 path

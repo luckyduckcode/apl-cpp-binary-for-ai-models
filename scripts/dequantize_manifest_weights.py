@@ -76,6 +76,42 @@ def main():
 
         scales_arr = load_scales(scales_path)
         fp32 = unpack_binarized(packed_rows, scales_arr, (out_dim, in_dim), per_channel_axis=int(scale_axis))
+        # Handle integer quantized qN arrays (per-row integer quantization)
+        if 'q' in entry:
+            q_path = entry.get('q')
+            q_scales = entry.get('q_scales')
+            q_zp = entry.get('q_zero_point')
+            q_array_path = (manifest_dir / q_path) if not Path(q_path).is_absolute() else Path(q_path)
+            if not q_array_path.exists():
+                print('Integer q file not found for', name, q_array_path, 'skipping')
+                continue
+            Q = np.load(str(q_array_path))
+            # infer shape
+            out_dim, in_dim = Q.shape
+            # load scales & zero_point
+            q_scales_path = (manifest_dir / q_scales) if not Path(q_scales).is_absolute() else Path(q_scales)
+            qscales = load_scales(q_scales_path)
+            zps = None
+            if q_zp:
+                zp_path = (manifest_dir / q_zp) if not Path(q_zp).is_absolute() else Path(q_zp)
+                zps = load_scales(zp_path).astype(np.int32)
+            else:
+                zps = np.zeros(out_dim, dtype=np.int32)
+
+            # dequantize per row: float = (Q_row - zp_row) * scale_row
+            fp32 = np.zeros((out_dim, in_dim), dtype=np.float32)
+            for i in range(out_dim):
+                fp32[i] = (Q[i].astype(np.float32) - int(zps[i])) * float(qscales[i])
+
+            # Write fp32
+            safe_name = name.replace('.', '_').replace('/', '_')
+            out_fp32 = out_dir / f"{safe_name}_fp32.npy"
+            np.save(out_fp32, fp32)
+            print('Dequantized integer qN', name, '->', out_fp32)
+            if args.update_manifest:
+                entry['fp32'] = str(out_fp32.relative_to(manifest_dir)).replace('\\', '/')
+                touched = True
+            continue
 
         # Write fp32 to out_dir with a safe filename
         safe_name = name.replace('.', '_').replace('/', '_')

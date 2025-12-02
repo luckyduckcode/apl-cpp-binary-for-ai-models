@@ -83,4 +83,51 @@ int matmul_1bit(const char* packed_file, const char* scales_file, const float* i
     return 0;
 }
 
+// matmul for integer quantized weights in memory.
+// q_ptr: pointer to quantized array contiguous row-major (out x in) of type uint8_t or uint16_t
+// elem_bytes: 1 for uint8_t, 2 for uint16_t
+// scales: per-row float32 scales (size out) or single scale
+// zero_points: per-row int32 or single zero point (may be NULL)
+// in_vec: float32 vector length in
+// out_vec: float32 vector length out (output)
+// bits: integer bit width (2,4,8)
+// mode: reserved (unused); threads: omp threads
+int matmul_q_in_mem(const void* q_ptr, int elem_bytes, const float* scales, const int* zero_points, const float* in_vec, float* out_vec, int out, int in, int bits, int mode, int threads){
+    if(threads > 0) omp_set_num_threads(threads);
+    if(bits <= 8 && elem_bytes == 1){
+        const uint8_t* qdata = reinterpret_cast<const uint8_t*>(q_ptr);
+        #pragma omp parallel for
+        for(int r=0; r<out; ++r){
+            const uint8_t* row = qdata + (size_t)r * in;
+            double acc = 0.0;
+            for(int c=0; c<in; ++c){
+                int qv = (int)row[c];
+                int zp = zero_points ? zero_points[r] : 0;
+                float s = scales ? scales[r] : 1.0f;
+                acc += (double)(qv - zp) * (double)in_vec[c];
+            }
+            float s = scales ? scales[r] : 1.0f;
+            out_vec[r] = (float)(acc * (double)s);
+        }
+    } else if(elem_bytes == 2){
+        const uint16_t* qdata = reinterpret_cast<const uint16_t*>(q_ptr);
+        #pragma omp parallel for
+        for(int r=0; r<out; ++r){
+            const uint16_t* row = qdata + (size_t)r * in;
+            double acc = 0.0;
+            for(int c=0; c<in; ++c){
+                int qv = (int)row[c];
+                int zp = zero_points ? zero_points[r] : 0;
+                float s = scales ? scales[r] : 1.0f;
+                acc += (double)(qv - zp) * (double)in_vec[c];
+            }
+            float s = scales ? scales[r] : 1.0f;
+            out_vec[r] = (float)(acc * (double)s);
+        }
+    } else {
+        return -10; // unsupported element size
+    }
+    return 0;
+}
+
 } // extern C

@@ -11,10 +11,19 @@ def test_loader_example_runs_if_present():
     if not manifest.exists():
         # Nothing to test without manifest
         return
-    if exe.exists():
+    # Prefer platform-native binary: on Windows look for .exe first
+    if os.name == 'nt':
+        if exe_win.exists():
+            ret = subprocess.run([str(exe_win), str(manifest), 'cpp/backend_1bit.dll'])
+            assert ret.returncode == 0 or ret.returncode == 1
+        else:
+            # On Windows if only the Linux binary is present we skip (not runnable on Windows)
+            return
+    elif exe.exists():
         ret = subprocess.run([str(exe), str(manifest), 'cpp/backend_1bit.so'])
         assert ret.returncode == 0 or ret.returncode == 1
     elif exe_win.exists():
+        # non-Windows runner that has an .exe file
         ret = subprocess.run([str(exe_win), str(manifest), 'cpp/backend_1bit.dll'])
         assert ret.returncode == 0 or ret.returncode == 1
     else:

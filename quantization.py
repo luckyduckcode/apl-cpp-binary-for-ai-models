@@ -32,6 +32,38 @@ def pack_bits(bit_arr):
         return np.packbits(arr)
 
 
+def quantize_per_row(weights: np.ndarray, bits: int):
+    """Quantize a 2D weight matrix per-row to integer 0..(2**bits-1).
+    Returns (quantized_array, scales_array, zero_points_array).
+    """
+    assert weights.ndim == 2
+    out, inp = weights.shape
+    qmax = (1 << bits) - 1
+    scales = np.zeros(out, dtype=np.float32)
+    zero_points = np.zeros(out, dtype=np.int32)
+    quantized_rows = []
+    for i in range(out):
+        row = weights[i]
+        rmin = float(np.min(row))
+        rmax = float(np.max(row))
+        if rmax == rmin:
+            s = 1.0
+            zp = 0
+            qrow = np.zeros(inp, dtype=np.uint8)
+        else:
+            s = (rmax - rmin) / qmax
+            if s == 0:
+                s = 1.0
+            zp = int(round(-rmin / s))
+            qrow = np.round(row / s + zp).astype(np.int32)
+            qrow = np.clip(qrow, 0, qmax).astype(np.uint16 if qmax > 255 else np.uint8)
+        scales[i] = s
+        zero_points[i] = int(zp)
+        quantized_rows.append(qrow)
+    Q = np.vstack(quantized_rows)
+    return Q, scales, zero_points
+
+
 def binarize_weights(weights, per_channel_axis=0):
     """
     Binarize weights to sign ±1 per output channel and compute per-channel scale.
