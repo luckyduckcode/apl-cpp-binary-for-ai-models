@@ -138,10 +138,11 @@ parser.add_argument('--model-notes', type=str, default='', help='Free-form notes
 args = parser.parse_args()
 
 npz_path = Path(args.npz)
-npz = np.load(npz_path)
+npz = np.load(npz_path, allow_pickle=True)
 npz_files = set(npz.files)
 
 weights_section = {}
+bits_used = set()
 
 global_heads = args.num_heads or args.nhead
 
@@ -181,6 +182,12 @@ for key in npz.files:
             'scale_dtype': 'float32',
             'packed_format': 'numpy.packbits(msb_first,row-major)'
         }
+        entry['quantization'] = {
+            'type': 'binarized',
+            'bits': 1,
+            'scales': scales_npy
+        }
+        bits_used.add(1)
 
         lname = name.lower()
         if any(tag in lname for tag in ['in_proj', 'self_attn', 'wq', 'wk', 'wv', 'out_proj']):
@@ -200,6 +207,59 @@ for key in npz.files:
             'dtype': 'fp32'
         }
         weights_section[name] = entry
+    else:
+        # check for keys like <name>_q{bits}
+        m = re.match(r'(.+)_q(\d+)$', key)
+        if m:
+            base = m.group(1)
+            bits = int(m.group(2))
+            # shape must exist as base_shape
+            shape_key = f"{base}_shape"
+            if shape_key not in npz_files:
+                raise KeyError(f"Missing shape entry {shape_key} in NPZ for {key}")
+            shape = list(map(int, np.asarray(npz[shape_key]).tolist()))
+
+            scales_key = f"{base}_q{bits}_scales"
+            zp_key = f"{base}_q{bits}_zero_point"
+            if scales_key not in npz_files:
+                raise KeyError(f"Missing scales entry {scales_key} in NPZ for {key}")
+            scales_array = np.asarray(npz[scales_key])
+            scales_npy = f"{base}_q{bits}_scales.npy"
+            np.save(scales_npy, scales_array)
+            scales_txt = f"{base}_q{bits}_scales.txt"
+            np.savetxt(scales_txt, scales_array)
+
+            zps_npy = None
+            if zp_key in npz_files:
+                zps_arr = np.asarray(npz[zp_key])
+                zps_npy = f"{base}_q{bits}_zero_point.npy"
+                np.save(zps_npy, zps_arr)
+
+            # Save integer quantized weights to .npy
+            q_np = f"{base}_q{bits}.npy"
+            np.save(q_np, npz[key])
+
+            scale_axis_index = infer_scale_axis(npz_files, npz, base)
+            entry = {
+                'q': q_np,
+                'shape': shape,
+                'q_scales': scales_npy,
+                'q_scales_txt': scales_txt,
+                'q_zero_point': zps_npy,
+                'bit_width': bits,
+                'scale_axis': {
+                    'index': int(scale_axis_index),
+                    'name': axis_name(scale_axis_index)
+                },
+                'quantization': {
+                    'type': 'perrow_int',
+                    'bits': bits,
+                    'scales': scales_npy,
+                    'zero_point': zps_npy
+                }
+            }
+            weights_section[base] = entry
+            bits_used.add(bits)
 
 
 def maybe_override(target, key, value):
@@ -260,19 +320,34 @@ model_block = drop_none({
     'source_npz': str(npz_path)
 })
 
+if len(bits_used) == 0:
+    q_bit = None
+elif len(bits_used) == 1:
+    q_bit = next(iter(bits_used))
+else:
+    q_bit = 'mixed'
+
 quantization_meta = {
-    'bit_width': 1,
-    'zero_point': 0,
+    'bit_width': q_bit,
+    'supported_bit_widths': sorted(list(bits_used)) if bits_used else None,
+    'zero_point': 0 if (1 in bits_used) else None,
     'scale': {
         'type': 'per-row',
         'dtype': 'float32'
     },
     'activation_dtype': 'float32',
     'packing': {
-        'layout': 'row-major',
-        'endianness': 'msb_first',
-        'library': 'numpy.packbits',
-        'bits_per_chunk': 8
+        '1bit': {
+            'layout': 'row-major',
+            'endianness': 'msb_first',
+            'library': 'numpy.packbits',
+            'bits_per_chunk': 8
+        },
+        'integer': {
+            'layout': 'row-major',
+            'dtype': 'numpy.npy',
+            'bits': 'variable'
+        }
     }
 }
 

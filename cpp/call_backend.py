@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 
 repo_root = Path(__file__).resolve().parent.parent
+import sys
+sys.path.insert(0, str(repo_root))
+QUIET = ('--out-json' in sys.argv or '--out-file' in sys.argv)
 if os.name == 'posix':
     # prefer shared library in repo root (built by scripts/build_backend.sh)
     # prefer shared library in repo root. On macOS the dynamic lib may be backend_1bit.dylib
@@ -31,7 +34,8 @@ elif os.name == 'nt':
         lib = ctypes.WinDLL(str(pyd_path))
     else:
         # If we couldn't find a compiled backend, offer a pure-Python fallback for demo purposes.
-        print('[call_backend] Compiled backend not found; falling back to pure-Python unpack/dequantize matmul for demos')
+        if not QUIET:
+            print('[call_backend] Compiled backend not found; falling back to pure-Python unpack/dequantize matmul for demos')
         lib = None
         try:
             # Attempt to import unpack_binarized from the repo's quantization module
@@ -41,10 +45,20 @@ elif os.name == 'nt':
 else:
     raise RuntimeError('Unsupported OS')
 
+HAVE_MATMUL_Q = False
 if lib is not None:
     # define prototype for native backend
     lib.matmul_1bit.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
     lib.matmul_1bit.restype = ctypes.c_int
+    # optional integer quant kernel in-memory
+    have_matmul_q = False
+    try:
+        lib.matmul_q_in_mem.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        lib.matmul_q_in_mem.restype = ctypes.c_int
+        have_matmul_q = True
+    except Exception:
+        have_matmul_q = False
+    HAVE_MATMUL_Q = have_matmul_q
 
     def call_matmul(packed_file, scales_file, vec, out, _in, mode=0, threads=0):
         # vec: either float numpy vector (mode=0) or packed uint8 array (mode=1)
@@ -57,6 +71,23 @@ if lib is not None:
         ret = lib.matmul_1bit(packed_file.encode('utf-8'), scales_file.encode('utf-8'), in_ptr, out_ptr, out, _in, mode, threads)
         if ret != 0:
             raise RuntimeError('backend matmul failed: ' + str(ret))
+        return out_arr
+    def call_matmul_q_in_mem(q_array, scales_array, zero_point_array, vec, out, _in, bits=2, mode=0, threads=0):
+        # q_array: numpy uint8/uint16 array shape (out, in)
+        if not HAVE_MATMUL_Q:
+            raise RuntimeError('Compiled backend does not support matmul_q_in_mem')
+        if not isinstance(q_array, np.ndarray):
+            raise ValueError('q_array must be numpy array')
+        elem_bytes = q_array.dtype.itemsize
+        q_ptr = q_array.ctypes.data_as(ctypes.c_void_p)
+        scales_ptr = (scales_array.ctypes.data_as(ctypes.c_void_p) if scales_array is not None else ctypes.c_void_p(0))
+        zps_ptr = (zero_point_array.ctypes.data_as(ctypes.c_void_p) if zero_point_array is not None else ctypes.c_void_p(0))
+        in_ptr = vec.ctypes.data_as(ctypes.c_void_p)
+        out_arr = np.zeros(out, dtype=np.float32)
+        out_ptr = out_arr.ctypes.data_as(ctypes.c_void_p)
+        ret = lib.matmul_q_in_mem(q_ptr, ctypes.c_int(elem_bytes), scales_ptr, zps_ptr, in_ptr, out_ptr, out, _in, bits, threads)
+        if ret != 0:
+            raise RuntimeError('backend matmul_q_in_mem failed: ' + str(ret))
         return out_arr
 else:
     # Python fallback (slow): unpack and dequantize to float then matmul using numpy
@@ -86,6 +117,32 @@ else:
             in_sign = np.where(in_bits == 1, 1.0, -1.0).astype(np.float32)
             return mat.dot(in_sign)
 
+        def call_matmul_q_in_mem(q_array, scales_array, zero_point_array, vec, out, _in, bits=2, mode=0, threads=0):
+            # Python fallback for integer quantized weights: dequantize to float and multiply
+            if not isinstance(q_array, np.ndarray):
+                raise ValueError('q_array must be numpy array')
+            # q_array shape: (out, in)
+            if zero_point_array is not None:
+                zp = zero_point_array
+            else:
+                zp = np.zeros(q_array.shape[0], dtype=np.int32)
+            if scales_array is not None:
+                scales = scales_array
+            else:
+                scales = np.ones(q_array.shape[0], dtype=np.float32)
+            # Dequantize
+            q_int = q_array.astype(np.int32)
+            if q_int.ndim == 1:
+                q_int = q_int.reshape((q_array.shape[0], -1))
+            # broadcast subtract
+            if zp.ndim == 0 or zp.shape[0] == 1:
+                q_int = q_int - int(zp)
+            else:
+                q_int = (q_int.T - zp).T
+            # apply scales
+            deq = q_int.astype(np.float32) * scales.reshape((-1, 1))
+            return deq.dot(vec.astype(np.float32))
+
 
 def call_matmul_from_manifest(manifest_path, weight_name, vec, mode=0, threads=0):
     """Convenience wrapper that extracts `packed` and `scales` paths for `weight_name` from
@@ -108,17 +165,31 @@ def call_matmul_from_manifest(manifest_path, weight_name, vec, mode=0, threads=0
     if not cfg:
         raise KeyError(f"Weight {weight_name} not found in manifest {manifest_path}")
 
+    # integer quantized arrays: 'q' (np.npy), 'q_scales', 'q_zero_point'
+    qfile = cfg.get('q')
+    q_scales = cfg.get('q_scales') or cfg.get('q_scales_txt')
+    q_zp = cfg.get('q_zero_point')
+
     packed = cfg.get('packed') or cfg.get('packed_file')
     scales = cfg.get('scales_txt') or cfg.get('scales')
     shape = cfg.get('shape')
-    if not packed or not scales:
-        raise KeyError(f"Packed/scale file missing for {weight_name} in manifest {manifest_path}")
 
     # If not absolute, assume same directory as manifest
-    packed_path = (mp.parent / packed).as_posix() if not Path(packed).is_absolute() else packed
-    scales_path = (mp.parent / scales).as_posix() if not Path(scales).is_absolute() else scales
-    # If scales_path is a numpy binary (.npy), convert it to .txt so the backend can parse text
-    if scales_path.endswith('.npy'):
+    qpath = None
+    scales_path = None
+    zp_path = None
+    # If qfile exists -> use integer kernel path
+    if qfile:
+        qpath = (mp.parent / qfile).as_posix() if not Path(qfile).is_absolute() else qfile
+        scales_path = (mp.parent / q_scales).as_posix() if (q_scales and not Path(q_scales).is_absolute()) else q_scales
+        zp_path = (mp.parent / q_zp).as_posix() if (q_zp and not Path(q_zp).is_absolute()) else q_zp
+    else:
+        if not packed or not scales:
+            raise KeyError(f"Packed/scale file missing for {weight_name} in manifest {manifest_path}")
+        packed_path = (mp.parent / packed).as_posix() if not Path(packed).is_absolute() else packed
+        scales_path = (mp.parent / scales).as_posix() if not Path(scales).is_absolute() else scales
+    # For 1-bit path: If scales_path is a numpy binary (.npy), convert it to .txt so the backend can parse text
+    if qpath is None and scales_path and scales_path.endswith('.npy'):
         sc = np.load(scales_path)
         txt_path = scales_path[:-4] + '.txt'
         np.savetxt(txt_path, sc)
@@ -139,8 +210,25 @@ def call_matmul_from_manifest(manifest_path, weight_name, vec, mode=0, threads=0
         else:
             out = int(shape[0]); _in = 64
 
-    print(f"[call_matmul_from_manifest] manifest={manifest_path} weight={weight_name} packed={packed_path} scales={scales_path} out={out} in={_in} mode={mode}")
-    return call_matmul(packed_path, scales_path, vec, out, _in, mode=mode, threads=threads)
+    if qpath is not None:
+        # integer quantized path: load numpy arrays and call C++ kernel if available else fallback
+        qarr = np.load(qpath, allow_pickle=False)
+        scarr = np.load(scales_path, allow_pickle=False) if scales_path and Path(scales_path).exists() else None
+        zp_arr = np.load(zp_path, allow_pickle=False) if (q_zp and Path(zp_path).exists()) else None
+        if not QUIET:
+            print(f"[call_matmul_from_manifest] manifest={manifest_path} weight={weight_name} q={qpath} q_scales={scales_path} q_zero_point={zp_path} out={out} in={_in} mode={mode}")
+        # Use compiled kernel if available
+        try:
+            if lib is not None and HAVE_MATMUL_Q:
+                return call_matmul_q_in_mem(qarr, scarr, zp_arr, vec, out, _in, bits=cfg.get('bit_width', 2), mode=mode, threads=threads)
+        except Exception:
+            pass
+        # fallback
+        return call_matmul_q_in_mem(qarr, scarr, zp_arr, vec, out, _in, bits=cfg.get('bit_width', 2), mode=mode, threads=threads)
+    else:
+        if not QUIET:
+            print(f"[call_matmul_from_manifest] manifest={manifest_path} weight={weight_name} packed={packed_path} scales={scales_path} out={out} in={_in} mode={mode}")
+        return call_matmul(packed_path, scales_path, vec, out, _in, mode=mode, threads=threads)
 
 if __name__ == '__main__':
     import argparse

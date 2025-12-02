@@ -188,6 +188,28 @@ python3 cpp/call_backend.py
 
 The manifest now exposes `model`, `architecture`, `quantization`, and `weights` sections (while keeping backwards-compatible top-level entries). See `docs/apl_integration.md` for the full schema and guidance on targeting Mistral, DeepSeek-R1, Code Llama, Gemma, and Qwen while staying on the 1-bit pipeline.
 
+Integer quantized kernels (q2/q4/q8)
+-----------------------------------
+In addition to the existing 1-bit XNOR/packed backend, this repo now includes an integer quantized matmul kernel that can accelerate per-row integer quantized weights (q2/q4/q8). To enable it:
+
+- Build the backend (as above) with OpenMP and the native compiler. The build helper `python scripts/build_backend.py` will compile the backend for your OS (or helper scripts in `scripts/`).
+- When available, call the runtime wrapper `python cpp/call_backend.py --manifest <manifest.json> --weight <name>`, and it will automatically select the best kernel based on the weight entry in the manifest.
+
+Behavior and fallbacks:
+- If the compiled backend exposes `matmul_q_in_mem`, the Python wrapper will pass the in-memory numpy arrays for integer quantized weights to this optimized kernel for faster execution.
+- If the compiled backend is not present or doesn't support the integer kernels, the Python wrapper will dequantize the integer q arrays to FP32 and use the normal float matmul code path as a fallback.
+
+Examples:
+
+```bash
+# Export an integer quantized NPZ with 2 bits
+python easy_run.py --custom-model my_local_hf --bits 2 --output-dir models
+
+# Build native backend and run call_backend which should pick the integer kernel if compiled
+python scripts/build_backend.py
+python cpp/call_backend.py --manifest models/my_local_hf_manifest.json --weight embedding.weight --input test_input.txt --out-json
+```
+
 Native loader example
 ---------------------
 The repo includes `cpp/loader_example` which demonstrates loading `backend_1bit.so` dynamically and calling `matmul_1bit`. Build it using the cross-platform build script and run it as a standalone test:
@@ -229,6 +251,8 @@ If you have a local `gguf` / `ggml` model (`llama.cpp` format) you can convert i
 python scripts/gguf_to_apl.py --hf-dir /tmp/hf_model --run-export
 ```
 
+By default, `gguf_to_apl.py` now prefers the repository's `scripts/export_model_1bit.py` as the quantizer which creates a 1-bit FPTQ NPZ and APL manifest. Use `--quantizer easy_run` to fall back to `easy_run.py` style export if preferred. You can also specify `--bits 2` or `--bits 4` to export integer quantized NPZ instead of 1-bit.
+
 3) Or pre-convert to NPZ/quantized format and then export to APL using the standard pipeline:
 
 ```bash
@@ -242,6 +266,26 @@ If you prefer, use `scripts/gguf_to_apl.py --gguf path/to/your.gguf --run-export
 
 
 Tip: use `scripts/manifest_to_apl.py` to create `apl/generated_manifest.apl` — a small snippet that exposes manifest properties as simple APL variables to `)load` inside an APL session or include in demos.
+
+## Export to 1-bit FPTQ for APL
+
+You can export Hugging Face models to 1-bit FPTQ NPZ with per-row scales and packed weights using the new helper script:
+
+```bash
+python scripts/export_model_1bit.py --hf-model <HF_MODEL_OR_LOCAL_DIR> \
+  --out models/my_model_1bit.npz \
+  --out-manifest models/my_model_manifest.json
+```
+
+This creates an NPZ containing packed 1-bit arrays and per-row scales with keys compatible with the APL importer. If `--out-manifest` is set, the exporter will call `export_quantized_for_apl.py` for you.
+You can export to 2/4/8-bit quantization by passing `--bits`; note that 2/4-bit quantization saves integers and per-row scales rather than packed 1-bit bytes:
+
+```bash
+python scripts/export_model_1bit.py --hf-model <HF_MODEL_OR_LOCAL_DIR> --out models/my_model_q2.npz --bits 2
+```
+
+If you have a `gguf/ggml` model (llama.cpp format), use `scripts/gguf_to_apl.py` to convert to an HF folder first, then run the above helper.
+
 
 ## Supported Model Families
 

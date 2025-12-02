@@ -11,6 +11,7 @@ import argparse
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -41,6 +42,9 @@ def main():
     parser.add_argument('--hf-dir', type=str, default=None, help='If you already have a HF model dir')
     parser.add_argument('--out-dir', type=str, default='models/gguf_converted', help='Output dir for HF model or NPZ')
     parser.add_argument('--run-export', action='store_true', help='Run easy_run.py to quantize/export to APL after conversion')
+    parser.add_argument('--bits', type=int, default=1, choices=[1,2,4,8], help='Bit width for quantization when exporting (default 1)')
+    parser.add_argument('--model-family', type=str, default='llama', help='Model family for export_quantized_for_apl (llama|mistral|gemma|etc)')
+    parser.add_argument('--quantizer', type=str, default='export_model_1bit', help='Which quantizer/export helper to call: export_model_1bit or easy_run')
     args = parser.parse_args()
 
     hf_dir = None
@@ -77,9 +81,17 @@ def main():
             return 1
 
     if hf_dir and args.run_export:
-        print('Running easy_run.py to quantize and export HF model to APL')
-        cmd = ['python', 'easy_run.py', '--custom-model', str(hf_dir), '--output-dir', 'models', '--run-demo']
-        subprocess.check_call(cmd)
+        if args.quantizer == 'export_model_1bit' and Path('scripts/export_model_1bit.py').exists():
+            print('Running scripts/export_model_1bit.py to quantize and export HF model to APL')
+            # assemble paths
+            out_npz = Path(args.out_dir) / f'{hf_dir.name}_q{args.bits}.npz'
+            out_manifest = Path(args.out_dir) / f'{hf_dir.name}_manifest.json'
+            cmd = [sys.executable, 'scripts/export_model_1bit.py', '--hf-model', str(hf_dir), '--out', str(out_npz), '--out-manifest', str(out_manifest), '--bits', str(args.bits), '--model-family', args.model_family]
+            subprocess.check_call(cmd)
+        else:
+            print('Running easy_run.py to quantize and export HF model to APL')
+            cmd = [sys.executable, 'easy_run.py', '--custom-model', str(hf_dir), '--output-dir', args.out_dir, '--run-demo']
+            subprocess.check_call(cmd)
 
     print('Done. HF dir:', hf_dir)
     return 0
