@@ -36,8 +36,13 @@ def install_dependencies_first():
     
     # Use pip directly to install all at once
     cmd = [sys.executable, '-m', 'pip', 'install', '--quiet'] + required_packages
-    subprocess.run(cmd, capture_output=True)
-    print("✓ Dependencies ready\n")
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        if result.returncode != 0:
+            print(f"⚠️  pip warnings/errors: {result.stderr[:200]}")
+        print("✓ Dependencies ready\n")
+    except Exception as e:
+        print(f"⚠️  Install attempt completed: {e}\n")
 
 def check_python_version():
     """Check Python version."""
@@ -64,7 +69,7 @@ def kill_existing_server():
     except:
         pass
 
-def launch_server():
+def launch_server(run_server):
     """Launch the chat server."""
     print("\n" + "=" * 60)
     print("🚀 Starting APL Chat Server...")
@@ -94,14 +99,7 @@ def launch_server():
     threading.Thread(target=open_browser, daemon=True).start()
     
     try:
-        # Import and run server directly (works with PyInstaller bundles)
-        try:
-            from apl_chat_server import run_server
-        except ImportError as import_err:
-            print(f"❌ Failed to import server: {import_err}")
-            print("Attempting direct execution...")
-            raise
-        
+        # Run server directly (now passed as parameter)
         run_server()
     except KeyboardInterrupt:
         print("\n\n👋 Shutting down...")
@@ -121,11 +119,51 @@ def main():
     print("=" * 60 + "\n")
     
     # CRITICAL: Install deps FIRST before any other imports
-    install_dependencies_first()
-    check_python_version()
+    try:
+        install_dependencies_first()
+    except Exception as e:
+        print(f"❌ Dependency install failed: {e}")
+        import traceback
+        traceback.print_exc()
+        time.sleep(5)
+        sys.exit(1)
+    
+    try:
+        check_python_version()
+    except Exception as e:
+        print(f"❌ Python check failed: {e}")
+        import traceback
+        traceback.print_exc()
+        time.sleep(5)
+        sys.exit(1)
+    
+    # Import server after dependencies are installed
+    try:
+        print("📥 Importing server module...")
+        from apl_chat_server import run_server
+        print("✓ Server imported successfully")
+    except ImportError as import_err:
+        print(f"❌ Failed to import server: {import_err}")
+        import traceback
+        traceback.print_exc()
+        time.sleep(5)
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Unexpected error during import: {e}")
+        import traceback
+        traceback.print_exc()
+        time.sleep(5)
+        sys.exit(1)
     
     # Now we can safely launch
-    launch_server()
+    try:
+        launch_server(run_server)
+    except Exception as e:
+        print(f"❌ Server launch failed: {e}")
+        import traceback
+        traceback.print_exc()
+        time.sleep(5)
+        sys.exit(1)
 
 if __name__ == "__main__":
     try:

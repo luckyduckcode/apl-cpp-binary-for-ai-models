@@ -359,7 +359,7 @@
             font-size: 11px;
             color: var(--text-secondary);
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 4px;
         }
 
@@ -722,7 +722,8 @@
                         <div class="model-item-name">${model.name}</div>
                         <div class="model-item-stats">
                             <div><span class="stat-label">${model.bits}-bit</span></div>
-                            <div><span class="stat-label">${model.compression}</span></div>
+                            <div><span class="stat-label">${model.size}</span></div>
+                            <div><span class="stat-label">${model.speed}</span></div>
                         </div>
                     </div>
                 `).join('');

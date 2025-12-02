@@ -61,21 +61,24 @@ MODELS = {
         "bits": 4,
         "size": "251 MB",
         "compression": "8.8x",
-        "tokens_per_sec": "~50",
+        "speed_cpu": "~15 t/s",
+        "speed_gpu": "~90 t/s",
     },
     "Mistral 7B": {
         "repo": "mistralai/Mistral-7B-v0.1",
         "bits": 4,
         "size": "1.1 GB",
         "compression": "12x",
-        "tokens_per_sec": "~20",
+        "speed_cpu": "~4 t/s",
+        "speed_gpu": "~35 t/s",
     },
     "Mistral 7B Instruct": {
         "repo": "mistralai/Mistral-7B-Instruct-v0.1",
         "bits": 4,
         "size": "1.1 GB",
         "compression": "12x",
-        "tokens_per_sec": "~20",
+        "speed_cpu": "~4 t/s",
+        "speed_gpu": "~35 t/s",
     },
 }
 
@@ -241,12 +244,15 @@ def get_models():
     """Get available models."""
     models_info = []
     for name, config in MODELS.items():
+        # Select appropriate speed based on device
+        speed = config["speed_gpu"] if device == "cuda" else config["speed_cpu"]
+        
         models_info.append({
             "name": name,
             "bits": config["bits"],
             "size": config["size"],
             "compression": config["compression"],
-            "tokens_per_sec": config["tokens_per_sec"],
+            "speed": speed,
         })
     
     gpu_info = get_gpu_info()
@@ -373,7 +379,15 @@ def run_server():
         print(f"TF32 Enabled: Yes (faster inference)")
     
     print(f"Parallel Workers: {max_workers}")
-    print(f"Quantization: 4-bit NF4 (BitsAndBytes)")
+    if device == "cuda":
+        print(f"Quantization: 4-bit NF4 (BitsAndBytes)")
+    else:
+        print(f"Quantization: FP32 (CPU - 4-bit not supported)")
+        if not torch.cuda.is_available():
+            print(f"[WARNING] CUDA not available. PyTorch version: {torch.__version__}")
+            print(f"          If you have a GPU, ensure you have a CUDA-enabled PyTorch installed.")
+            if "3.14" in sys.version:
+                 print(f"          NOTE: Python 3.14 does not yet support CUDA-enabled PyTorch.")
     print(f"Compute Precision: FP16 (GPU) / FP32 (CPU)")
     print("\n[NOTE] Models load on first request (lazy loading)")
     print("[NOTE] Model loading may take 1-5 minutes depending on model size and device")
