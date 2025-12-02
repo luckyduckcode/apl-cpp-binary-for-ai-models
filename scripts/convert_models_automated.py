@@ -153,32 +153,57 @@ class ModelConverter:
         for idx, layer in enumerate(layers[:min(len(layers), 12)]):  # Limit for memory
             print(f"    Quantizing layer {idx + 1}/{min(len(layers), 12)}")
             
-            # Get attention weights
-            if hasattr(layer, 'attn'):
-                for name in ['c_attn', 'qkv_proj', 'attention']:
-                    if hasattr(layer.attn, name):
-                        w = getattr(layer.attn, name).weight.data.numpy().T.astype(np.float32)
+            # Extract all parameters from this layer
+            for param_name, param_data in layer.named_parameters():
+                if 'weight' in param_name:
+                    try:
+                        # Convert to numpy and transpose if needed
+                        w = param_data.data.detach().cpu().numpy().astype(np.float32)
+                        original_shape = w.shape
+                        
+                        # For 2D weights, transpose to (out, in) format
+                        if w.ndim == 2:
+                            w = w.T
+                        
+                        # Quantize
                         q, scales, zps = quantize_per_row(w, bits=self.bits)
-                        quantized_data[f'layer_{idx}.attn.{name}_q{self.bits}'] = q
-                        quantized_data[f'layer_{idx}.attn.{name}_scales'] = scales
-                        quantized_data[f'layer_{idx}.attn.{name}_zps'] = zps.astype(np.int32)
+                        
+                        # Store with flattened layer structure and shape metadata
+                        param_key = param_name.replace('.', '_')
+                        base_key = f'layer_{idx}_{param_key}'
+                        
+                        quantized_data[f'{base_key}_q{self.bits}'] = q
+                        quantized_data[f'{base_key}_q{self.bits}_scales'] = scales
+                        quantized_data[f'{base_key}_q{self.bits}_zero_point'] = zps.astype(np.int32)
+                        quantized_data[f'{base_key}_shape'] = np.array(list(w.shape), dtype=np.int32)
+                        
+                        layer_count += 1
+                    except Exception as e:
+                        print(f"      [WARNING] Failed to quantize {param_name}: {e}")
             
-            # Get FFN weights
-            if hasattr(layer, 'mlp'):
-                for name in ['fc1', 'c_fc', 'w1']:
-                    if hasattr(layer.mlp, name):
-                        w = getattr(layer.mlp, name).weight.data.numpy().T.astype(np.float32)
-                        q, scales, zps = quantize_per_row(w, bits=self.bits)
-                        quantized_data[f'layer_{idx}.mlp.{name}_q{self.bits}'] = q
-                        quantized_data[f'layer_{idx}.mlp.{name}_scales'] = scales
-                        quantized_data[f'layer_{idx}.mlp.{name}_zps'] = zps.astype(np.int32)
-            
-            layer_count += 1
+        # Also quantize embedding and head weights
+        try:
+            if hasattr(model, 'lm_head') and hasattr(model.lm_head, 'weight'):
+                w = model.lm_head.weight.data.detach().cpu().numpy().T.astype(np.float32)
+                q, scales, zps = quantize_per_row(w, bits=self.bits)
+                quantized_data['lm_head_weight_q{}'.format(self.bits)] = q
+                quantized_data['lm_head_weight_q{}_scales'.format(self.bits)] = scales
+                quantized_data['lm_head_weight_q{}_zero_point'.format(self.bits)] = zps.astype(np.int32)
+                quantized_data['lm_head_weight_shape'] = np.array(list(w.shape), dtype=np.int32)
+        except Exception as e:
+            print(f"      [WARNING] Failed to quantize lm_head: {e}")
         
         # Save NPZ
         npz_path = self.output_dir / f"{model_key}_quantized_q{self.bits}.npz"
+        if not quantized_data:
+            print(f"    [WARNING] No quantized data extracted from model")
+            print(f"    [INFO] Layer extraction needs review for this model architecture")
         np.savez_compressed(npz_path, **quantized_data)
-        print(f"    Saved: {npz_path} ({npz_path.stat().st_size / 1e6:.1f} MB)")
+        file_size_mb = npz_path.stat().st_size / 1e6
+        print(f"    Saved: {npz_path} ({file_size_mb:.1f} MB)")
+        
+        if file_size_mb < 1.0:
+            print(f"    [WARNING] File size seems small - check quantized_data extraction")
         
         return npz_path
     
@@ -240,7 +265,7 @@ class ModelConverter:
                 if 'shape' not in weight_info or 'bit_width' not in weight_info:
                     print(f"    [WARNING] Incomplete weight entry: {name}")
             
-            print(f"    ✓ Manifest valid")
+            print(f"    [OK] Manifest valid")
             return True
         except Exception as e:
             print(f"    [ERROR] Validation failed: {e}")
@@ -262,7 +287,7 @@ class ModelConverter:
                 cwd=str(self.repo_root),
                 timeout=60
             )
-            print(f"    ✓ Accuracy validation passed")
+            print(f"    [OK] Accuracy validation passed")
             return True
         except subprocess.TimeoutExpired:
             print(f"    [WARNING] Validation timed out")
@@ -306,7 +331,7 @@ class ModelConverter:
         self.run_accuracy_check(manifest_path)
         
         print(f"\n{'='*80}")
-        print(f"✓ CONVERSION COMPLETE")
+        print(f"[OK] CONVERSION COMPLETE")
         print(f"  Manifest: {manifest_path}")
         print(f"  Model family: {POPULAR_MODELS.get(model_key, {}).get('family', 'llama')}")
         print(f"  Context length: {POPULAR_MODELS.get(model_key, {}).get('context_length', 4096)}")
@@ -341,7 +366,7 @@ def main():
         for model_key in POPULAR_MODELS:
             if converter.convert_model(model_key, bits=args.bits):
                 successes += 1
-        print(f"\n✓ Converted {successes}/{len(POPULAR_MODELS)} models successfully")
+        print(f"\n[OK] Converted {successes}/{len(POPULAR_MODELS)} models successfully")
         return 0
     else:
         success = converter.convert_model(args.model, bits=args.bits)
