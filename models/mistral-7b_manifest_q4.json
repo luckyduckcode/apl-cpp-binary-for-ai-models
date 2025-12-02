@@ -1,0 +1,3617 @@
+{
+  "format_version": 2,
+  "model": {
+    "primary_family": "mistral",
+    "families": [
+      "mistral"
+    ],
+    "source_npz": "models\\mistral-7b_quantized_q4.npz"
+  },
+  "architecture": {
+    "families": [
+      "mistral"
+    ],
+    "attention": {
+      "variant": "full"
+    },
+    "activation": "relu",
+    "norm": "layernorm"
+  },
+  "quantization": {
+    "bit_width": 4,
+    "supported_bit_widths": [
+      4
+    ],
+    "zero_point": null,
+    "scale": {
+      "type": "per-row",
+      "dtype": "float32"
+    },
+    "activation_dtype": "float32",
+    "packing": {
+      "1bit": {
+        "layout": "row-major",
+        "endianness": "msb_first",
+        "library": "numpy.packbits",
+        "bits_per_chunk": 8
+      },
+      "integer": {
+        "layout": "row-major",
+        "dtype": "numpy.npy",
+        "bits": "variable"
+      }
+    }
+  },
+  "weights": {
+    "layer_0_self_attn_q_proj_weight": {
+      "q": "layer_0_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_0_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_0_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_0_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_0_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_0_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_0_self_attn_k_proj_weight": {
+      "q": "layer_0_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_0_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_0_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_0_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_0_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_0_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_0_self_attn_v_proj_weight": {
+      "q": "layer_0_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_0_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_0_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_0_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_0_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_0_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_0_self_attn_o_proj_weight": {
+      "q": "layer_0_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_0_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_0_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_0_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_0_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_0_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_0_mlp_gate_proj_weight": {
+      "q": "layer_0_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_0_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_0_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_0_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_0_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_0_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_0_mlp_up_proj_weight": {
+      "q": "layer_0_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_0_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_0_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_0_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_0_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_0_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_0_mlp_down_proj_weight": {
+      "q": "layer_0_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_0_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_0_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_0_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_0_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_0_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_1_self_attn_q_proj_weight": {
+      "q": "layer_1_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_1_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_1_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_1_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_1_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_1_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_1_self_attn_k_proj_weight": {
+      "q": "layer_1_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_1_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_1_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_1_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_1_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_1_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_1_self_attn_v_proj_weight": {
+      "q": "layer_1_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_1_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_1_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_1_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_1_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_1_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_1_self_attn_o_proj_weight": {
+      "q": "layer_1_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_1_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_1_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_1_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_1_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_1_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_1_mlp_gate_proj_weight": {
+      "q": "layer_1_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_1_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_1_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_1_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_1_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_1_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_1_mlp_up_proj_weight": {
+      "q": "layer_1_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_1_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_1_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_1_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_1_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_1_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_1_mlp_down_proj_weight": {
+      "q": "layer_1_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_1_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_1_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_1_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_1_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_1_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_2_self_attn_q_proj_weight": {
+      "q": "layer_2_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_2_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_2_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_2_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_2_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_2_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_2_self_attn_k_proj_weight": {
+      "q": "layer_2_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_2_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_2_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_2_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_2_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_2_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_2_self_attn_v_proj_weight": {
+      "q": "layer_2_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_2_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_2_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_2_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_2_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_2_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_2_self_attn_o_proj_weight": {
+      "q": "layer_2_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_2_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_2_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_2_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_2_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_2_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_2_mlp_gate_proj_weight": {
+      "q": "layer_2_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_2_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_2_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_2_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_2_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_2_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_2_mlp_up_proj_weight": {
+      "q": "layer_2_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_2_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_2_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_2_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_2_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_2_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_2_mlp_down_proj_weight": {
+      "q": "layer_2_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_2_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_2_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_2_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_2_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_2_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_3_self_attn_q_proj_weight": {
+      "q": "layer_3_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_3_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_3_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_3_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_3_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_3_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_3_self_attn_k_proj_weight": {
+      "q": "layer_3_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_3_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_3_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_3_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_3_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_3_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_3_self_attn_v_proj_weight": {
+      "q": "layer_3_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_3_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_3_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_3_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_3_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_3_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_3_self_attn_o_proj_weight": {
+      "q": "layer_3_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_3_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_3_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_3_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_3_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_3_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_3_mlp_gate_proj_weight": {
+      "q": "layer_3_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_3_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_3_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_3_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_3_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_3_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_3_mlp_up_proj_weight": {
+      "q": "layer_3_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_3_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_3_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_3_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_3_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_3_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_3_mlp_down_proj_weight": {
+      "q": "layer_3_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_3_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_3_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_3_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_3_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_3_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_4_self_attn_q_proj_weight": {
+      "q": "layer_4_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_4_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_4_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_4_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_4_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_4_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_4_self_attn_k_proj_weight": {
+      "q": "layer_4_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_4_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_4_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_4_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_4_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_4_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_4_self_attn_v_proj_weight": {
+      "q": "layer_4_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_4_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_4_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_4_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_4_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_4_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_4_self_attn_o_proj_weight": {
+      "q": "layer_4_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_4_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_4_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_4_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_4_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_4_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_4_mlp_gate_proj_weight": {
+      "q": "layer_4_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_4_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_4_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_4_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_4_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_4_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_4_mlp_up_proj_weight": {
+      "q": "layer_4_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_4_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_4_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_4_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_4_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_4_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_4_mlp_down_proj_weight": {
+      "q": "layer_4_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_4_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_4_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_4_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_4_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_4_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_5_self_attn_q_proj_weight": {
+      "q": "layer_5_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_5_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_5_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_5_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_5_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_5_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_5_self_attn_k_proj_weight": {
+      "q": "layer_5_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_5_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_5_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_5_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_5_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_5_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_5_self_attn_v_proj_weight": {
+      "q": "layer_5_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_5_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_5_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_5_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_5_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_5_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_5_self_attn_o_proj_weight": {
+      "q": "layer_5_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_5_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_5_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_5_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_5_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_5_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_5_mlp_gate_proj_weight": {
+      "q": "layer_5_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_5_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_5_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_5_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_5_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_5_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_5_mlp_up_proj_weight": {
+      "q": "layer_5_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_5_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_5_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_5_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_5_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_5_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_5_mlp_down_proj_weight": {
+      "q": "layer_5_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_5_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_5_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_5_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_5_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_5_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_6_self_attn_q_proj_weight": {
+      "q": "layer_6_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_6_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_6_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_6_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_6_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_6_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_6_self_attn_k_proj_weight": {
+      "q": "layer_6_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_6_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_6_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_6_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_6_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_6_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_6_self_attn_v_proj_weight": {
+      "q": "layer_6_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_6_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_6_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_6_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_6_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_6_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_6_self_attn_o_proj_weight": {
+      "q": "layer_6_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_6_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_6_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_6_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_6_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_6_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_6_mlp_gate_proj_weight": {
+      "q": "layer_6_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_6_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_6_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_6_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_6_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_6_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_6_mlp_up_proj_weight": {
+      "q": "layer_6_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_6_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_6_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_6_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_6_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_6_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_6_mlp_down_proj_weight": {
+      "q": "layer_6_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_6_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_6_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_6_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_6_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_6_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_7_self_attn_q_proj_weight": {
+      "q": "layer_7_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_7_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_7_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_7_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_7_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_7_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_7_self_attn_k_proj_weight": {
+      "q": "layer_7_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_7_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_7_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_7_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_7_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_7_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_7_self_attn_v_proj_weight": {
+      "q": "layer_7_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_7_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_7_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_7_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_7_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_7_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_7_self_attn_o_proj_weight": {
+      "q": "layer_7_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_7_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_7_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_7_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_7_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_7_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_7_mlp_gate_proj_weight": {
+      "q": "layer_7_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_7_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_7_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_7_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_7_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_7_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_7_mlp_up_proj_weight": {
+      "q": "layer_7_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_7_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_7_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_7_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_7_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_7_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_7_mlp_down_proj_weight": {
+      "q": "layer_7_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_7_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_7_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_7_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_7_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_7_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_8_self_attn_q_proj_weight": {
+      "q": "layer_8_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_8_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_8_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_8_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_8_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_8_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_8_self_attn_k_proj_weight": {
+      "q": "layer_8_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_8_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_8_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_8_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_8_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_8_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_8_self_attn_v_proj_weight": {
+      "q": "layer_8_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_8_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_8_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_8_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_8_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_8_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_8_self_attn_o_proj_weight": {
+      "q": "layer_8_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_8_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_8_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_8_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_8_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_8_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_8_mlp_gate_proj_weight": {
+      "q": "layer_8_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_8_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_8_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_8_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_8_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_8_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_8_mlp_up_proj_weight": {
+      "q": "layer_8_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_8_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_8_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_8_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_8_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_8_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_8_mlp_down_proj_weight": {
+      "q": "layer_8_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_8_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_8_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_8_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_8_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_8_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_9_self_attn_q_proj_weight": {
+      "q": "layer_9_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_9_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_9_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_9_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_9_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_9_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_9_self_attn_k_proj_weight": {
+      "q": "layer_9_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_9_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_9_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_9_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_9_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_9_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_9_self_attn_v_proj_weight": {
+      "q": "layer_9_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_9_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_9_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_9_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_9_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_9_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_9_self_attn_o_proj_weight": {
+      "q": "layer_9_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_9_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_9_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_9_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_9_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_9_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_9_mlp_gate_proj_weight": {
+      "q": "layer_9_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_9_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_9_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_9_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_9_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_9_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_9_mlp_up_proj_weight": {
+      "q": "layer_9_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_9_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_9_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_9_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_9_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_9_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_9_mlp_down_proj_weight": {
+      "q": "layer_9_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_9_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_9_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_9_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_9_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_9_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_10_self_attn_q_proj_weight": {
+      "q": "layer_10_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_10_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_10_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_10_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_10_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_10_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_10_self_attn_k_proj_weight": {
+      "q": "layer_10_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_10_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_10_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_10_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_10_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_10_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_10_self_attn_v_proj_weight": {
+      "q": "layer_10_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_10_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_10_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_10_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_10_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_10_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_10_self_attn_o_proj_weight": {
+      "q": "layer_10_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_10_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_10_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_10_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_10_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_10_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_10_mlp_gate_proj_weight": {
+      "q": "layer_10_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_10_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_10_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_10_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_10_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_10_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_10_mlp_up_proj_weight": {
+      "q": "layer_10_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_10_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_10_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_10_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_10_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_10_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_10_mlp_down_proj_weight": {
+      "q": "layer_10_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_10_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_10_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_10_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_10_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_10_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_11_self_attn_q_proj_weight": {
+      "q": "layer_11_self_attn_q_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_11_self_attn_q_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_11_self_attn_q_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_11_self_attn_q_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_11_self_attn_q_proj_weight_q4_scales.npy",
+        "zero_point": "layer_11_self_attn_q_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_11_self_attn_k_proj_weight": {
+      "q": "layer_11_self_attn_k_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_11_self_attn_k_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_11_self_attn_k_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_11_self_attn_k_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_11_self_attn_k_proj_weight_q4_scales.npy",
+        "zero_point": "layer_11_self_attn_k_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_11_self_attn_v_proj_weight": {
+      "q": "layer_11_self_attn_v_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        1024
+      ],
+      "q_scales": "layer_11_self_attn_v_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_11_self_attn_v_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_11_self_attn_v_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_11_self_attn_v_proj_weight_q4_scales.npy",
+        "zero_point": "layer_11_self_attn_v_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_11_self_attn_o_proj_weight": {
+      "q": "layer_11_self_attn_o_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        4096
+      ],
+      "q_scales": "layer_11_self_attn_o_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_11_self_attn_o_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_11_self_attn_o_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_11_self_attn_o_proj_weight_q4_scales.npy",
+        "zero_point": "layer_11_self_attn_o_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_11_mlp_gate_proj_weight": {
+      "q": "layer_11_mlp_gate_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_11_mlp_gate_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_11_mlp_gate_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_11_mlp_gate_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_11_mlp_gate_proj_weight_q4_scales.npy",
+        "zero_point": "layer_11_mlp_gate_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_11_mlp_up_proj_weight": {
+      "q": "layer_11_mlp_up_proj_weight_q4.npy",
+      "shape": [
+        4096,
+        14336
+      ],
+      "q_scales": "layer_11_mlp_up_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_11_mlp_up_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_11_mlp_up_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_11_mlp_up_proj_weight_q4_scales.npy",
+        "zero_point": "layer_11_mlp_up_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "layer_11_mlp_down_proj_weight": {
+      "q": "layer_11_mlp_down_proj_weight_q4.npy",
+      "shape": [
+        14336,
+        4096
+      ],
+      "q_scales": "layer_11_mlp_down_proj_weight_q4_scales.npy",
+      "q_scales_txt": "layer_11_mlp_down_proj_weight_q4_scales.txt",
+      "q_zero_point": "layer_11_mlp_down_proj_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "layer_11_mlp_down_proj_weight_q4_scales.npy",
+        "zero_point": "layer_11_mlp_down_proj_weight_q4_zero_point.npy"
+      }
+    },
+    "lm_head_weight": {
+      "q": "lm_head_weight_q4.npy",
+      "shape": [
+        4096,
+        32000
+      ],
+      "q_scales": "lm_head_weight_q4_scales.npy",
+      "q_scales_txt": "lm_head_weight_q4_scales.txt",
+      "q_zero_point": "lm_head_weight_q4_zero_point.npy",
+      "bit_width": 4,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "quantization": {
+        "type": "perrow_int",
+        "bits": 4,
+        "scales": "lm_head_weight_q4_scales.npy",
+        "zero_point": "lm_head_weight_q4_zero_point.npy"
+      }
+    }
+  },
+  "layer_0_self_attn_q_proj_weight": {
+    "q": "layer_0_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_0_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_0_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_0_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_0_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_0_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_0_self_attn_k_proj_weight": {
+    "q": "layer_0_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_0_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_0_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_0_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_0_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_0_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_0_self_attn_v_proj_weight": {
+    "q": "layer_0_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_0_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_0_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_0_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_0_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_0_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_0_self_attn_o_proj_weight": {
+    "q": "layer_0_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_0_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_0_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_0_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_0_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_0_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_0_mlp_gate_proj_weight": {
+    "q": "layer_0_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_0_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_0_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_0_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_0_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_0_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_0_mlp_up_proj_weight": {
+    "q": "layer_0_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_0_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_0_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_0_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_0_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_0_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_0_mlp_down_proj_weight": {
+    "q": "layer_0_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_0_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_0_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_0_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_0_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_0_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_1_self_attn_q_proj_weight": {
+    "q": "layer_1_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_1_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_1_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_1_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_1_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_1_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_1_self_attn_k_proj_weight": {
+    "q": "layer_1_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_1_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_1_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_1_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_1_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_1_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_1_self_attn_v_proj_weight": {
+    "q": "layer_1_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_1_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_1_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_1_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_1_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_1_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_1_self_attn_o_proj_weight": {
+    "q": "layer_1_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_1_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_1_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_1_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_1_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_1_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_1_mlp_gate_proj_weight": {
+    "q": "layer_1_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_1_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_1_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_1_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_1_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_1_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_1_mlp_up_proj_weight": {
+    "q": "layer_1_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_1_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_1_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_1_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_1_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_1_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_1_mlp_down_proj_weight": {
+    "q": "layer_1_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_1_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_1_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_1_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_1_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_1_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_2_self_attn_q_proj_weight": {
+    "q": "layer_2_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_2_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_2_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_2_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_2_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_2_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_2_self_attn_k_proj_weight": {
+    "q": "layer_2_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_2_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_2_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_2_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_2_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_2_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_2_self_attn_v_proj_weight": {
+    "q": "layer_2_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_2_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_2_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_2_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_2_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_2_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_2_self_attn_o_proj_weight": {
+    "q": "layer_2_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_2_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_2_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_2_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_2_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_2_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_2_mlp_gate_proj_weight": {
+    "q": "layer_2_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_2_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_2_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_2_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_2_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_2_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_2_mlp_up_proj_weight": {
+    "q": "layer_2_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_2_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_2_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_2_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_2_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_2_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_2_mlp_down_proj_weight": {
+    "q": "layer_2_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_2_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_2_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_2_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_2_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_2_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_3_self_attn_q_proj_weight": {
+    "q": "layer_3_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_3_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_3_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_3_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_3_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_3_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_3_self_attn_k_proj_weight": {
+    "q": "layer_3_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_3_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_3_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_3_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_3_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_3_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_3_self_attn_v_proj_weight": {
+    "q": "layer_3_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_3_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_3_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_3_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_3_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_3_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_3_self_attn_o_proj_weight": {
+    "q": "layer_3_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_3_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_3_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_3_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_3_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_3_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_3_mlp_gate_proj_weight": {
+    "q": "layer_3_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_3_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_3_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_3_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_3_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_3_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_3_mlp_up_proj_weight": {
+    "q": "layer_3_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_3_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_3_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_3_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_3_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_3_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_3_mlp_down_proj_weight": {
+    "q": "layer_3_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_3_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_3_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_3_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_3_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_3_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_4_self_attn_q_proj_weight": {
+    "q": "layer_4_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_4_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_4_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_4_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_4_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_4_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_4_self_attn_k_proj_weight": {
+    "q": "layer_4_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_4_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_4_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_4_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_4_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_4_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_4_self_attn_v_proj_weight": {
+    "q": "layer_4_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_4_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_4_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_4_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_4_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_4_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_4_self_attn_o_proj_weight": {
+    "q": "layer_4_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_4_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_4_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_4_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_4_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_4_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_4_mlp_gate_proj_weight": {
+    "q": "layer_4_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_4_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_4_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_4_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_4_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_4_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_4_mlp_up_proj_weight": {
+    "q": "layer_4_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_4_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_4_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_4_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_4_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_4_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_4_mlp_down_proj_weight": {
+    "q": "layer_4_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_4_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_4_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_4_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_4_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_4_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_5_self_attn_q_proj_weight": {
+    "q": "layer_5_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_5_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_5_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_5_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_5_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_5_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_5_self_attn_k_proj_weight": {
+    "q": "layer_5_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_5_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_5_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_5_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_5_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_5_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_5_self_attn_v_proj_weight": {
+    "q": "layer_5_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_5_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_5_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_5_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_5_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_5_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_5_self_attn_o_proj_weight": {
+    "q": "layer_5_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_5_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_5_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_5_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_5_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_5_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_5_mlp_gate_proj_weight": {
+    "q": "layer_5_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_5_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_5_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_5_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_5_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_5_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_5_mlp_up_proj_weight": {
+    "q": "layer_5_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_5_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_5_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_5_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_5_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_5_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_5_mlp_down_proj_weight": {
+    "q": "layer_5_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_5_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_5_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_5_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_5_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_5_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_6_self_attn_q_proj_weight": {
+    "q": "layer_6_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_6_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_6_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_6_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_6_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_6_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_6_self_attn_k_proj_weight": {
+    "q": "layer_6_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_6_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_6_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_6_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_6_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_6_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_6_self_attn_v_proj_weight": {
+    "q": "layer_6_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_6_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_6_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_6_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_6_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_6_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_6_self_attn_o_proj_weight": {
+    "q": "layer_6_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_6_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_6_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_6_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_6_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_6_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_6_mlp_gate_proj_weight": {
+    "q": "layer_6_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_6_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_6_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_6_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_6_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_6_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_6_mlp_up_proj_weight": {
+    "q": "layer_6_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_6_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_6_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_6_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_6_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_6_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_6_mlp_down_proj_weight": {
+    "q": "layer_6_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_6_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_6_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_6_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_6_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_6_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_7_self_attn_q_proj_weight": {
+    "q": "layer_7_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_7_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_7_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_7_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_7_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_7_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_7_self_attn_k_proj_weight": {
+    "q": "layer_7_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_7_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_7_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_7_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_7_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_7_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_7_self_attn_v_proj_weight": {
+    "q": "layer_7_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_7_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_7_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_7_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_7_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_7_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_7_self_attn_o_proj_weight": {
+    "q": "layer_7_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_7_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_7_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_7_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_7_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_7_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_7_mlp_gate_proj_weight": {
+    "q": "layer_7_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_7_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_7_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_7_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_7_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_7_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_7_mlp_up_proj_weight": {
+    "q": "layer_7_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_7_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_7_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_7_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_7_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_7_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_7_mlp_down_proj_weight": {
+    "q": "layer_7_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_7_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_7_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_7_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_7_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_7_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_8_self_attn_q_proj_weight": {
+    "q": "layer_8_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_8_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_8_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_8_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_8_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_8_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_8_self_attn_k_proj_weight": {
+    "q": "layer_8_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_8_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_8_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_8_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_8_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_8_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_8_self_attn_v_proj_weight": {
+    "q": "layer_8_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_8_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_8_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_8_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_8_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_8_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_8_self_attn_o_proj_weight": {
+    "q": "layer_8_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_8_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_8_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_8_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_8_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_8_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_8_mlp_gate_proj_weight": {
+    "q": "layer_8_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_8_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_8_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_8_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_8_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_8_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_8_mlp_up_proj_weight": {
+    "q": "layer_8_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_8_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_8_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_8_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_8_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_8_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_8_mlp_down_proj_weight": {
+    "q": "layer_8_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_8_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_8_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_8_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_8_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_8_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_9_self_attn_q_proj_weight": {
+    "q": "layer_9_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_9_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_9_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_9_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_9_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_9_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_9_self_attn_k_proj_weight": {
+    "q": "layer_9_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_9_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_9_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_9_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_9_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_9_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_9_self_attn_v_proj_weight": {
+    "q": "layer_9_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_9_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_9_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_9_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_9_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_9_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_9_self_attn_o_proj_weight": {
+    "q": "layer_9_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_9_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_9_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_9_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_9_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_9_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_9_mlp_gate_proj_weight": {
+    "q": "layer_9_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_9_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_9_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_9_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_9_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_9_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_9_mlp_up_proj_weight": {
+    "q": "layer_9_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_9_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_9_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_9_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_9_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_9_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_9_mlp_down_proj_weight": {
+    "q": "layer_9_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_9_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_9_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_9_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_9_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_9_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_10_self_attn_q_proj_weight": {
+    "q": "layer_10_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_10_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_10_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_10_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_10_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_10_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_10_self_attn_k_proj_weight": {
+    "q": "layer_10_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_10_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_10_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_10_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_10_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_10_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_10_self_attn_v_proj_weight": {
+    "q": "layer_10_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_10_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_10_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_10_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_10_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_10_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_10_self_attn_o_proj_weight": {
+    "q": "layer_10_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_10_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_10_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_10_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_10_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_10_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_10_mlp_gate_proj_weight": {
+    "q": "layer_10_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_10_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_10_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_10_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_10_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_10_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_10_mlp_up_proj_weight": {
+    "q": "layer_10_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_10_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_10_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_10_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_10_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_10_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_10_mlp_down_proj_weight": {
+    "q": "layer_10_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_10_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_10_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_10_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_10_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_10_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_11_self_attn_q_proj_weight": {
+    "q": "layer_11_self_attn_q_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_11_self_attn_q_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_11_self_attn_q_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_11_self_attn_q_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_11_self_attn_q_proj_weight_q4_scales.npy",
+      "zero_point": "layer_11_self_attn_q_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_11_self_attn_k_proj_weight": {
+    "q": "layer_11_self_attn_k_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_11_self_attn_k_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_11_self_attn_k_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_11_self_attn_k_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_11_self_attn_k_proj_weight_q4_scales.npy",
+      "zero_point": "layer_11_self_attn_k_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_11_self_attn_v_proj_weight": {
+    "q": "layer_11_self_attn_v_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      1024
+    ],
+    "q_scales": "layer_11_self_attn_v_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_11_self_attn_v_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_11_self_attn_v_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_11_self_attn_v_proj_weight_q4_scales.npy",
+      "zero_point": "layer_11_self_attn_v_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_11_self_attn_o_proj_weight": {
+    "q": "layer_11_self_attn_o_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      4096
+    ],
+    "q_scales": "layer_11_self_attn_o_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_11_self_attn_o_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_11_self_attn_o_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_11_self_attn_o_proj_weight_q4_scales.npy",
+      "zero_point": "layer_11_self_attn_o_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_11_mlp_gate_proj_weight": {
+    "q": "layer_11_mlp_gate_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_11_mlp_gate_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_11_mlp_gate_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_11_mlp_gate_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_11_mlp_gate_proj_weight_q4_scales.npy",
+      "zero_point": "layer_11_mlp_gate_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_11_mlp_up_proj_weight": {
+    "q": "layer_11_mlp_up_proj_weight_q4.npy",
+    "shape": [
+      4096,
+      14336
+    ],
+    "q_scales": "layer_11_mlp_up_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_11_mlp_up_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_11_mlp_up_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_11_mlp_up_proj_weight_q4_scales.npy",
+      "zero_point": "layer_11_mlp_up_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "layer_11_mlp_down_proj_weight": {
+    "q": "layer_11_mlp_down_proj_weight_q4.npy",
+    "shape": [
+      14336,
+      4096
+    ],
+    "q_scales": "layer_11_mlp_down_proj_weight_q4_scales.npy",
+    "q_scales_txt": "layer_11_mlp_down_proj_weight_q4_scales.txt",
+    "q_zero_point": "layer_11_mlp_down_proj_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "layer_11_mlp_down_proj_weight_q4_scales.npy",
+      "zero_point": "layer_11_mlp_down_proj_weight_q4_zero_point.npy"
+    }
+  },
+  "lm_head_weight": {
+    "q": "lm_head_weight_q4.npy",
+    "shape": [
+      4096,
+      32000
+    ],
+    "q_scales": "lm_head_weight_q4_scales.npy",
+    "q_scales_txt": "lm_head_weight_q4_scales.txt",
+    "q_zero_point": "lm_head_weight_q4_zero_point.npy",
+    "bit_width": 4,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "quantization": {
+      "type": "perrow_int",
+      "bits": 4,
+      "scales": "lm_head_weight_q4_scales.npy",
+      "zero_point": "lm_head_weight_q4_zero_point.npy"
+    }
+  }
+}
