@@ -22,11 +22,11 @@ import multiprocessing
 import subprocess
 import warnings
 
-# Suppress warnings
+# Suppress warnings and non-critical errors
 warnings.filterwarnings('ignore')
-logging.getLogger('transformers').setLevel(logging.ERROR)
-logging.getLogger('torch').setLevel(logging.ERROR)
-logging.getLogger('bitsandbytes').setLevel(logging.ERROR)
+logging.getLogger('transformers').setLevel(logging.CRITICAL)
+logging.getLogger('torch').setLevel(logging.CRITICAL)
+logging.getLogger('bitsandbytes').setLevel(logging.CRITICAL)
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -117,7 +117,17 @@ def load_model(model_name: str) -> dict:
         print(f"  Repo: {repo}")
         print(f"  Device: {device} | Workers: {max_workers}")
         
-        current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
+        # Load tokenizer with error suppression
+        try:
+            current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
+        except Exception as tok_err:
+            if 'ernie' in str(tok_err).lower():
+                # Ignore ernie model registry errors - model still works
+                import warnings
+                warnings.filterwarnings('ignore', category=ImportWarning)
+                current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
+            else:
+                raise
         
         # Load with GPU optimization if available
         load_kwargs = {
@@ -131,12 +141,32 @@ def load_model(model_name: str) -> dict:
             load_kwargs["quantization_config"] = quant_config
             load_kwargs["device_map"] = "auto"
             print("  Using: 4-bit NF4 quantization (GPU)")
-            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            try:
+                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            except Exception as model_err:
+                if 'ernie' in str(model_err).lower():
+                    # Ignore ernie errors and retry
+                    import warnings
+                    with warnings.catch_warnings():
+                        warnings.simplefilter('ignore')
+                        current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+                else:
+                    raise
         else:
             # On CPU, use FP16 for memory efficiency (simpler than Int8)
             print("  Using: FP16 (CPU, memory efficient)")
             load_kwargs["torch_dtype"] = torch.float16
-            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            try:
+                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            except Exception as model_err:
+                if 'ernie' in str(model_err).lower():
+                    # Ignore ernie errors and retry
+                    import warnings
+                    with warnings.catch_warnings():
+                        warnings.simplefilter('ignore')
+                        current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+                else:
+                    raise
             current_model = current_model.to(device)
         
         current_model.eval()
