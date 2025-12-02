@@ -117,27 +117,10 @@ def main():
     if not models_ok:
         print("\n⚠️  Models not found. Please convert models first:")
         print("  python scripts/convert_models_automated.py tinyllama --bits 4")
-        response = input("\nContinue anyway? (y/n): ").lower().strip()
-        if response != 'y':
-            sys.exit(1)
+        print("\nContinuing with HuggingFace model auto-download...")
     
-    print("\n" + "=" * 60)
-    print("Choose chat interface:")
-    print("  1. Flask (lightweight, recommended)")
-    print("  2. Gradio (feature-rich)")
-    print("  Q. Quit")
-    
-    choice = input("\nEnter choice (1/2/Q): ").strip().upper()
-    
-    if choice == '1':
-        launch_server(use_gradio=False)
-    elif choice == '2':
-        launch_server(use_gradio=True)
-    elif choice == 'Q':
-        print("Goodbye!")
-    else:
-        print("Invalid choice")
-        main()
+    # Auto-launch Flask server (no menu when run from exe)
+    launch_server(use_gradio=False)
 
 if __name__ == "__main__":
     try:
