@@ -15,8 +15,10 @@ from datetime import datetime
 from flask import Flask, render_template, request, jsonify, session
 from flask_cors import CORS
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import logging
+from concurrent.futures import ThreadPoolExecutor
+import multiprocessing
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -26,6 +28,11 @@ logging.getLogger('torch').setLevel(logging.ERROR)
 
 app = Flask(__name__, template_folder='.', static_folder='.')
 CORS(app)
+
+# GPU/Device Configuration
+device = "cuda" if torch.cuda.is_available() else "cpu"
+max_workers = multiprocessing.cpu_count() if device == "cpu" else 4  # Parallel worker threads
+executor = ThreadPoolExecutor(max_workers=max_workers)
 
 # Model configurations
 MODELS = {
@@ -56,11 +63,22 @@ MODELS = {
 current_model = None
 current_tokenizer = None
 current_model_name = "TinyLlama 1.1B"
-device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# 4-bit quantization config for GPU (BitsAndBytes)
+def get_quantization_config():
+    """Get 4-bit quantization config for efficient GPU inference."""
+    if device == "cuda":
+        return BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_quant_type="nf4",
+        )
+    return None
 
 
 def load_model(model_name: str) -> dict:
-    """Load a model."""
+    """Load a model with GPU acceleration and 4-bit quantization."""
     global current_model, current_tokenizer, current_model_name
     
     try:
@@ -69,19 +87,35 @@ def load_model(model_name: str) -> dict:
         
         repo = MODELS[model_name]["repo"]
         print(f"Loading {model_name} from {repo}...")
+        print(f"Device: {device} | Quantization: 4-bit NF4 | Workers: {max_workers}")
         
         current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
-        current_model = AutoModelForCausalLM.from_pretrained(
-            repo,
-            torch_dtype=torch.float32,
-            low_cpu_mem_usage=True,
-            trust_remote_code=True
-        )
-        current_model = current_model.to(device)
+        
+        # Load with GPU optimization if available
+        load_kwargs = {
+            "trust_remote_code": True,
+            "low_cpu_mem_usage": True,
+        }
+        
+        if device == "cuda":
+            # Use 4-bit quantization on GPU
+            quant_config = get_quantization_config()
+            load_kwargs["quantization_config"] = quant_config
+            load_kwargs["device_map"] = "auto"
+            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+        else:
+            # On CPU, use float32 but enable memory optimization
+            load_kwargs["torch_dtype"] = torch.float32
+            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            current_model = current_model.to(device)
+        
         current_model.eval()
         current_model_name = model_name
         
-        return {"status": "ok", "message": f"✓ {model_name} loaded on {device}"}
+        if device == "cuda":
+            torch.cuda.empty_cache()
+        
+        return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()} (4-bit)"}
     except Exception as e:
         return {"status": "error", "message": f"Failed to load model: {str(e)}"}
 
@@ -110,7 +144,7 @@ def generate_response(
         inputs = current_tokenizer(full_prompt, return_tensors="pt").to(device)
         input_length = inputs['input_ids'].shape[1]
         
-        # Generate
+        # Generate with GPU acceleration
         with torch.no_grad():
             output_ids = current_model.generate(
                 inputs['input_ids'],
@@ -120,6 +154,7 @@ def generate_response(
                 do_sample=True,
                 eos_token_id=current_tokenizer.eos_token_id,
                 pad_token_id=current_tokenizer.pad_token_id,
+                num_beams=1,  # Parallel decoding
             )
         
         # Decode response
@@ -151,10 +186,17 @@ def get_models():
             "compression": config["compression"],
             "tokens_per_sec": config["tokens_per_sec"],
         })
+    
+    gpu_info = ""
+    if device == "cuda":
+        gpu_info = f" - {torch.cuda.get_device_name(0)}"
+    
     return jsonify({
         "models": models_info,
         "current_model": current_model_name,
-        "device": device,
+        "device": device + gpu_info,
+        "quantization": "4-bit NF4 (BitsAndBytes)",
+        "parallel_workers": max_workers,
     })
 
 
@@ -174,6 +216,10 @@ def api_load_model():
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
     """Chat endpoint - generates response."""
+    # Lazy load model if needed
+    if current_model is None:
+        load_model("TinyLlama 1.1B")
+    
     data = request.json
     message = data.get('message', '').strip()
     system_prompt = data.get('system_prompt', '')
@@ -202,23 +248,34 @@ def api_chat():
 @app.route('/api/health', methods=['GET'])
 def health():
     """Health check."""
+    gpu_memory = ""
+    if device == "cuda":
+        gpu_memory = f" - {torch.cuda.memory_allocated() / 1e9:.1f}GB used"
+    
     return jsonify({
         "status": "ok",
         "model_loaded": current_model is not None,
         "current_model": current_model_name,
-        "device": device,
+        "device": device + gpu_memory,
+        "quantization": "4-bit",
+        "parallel_workers": max_workers,
     })
 
 
 if __name__ == '__main__':
     # Pre-load default model
     print("Initializing APL Chat Server...")
-    print("Loading default model: TinyLlama 1.1B...")
-    result = load_model("TinyLlama 1.1B")
-    print(result)
+    print(f"Device: {device.upper()}")
+    if device == "cuda":
+        print(f"GPU: {torch.cuda.get_device_name(0)}")
+        print(f"CUDA Version: {torch.version.cuda}")
+        print(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f}GB")
+    print(f"Parallel Workers: {max_workers}")
+    print(f"Quantization: 4-bit NF4 (BitsAndBytes)")
+    print("\n[NOTE] Model will load on first request")
     
-    print("\n🚀 Starting APL Chat Server")
-    print("📱 Open http://localhost:5000 in your browser")
+    print("\n[START] APL Chat Server")
+    print("[INFO] Open http://localhost:5000 in your browser")
     print("=" * 60)
     
     app.run(host='127.0.0.1', port=5000, debug=False, threaded=True)
