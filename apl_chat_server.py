@@ -19,6 +19,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 import logging
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
+import subprocess
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -30,8 +31,19 @@ app = Flask(__name__, template_folder='.', static_folder='.')
 CORS(app)
 
 # GPU/Device Configuration
-device = "cuda" if torch.cuda.is_available() else "cpu"
-max_workers = multiprocessing.cpu_count() if device == "cpu" else 4  # Parallel worker threads
+def init_gpu():
+    """Initialize GPU settings for optimal performance."""
+    if torch.cuda.is_available():
+        # Enable TF32 for speedup (maintains precision for LLMs)
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+        # Enable cuDNN benchmarking for optimization
+        torch.backends.cudnn.benchmark = True
+        return "cuda"
+    return "cpu"
+
+device = init_gpu()
+max_workers = 4 if device == "cuda" else multiprocessing.cpu_count()
 executor = ThreadPoolExecutor(max_workers=max_workers)
 
 # Model configurations
@@ -71,9 +83,21 @@ def get_quantization_config():
         return BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_compute_dtype=torch.float16,
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,  # Double quantization for extra compression
+            bnb_4bit_quant_type="nf4",  # NormalFloat4 - optimal for LLMs
         )
+    return None
+
+def get_gpu_info():
+    """Get GPU information."""
+    if torch.cuda.is_available():
+        props = torch.cuda.get_device_properties(0)
+        return {
+            "name": torch.cuda.get_device_name(0),
+            "memory_gb": props.total_memory / 1e9,
+            "cuda_version": torch.version.cuda,
+            "cudnn_version": torch.backends.cudnn.version(),
+        }
     return None
 
 
@@ -114,6 +138,7 @@ def load_model(model_name: str) -> dict:
         
         if device == "cuda":
             torch.cuda.empty_cache()
+            print(f"[GPU] Memory allocated: {torch.cuda.memory_allocated() / 1e9:.2f}GB")
         
         return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()} (4-bit)"}
     except Exception as e:
@@ -187,16 +212,18 @@ def get_models():
             "tokens_per_sec": config["tokens_per_sec"],
         })
     
-    gpu_info = ""
-    if device == "cuda":
-        gpu_info = f" - {torch.cuda.get_device_name(0)}"
+    gpu_info = get_gpu_info()
+    device_str = device
+    if gpu_info:
+        device_str = f"{device} ({gpu_info['name']})"
     
     return jsonify({
         "models": models_info,
         "current_model": current_model_name,
-        "device": device + gpu_info,
+        "device": device_str,
         "quantization": "4-bit NF4 (BitsAndBytes)",
         "parallel_workers": max_workers,
+        "gpu_info": gpu_info,
     })
 
 
@@ -248,34 +275,51 @@ def api_chat():
 @app.route('/api/health', methods=['GET'])
 def health():
     """Health check."""
-    gpu_memory = ""
-    if device == "cuda":
-        gpu_memory = f" - {torch.cuda.memory_allocated() / 1e9:.1f}GB used"
-    
-    return jsonify({
+    health_data = {
         "status": "ok",
         "model_loaded": current_model is not None,
         "current_model": current_model_name,
-        "device": device + gpu_memory,
-        "quantization": "4-bit",
+        "device": device,
+        "quantization": "4-bit NF4",
         "parallel_workers": max_workers,
-    })
+    }
+    
+    if device == "cuda":
+        gpu_info = get_gpu_info()
+        health_data["gpu"] = {
+            "name": gpu_info["name"],
+            "memory_gb": gpu_info["memory_gb"],
+            "memory_allocated_gb": torch.cuda.memory_allocated() / 1e9,
+            "memory_reserved_gb": torch.cuda.memory_reserved() / 1e9,
+            "cuda_version": gpu_info["cuda_version"],
+        }
+    
+    return jsonify(health_data)
 
 
 if __name__ == '__main__':
-    # Pre-load default model
-    print("Initializing APL Chat Server...")
+    # Display startup info
+    print("\n" + "=" * 60)
+    print("[INIT] APL Chat Server - GPU Optimized")
+    print("=" * 60)
     print(f"Device: {device.upper()}")
+    
     if device == "cuda":
-        print(f"GPU: {torch.cuda.get_device_name(0)}")
-        print(f"CUDA Version: {torch.version.cuda}")
-        print(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f}GB")
+        gpu_info = get_gpu_info()
+        print(f"GPU: {gpu_info['name']}")
+        print(f"GPU Memory: {gpu_info['memory_gb']:.1f}GB")
+        print(f"CUDA Version: {gpu_info['cuda_version']}")
+        print(f"cuDNN Version: {gpu_info['cudnn_version']}")
+        print(f"TF32 Enabled: Yes (faster inference)")
+    
     print(f"Parallel Workers: {max_workers}")
     print(f"Quantization: 4-bit NF4 (BitsAndBytes)")
-    print("\n[NOTE] Model will load on first request")
+    print(f"Compute Precision: FP16 (GPU) / FP32 (CPU)")
+    print("\n[NOTE] Models load on first request (lazy loading)")
     
     print("\n[START] APL Chat Server")
     print("[INFO] Open http://localhost:5000 in your browser")
-    print("=" * 60)
+    print("[INFO] API Health: http://localhost:5000/api/health")
+    print("=" * 60 + "\n")
     
     app.run(host='127.0.0.1', port=5000, debug=False, threaded=True)
