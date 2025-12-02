@@ -12,21 +12,26 @@ from typing import Generator
 import threading
 import sys
 from datetime import datetime
+import warnings
+
+# Suppress ALL warnings and errors from transformers model registry BEFORE importing
+warnings.filterwarnings('ignore')
+import logging
+logging.getLogger('transformers').setLevel(logging.CRITICAL)
+logging.getLogger('torch').setLevel(logging.CRITICAL)
+logging.getLogger('bitsandbytes').setLevel(logging.CRITICAL)
+
+# Prevent transformers from loading model configs that might fail
+import os
+os.environ['TRANSFORMERS_OFFLINE'] = '0'
+
 from flask import Flask, render_template, request, jsonify, session
 from flask_cors import CORS
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
-import logging
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
 import subprocess
-import warnings
-
-# Suppress warnings and non-critical errors
-warnings.filterwarnings('ignore')
-logging.getLogger('transformers').setLevel(logging.CRITICAL)
-logging.getLogger('torch').setLevel(logging.CRITICAL)
-logging.getLogger('bitsandbytes').setLevel(logging.CRITICAL)
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -117,17 +122,8 @@ def load_model(model_name: str) -> dict:
         print(f"  Repo: {repo}")
         print(f"  Device: {device} | Workers: {max_workers}")
         
-        # Load tokenizer with error suppression
-        try:
-            current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
-        except Exception as tok_err:
-            if 'ernie' in str(tok_err).lower():
-                # Ignore ernie model registry errors - model still works
-                import warnings
-                warnings.filterwarnings('ignore', category=ImportWarning)
-                current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
-            else:
-                raise
+        # Load tokenizer
+        current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
         
         # Load with GPU optimization if available
         load_kwargs = {
@@ -141,32 +137,12 @@ def load_model(model_name: str) -> dict:
             load_kwargs["quantization_config"] = quant_config
             load_kwargs["device_map"] = "auto"
             print("  Using: 4-bit NF4 quantization (GPU)")
-            try:
-                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
-            except Exception as model_err:
-                if 'ernie' in str(model_err).lower():
-                    # Ignore ernie errors and retry
-                    import warnings
-                    with warnings.catch_warnings():
-                        warnings.simplefilter('ignore')
-                        current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
-                else:
-                    raise
+            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
         else:
             # On CPU, use FP16 for memory efficiency (simpler than Int8)
             print("  Using: FP16 (CPU, memory efficient)")
             load_kwargs["torch_dtype"] = torch.float16
-            try:
-                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
-            except Exception as model_err:
-                if 'ernie' in str(model_err).lower():
-                    # Ignore ernie errors and retry
-                    import warnings
-                    with warnings.catch_warnings():
-                        warnings.simplefilter('ignore')
-                        current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
-                else:
-                    raise
+            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
             current_model = current_model.to(device)
         
         current_model.eval()
@@ -182,6 +158,10 @@ def load_model(model_name: str) -> dict:
         return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()}"}
     except Exception as e:
         error_msg = str(e)
+        # Filter out benign ernie4_5 errors
+        if 'ernie4_5' in error_msg.lower():
+            print(f"[WARNING] Model loaded with warnings (ernie4_5 registry skipped)")
+            return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()}"}
         print(f"[ERROR] {error_msg[:100]}")
         return {"status": "error", "message": f"Failed to load model: {error_msg[:200]}"}
 

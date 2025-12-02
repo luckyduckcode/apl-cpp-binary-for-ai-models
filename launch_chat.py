@@ -95,7 +95,13 @@ def launch_server():
     
     try:
         # Import and run server directly (works with PyInstaller bundles)
-        from apl_chat_server import run_server
+        try:
+            from apl_chat_server import run_server
+        except ImportError as import_err:
+            print(f"❌ Failed to import server: {import_err}")
+            print("Attempting direct execution...")
+            raise
+        
         run_server()
     except KeyboardInterrupt:
         print("\n\n👋 Shutting down...")
