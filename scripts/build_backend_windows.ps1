@@ -21,7 +21,7 @@ if ($gpp) {
     # If using MinGW, compile a DLL (shared library) with -shared
     $srcList = @("cpp/backend_1bit.cpp","cpp/bitmatmul_xnor_avx2.cpp")
     $src = ($srcList -join ' ')
-    & g++ -O3 -std=c++17 -m64 -fopenmp -shared -static-libgcc -static-libstdc++ -o $Output $src
+    & g++ -O3 -std=c++17 -m64 -mavx2 -mfma -fopenmp -shared -static-libgcc -static-libstdc++ -o $Output $src
     # Try to compile loader_example (executable)
     & g++ -O3 -std=c++17 -m64 -o cpp\loader_example.exe cpp\loader_example.cpp || Write-Host "Could not compile loader_example with g++"
     if ($LASTEXITCODE -ne 0) { throw "g++ compile failed with exit code $LASTEXITCODE" }
@@ -41,7 +41,7 @@ if ($cl) {
     foreach ($s in $sources) {
         $obj = [System.IO.Path]::ChangeExtension($s, ".obj")
         $objFiles += $obj
-        cl /nologo /O2 /EHsc /MD /W3 /c $s
+            cl /nologo /O2 /EHsc /MD /W3 /arch:AVX2 /c $s
     }
     # Link into a DLL
     $libFiles = $objFiles -join ' '
