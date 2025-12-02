@@ -236,17 +236,28 @@ def get_models():
         })
     
     gpu_info = get_gpu_info()
-    device_str = device
+    device_str = device.upper()
     if gpu_info:
-        device_str = f"{device} ({gpu_info['name']})"
+        device_str = f"{device.upper()} - {gpu_info['name']}"
+    
+    # Get current GPU memory usage if available
+    gpu_memory_info = None
+    if device == "cuda" and current_model is not None:
+        gpu_memory_info = {
+            "allocated_gb": torch.cuda.memory_allocated() / 1e9,
+            "reserved_gb": torch.cuda.memory_reserved() / 1e9,
+            "total_gb": gpu_info["memory_gb"] if gpu_info else 0,
+        }
     
     return jsonify({
         "models": models_info,
         "current_model": current_model_name,
+        "model_loaded": current_model is not None,
         "device": device_str,
         "quantization": "4-bit NF4 (BitsAndBytes)",
         "parallel_workers": max_workers,
         "gpu_info": gpu_info,
+        "gpu_memory": gpu_memory_info,
     })
 
 
@@ -266,10 +277,6 @@ def api_load_model():
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
     """Chat endpoint - generates response."""
-    # Lazy load model if needed
-    if current_model is None:
-        load_model("TinyLlama 1.1B")
-    
     data = request.json
     message = data.get('message', '').strip()
     system_prompt = data.get('system_prompt', '')
@@ -278,6 +285,13 @@ def api_chat():
     
     if not message:
         return jsonify({"status": "error", "message": "Empty message"}), 400
+    
+    # Check if model is loaded
+    if current_model is None:
+        return jsonify({
+            "status": "error",
+            "message": "No model loaded. Please select a model first."
+        }), 400
     
     try:
         # Generate response
