@@ -203,6 +203,42 @@ On Windows, run the EXE:
 python scripts/build_backend.py
 .\cpp\loader_example.exe student_quantized_manifest.json cpp/backend_1bit.dll
 ```
+Converting llama.cpp models (gguf / ggml)
+----------------------------------------
+
+If you have a local `gguf` / `ggml` model (`llama.cpp` format) you can convert it and run it with this repo:
+
+1) Convert `gguf`/`ggml` -> HF directory (use `llama.cpp` tools or community converters):
+
+  Example commands (community tools / `llama.cpp`):
+
+  ```bash
+  # Using llama.cpp conversion script (if available)
+  python3 llama.cpp/scripts/convert.py --input path/to/model.gguf --output_hf /tmp/hf_model
+  ```
+
+  or if you use community tools that convert to PyTorch HF format:
+
+  ```bash
+  python convert-ggml-to-hf.py --input path/model.gguf --output /tmp/hf_model
+  ```
+
+2) Once you have an HF-style model directory, run the exporter and runner:
+
+```bash
+python scripts/gguf_to_apl.py --hf-dir /tmp/hf_model --run-export
+```
+
+3) Or pre-convert to NPZ/quantized format and then export to APL using the standard pipeline:
+
+```bash
+# Convert to NPZ with 1-bit quantization (if the converter supports it)
+# Or use `easy_run.py` to download the HF model and quantize
+python easy_run.py --custom-model /tmp/hf_model --output-dir models
+```
+
+If you prefer, use `scripts/gguf_to_apl.py --gguf path/to/your.gguf --run-export` to attempt an automatic conversion if ldaamma.cpp/convert is available locally.
+
 
 
 Tip: use `scripts/manifest_to_apl.py` to create `apl/generated_manifest.apl` — a small snippet that exposes manifest properties as simple APL variables to `)load` inside an APL session or include in demos.
