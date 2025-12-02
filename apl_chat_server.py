@@ -122,27 +122,36 @@ def load_model(model_name: str) -> dict:
         print(f"  Repo: {repo}")
         print(f"  Device: {device} | Workers: {max_workers}")
         
-        # Load tokenizer
-        current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
+        try:
+            # Load tokenizer
+            print("  Loading tokenizer...")
+            current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
+        except Exception as tok_err:
+            print(f"  ⚠️  Tokenizer error (will try to continue): {str(tok_err)[:100]}")
+            raise
         
         # Load with GPU optimization if available
         load_kwargs = {
             "trust_remote_code": True,
-            "low_cpu_mem_usage": True,
         }
         
         if device == "cuda":
             # Use 4-bit quantization on GPU with accelerate
+            load_kwargs["low_cpu_mem_usage"] = True
             quant_config = get_quantization_config()
             load_kwargs["quantization_config"] = quant_config
             load_kwargs["device_map"] = "auto"
             print("  Using: 4-bit NF4 quantization (GPU)")
-            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
         else:
-            # On CPU, use FP16 for memory efficiency (simpler than Int8)
-            print("  Using: FP16 (CPU, memory efficient)")
-            load_kwargs["torch_dtype"] = torch.float16
-            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            # On CPU, avoid device_map and low_cpu_mem_usage (these can cause issues)
+            load_kwargs["torch_dtype"] = torch.float32  # Use FP32 on CPU for stability
+            print("  Using: FP32 (CPU)")
+        
+        print("  Loading model (this may take a moment)...")
+        current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+        
+        if device == "cpu":
+            # Explicitly move to CPU if not already there
             current_model = current_model.to(device)
         
         current_model.eval()
@@ -153,16 +162,19 @@ def load_model(model_name: str) -> dict:
             mem_gb = torch.cuda.memory_allocated() / 1e9
             print(f"  ✓ GPU Memory: {mem_gb:.2f}GB")
         else:
-            print(f"  ✓ Model ready for inference")
+            print(f"  ✓ Model ready for inference on CPU")
         
         return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()}"}
     except Exception as e:
         error_msg = str(e)
+        print(f"[ERROR] Model load failed: {error_msg[:200]}")
+        
         # Filter out benign ernie4_5 errors
         if 'ernie4_5' in error_msg.lower():
             print(f"[WARNING] Model loaded with warnings (ernie4_5 registry skipped)")
+            current_model_name = model_name
             return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()}"}
-        print(f"[ERROR] {error_msg[:100]}")
+        
         return {"status": "error", "message": f"Failed to load model: {error_msg[:200]}"}
 
 
@@ -270,8 +282,16 @@ def api_load_model():
     if model_name not in MODELS:
         return jsonify({"status": "error", "message": "Unknown model"}), 400
     
-    result = load_model(model_name)
-    return jsonify(result)
+    try:
+        result = load_model(model_name)
+        return jsonify(result)
+    except Exception as e:
+        error_msg = str(e)
+        print(f"[ERROR] API load_model exception: {error_msg[:200]}")
+        return jsonify({
+            "status": "error",
+            "message": f"Model loading failed: {error_msg[:200]}"
+        }), 500
 
 
 @app.route('/api/chat', methods=['POST'])
