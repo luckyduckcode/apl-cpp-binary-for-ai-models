@@ -1,4 +1,4 @@
-MANIFEST_FILE ← 'C:/Users/tenna/AppData/Local/Temp/pytest-of-tenna/pytest-31/test_easy_run_with_bits_20/tiny_hf_manifest.json'
+MANIFEST_FILE ← '/tmp/pytest-of-runner/pytest-4/test_easy_run_with_bits_20/out/_tmp_pytest-of-runner_pytest-4_test_easy_run_with_bits_20_tiny_hf_manifest.json'
 MODEL_FAMILY ← 'llama'
 
 ⍝ === Architecture Metadata ===

@@ -1,4 +1,4 @@
-MANIFEST_FILE ← '/tmp/pytest-of-runner/pytest-1/test_manifest_to_apl_and_call_0/test_manifest.json'
+MANIFEST_FILE ← '/tmp/pytest-of-runner/pytest-4/test_manifest_to_apl_and_call_0/test_manifest.json'
 MODEL_FAMILY ← 'llama'
 
 ⍝ === Architecture Metadata ===
