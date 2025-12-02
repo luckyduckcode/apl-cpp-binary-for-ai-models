@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 APL Chat Launcher - Simple startup script
 
@@ -12,6 +13,12 @@ import time
 import platform
 import socket
 import os
+
+# Force UTF-8 output for emojis and special characters
+if sys.platform == 'win32':
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 def install_dependencies_first():
     """Install required packages BEFORE any imports."""
