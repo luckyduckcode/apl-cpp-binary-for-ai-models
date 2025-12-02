@@ -23,7 +23,8 @@ if ($gpp) {
     $src = ($srcList -join ' ')
     & g++ -O3 -std=c++17 -m64 -mavx2 -mfma -fopenmp -shared -static-libgcc -static-libstdc++ -o $Output $src
     # Try to compile loader_example (executable)
-    & g++ -O3 -std=c++17 -m64 -o cpp\loader_example.exe cpp\loader_example.cpp || Write-Host "Could not compile loader_example with g++"
+    & g++ -O3 -std=c++17 -m64 -o cpp\loader_example.exe cpp\loader_example.cpp
+    if ($LASTEXITCODE -ne 0) { Write-Host "Could not compile loader_example with g++" }
     if ($LASTEXITCODE -ne 0) { throw "g++ compile failed with exit code $LASTEXITCODE" }
     Log "Build succeeded: $Output"
     exit 0

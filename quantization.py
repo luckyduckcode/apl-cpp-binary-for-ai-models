@@ -64,6 +64,41 @@ def quantize_per_row(weights: np.ndarray, bits: int):
     return Q, scales, zero_points
 
 
+def pack_q4(q_array: np.ndarray) -> np.ndarray:
+    """Pack q4 values (0-15) into nibbles: 2 values per byte.
+    Input: uint8 array with values 0-15
+    Output: packed uint8 array with half the size (rounded up)
+    """
+    assert q_array.dtype == np.uint8
+    flat = q_array.flatten()
+    n = len(flat)
+    packed_size = (n + 1) // 2
+    packed = np.zeros(packed_size, dtype=np.uint8)
+    
+    for i in range(0, n, 2):
+        low = flat[i] & 0x0F
+        high = (flat[i+1] & 0x0F) if (i+1 < n) else 0
+        packed[i//2] = low | (high << 4)
+    
+    return packed
+
+
+def unpack_q4(packed: np.ndarray, original_size: int) -> np.ndarray:
+    """Unpack q4 nibbles from packed bytes.
+    Input: packed uint8 array
+    Output: unpacked uint8 array with values 0-15
+    """
+    unpacked = np.zeros(original_size, dtype=np.uint8)
+    for i in range(original_size):
+        byte_idx = i // 2
+        if i % 2 == 0:
+            unpacked[i] = packed[byte_idx] & 0x0F
+        else:
+            unpacked[i] = (packed[byte_idx] >> 4) & 0x0F
+    return unpacked
+
+
+
 def binarize_weights(weights, per_channel_axis=0):
     """
     Binarize weights to sign ±1 per output channel and compute per-channel scale.

@@ -53,7 +53,7 @@ if lib is not None:
     # optional integer quant kernel in-memory
     have_matmul_q = False
     try:
-        lib.matmul_q_in_mem.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        lib.matmul_q_in_mem.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
         lib.matmul_q_in_mem.restype = ctypes.c_int
         have_matmul_q = True
     except Exception:
@@ -85,7 +85,7 @@ if lib is not None:
         in_ptr = vec.ctypes.data_as(ctypes.c_void_p)
         out_arr = np.zeros(out, dtype=np.float32)
         out_ptr = out_arr.ctypes.data_as(ctypes.c_void_p)
-        ret = lib.matmul_q_in_mem(q_ptr, ctypes.c_int(elem_bytes), scales_ptr, zps_ptr, in_ptr, out_ptr, out, _in, bits, threads)
+        ret = lib.matmul_q_in_mem(q_ptr, ctypes.c_int(elem_bytes), scales_ptr, zps_ptr, in_ptr, out_ptr, out, _in, bits, mode, threads)
         if ret != 0:
             raise RuntimeError('backend matmul_q_in_mem failed: ' + str(ret))
         return out_arr
