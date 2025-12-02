@@ -1,0 +1,5736 @@
+{
+  "format_version": 2,
+  "model": {
+    "primary_family": "llama",
+    "families": [
+      "llama"
+    ],
+    "source_npz": "models\\tinyllama_quantized.npz"
+  },
+  "architecture": {
+    "families": [
+      "llama"
+    ],
+    "context_length": 2048,
+    "num_layers": 22,
+    "vocab_size": 32000,
+    "attention": {
+      "variant": "full"
+    },
+    "activation": "swiglu",
+    "norm": "rmsnorm"
+  },
+  "quantization": {
+    "bit_width": 1,
+    "zero_point": 0,
+    "scale": {
+      "type": "per-row",
+      "dtype": "float32"
+    },
+    "activation_dtype": "float32",
+    "packing": {
+      "layout": "row-major",
+      "endianness": "msb_first",
+      "library": "numpy.packbits",
+      "bits_per_chunk": 8
+    }
+  },
+  "weights": {
+    "embedding.weight": {
+      "packed": "embedding.weight_1bit.bin",
+      "shape": [
+        32000,
+        2048
+      ],
+      "scales": "embedding.weight_scales.npy",
+      "scales_txt": "embedding.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.0.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.0.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.0.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.0.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.0.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.0.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.0.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.0.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.0.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.0.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.0.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.0.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.0.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.0.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.0.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.0.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.0.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.0.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.0.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.0.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.0.mlp.up_proj.weight": {
+      "packed": "transformer.layers.0.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.0.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.0.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.0.mlp.down_proj.weight": {
+      "packed": "transformer.layers.0.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.0.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.0.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.0.input_layernorm.weight": {
+      "fp32": "transformer.layers.0.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.0.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.0.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.1.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.1.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.1.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.1.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.1.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.1.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.1.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.1.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.1.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.1.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.1.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.1.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.1.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.1.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.1.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.1.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.1.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.1.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.1.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.1.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.1.mlp.up_proj.weight": {
+      "packed": "transformer.layers.1.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.1.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.1.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.1.mlp.down_proj.weight": {
+      "packed": "transformer.layers.1.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.1.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.1.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.1.input_layernorm.weight": {
+      "fp32": "transformer.layers.1.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.1.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.1.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.2.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.2.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.2.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.2.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.2.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.2.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.2.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.2.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.2.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.2.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.2.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.2.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.2.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.2.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.2.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.2.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.2.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.2.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.2.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.2.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.2.mlp.up_proj.weight": {
+      "packed": "transformer.layers.2.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.2.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.2.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.2.mlp.down_proj.weight": {
+      "packed": "transformer.layers.2.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.2.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.2.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.2.input_layernorm.weight": {
+      "fp32": "transformer.layers.2.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.2.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.2.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.3.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.3.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.3.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.3.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.3.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.3.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.3.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.3.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.3.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.3.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.3.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.3.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.3.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.3.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.3.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.3.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.3.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.3.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.3.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.3.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.3.mlp.up_proj.weight": {
+      "packed": "transformer.layers.3.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.3.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.3.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.3.mlp.down_proj.weight": {
+      "packed": "transformer.layers.3.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.3.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.3.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.3.input_layernorm.weight": {
+      "fp32": "transformer.layers.3.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.3.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.3.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.4.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.4.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.4.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.4.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.4.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.4.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.4.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.4.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.4.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.4.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.4.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.4.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.4.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.4.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.4.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.4.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.4.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.4.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.4.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.4.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.4.mlp.up_proj.weight": {
+      "packed": "transformer.layers.4.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.4.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.4.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.4.mlp.down_proj.weight": {
+      "packed": "transformer.layers.4.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.4.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.4.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.4.input_layernorm.weight": {
+      "fp32": "transformer.layers.4.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.4.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.4.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.5.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.5.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.5.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.5.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.5.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.5.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.5.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.5.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.5.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.5.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.5.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.5.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.5.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.5.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.5.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.5.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.5.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.5.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.5.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.5.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.5.mlp.up_proj.weight": {
+      "packed": "transformer.layers.5.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.5.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.5.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.5.mlp.down_proj.weight": {
+      "packed": "transformer.layers.5.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.5.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.5.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.5.input_layernorm.weight": {
+      "fp32": "transformer.layers.5.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.5.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.5.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.6.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.6.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.6.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.6.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.6.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.6.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.6.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.6.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.6.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.6.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.6.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.6.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.6.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.6.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.6.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.6.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.6.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.6.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.6.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.6.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.6.mlp.up_proj.weight": {
+      "packed": "transformer.layers.6.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.6.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.6.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.6.mlp.down_proj.weight": {
+      "packed": "transformer.layers.6.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.6.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.6.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.6.input_layernorm.weight": {
+      "fp32": "transformer.layers.6.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.6.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.6.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.7.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.7.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.7.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.7.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.7.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.7.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.7.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.7.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.7.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.7.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.7.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.7.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.7.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.7.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.7.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.7.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.7.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.7.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.7.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.7.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.7.mlp.up_proj.weight": {
+      "packed": "transformer.layers.7.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.7.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.7.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.7.mlp.down_proj.weight": {
+      "packed": "transformer.layers.7.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.7.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.7.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.7.input_layernorm.weight": {
+      "fp32": "transformer.layers.7.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.7.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.7.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.8.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.8.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.8.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.8.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.8.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.8.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.8.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.8.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.8.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.8.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.8.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.8.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.8.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.8.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.8.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.8.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.8.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.8.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.8.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.8.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.8.mlp.up_proj.weight": {
+      "packed": "transformer.layers.8.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.8.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.8.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.8.mlp.down_proj.weight": {
+      "packed": "transformer.layers.8.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.8.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.8.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.8.input_layernorm.weight": {
+      "fp32": "transformer.layers.8.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.8.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.8.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.9.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.9.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.9.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.9.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.9.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.9.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.9.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.9.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.9.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.9.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.9.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.9.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.9.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.9.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.9.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.9.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.9.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.9.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.9.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.9.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.9.mlp.up_proj.weight": {
+      "packed": "transformer.layers.9.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.9.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.9.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.9.mlp.down_proj.weight": {
+      "packed": "transformer.layers.9.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.9.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.9.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.9.input_layernorm.weight": {
+      "fp32": "transformer.layers.9.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.9.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.9.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.10.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.10.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.10.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.10.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.10.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.10.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.10.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.10.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.10.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.10.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.10.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.10.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.10.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.10.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.10.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.10.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.10.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.10.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.10.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.10.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.10.mlp.up_proj.weight": {
+      "packed": "transformer.layers.10.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.10.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.10.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.10.mlp.down_proj.weight": {
+      "packed": "transformer.layers.10.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.10.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.10.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.10.input_layernorm.weight": {
+      "fp32": "transformer.layers.10.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.10.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.10.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.11.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.11.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.11.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.11.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.11.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.11.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.11.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.11.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.11.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.11.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.11.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.11.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.11.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.11.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.11.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.11.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.11.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.11.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.11.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.11.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.11.mlp.up_proj.weight": {
+      "packed": "transformer.layers.11.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.11.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.11.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.11.mlp.down_proj.weight": {
+      "packed": "transformer.layers.11.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.11.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.11.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.11.input_layernorm.weight": {
+      "fp32": "transformer.layers.11.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.11.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.11.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.12.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.12.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.12.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.12.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.12.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.12.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.12.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.12.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.12.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.12.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.12.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.12.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.12.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.12.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.12.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.12.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.12.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.12.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.12.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.12.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.12.mlp.up_proj.weight": {
+      "packed": "transformer.layers.12.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.12.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.12.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.12.mlp.down_proj.weight": {
+      "packed": "transformer.layers.12.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.12.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.12.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.12.input_layernorm.weight": {
+      "fp32": "transformer.layers.12.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.12.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.12.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.13.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.13.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.13.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.13.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.13.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.13.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.13.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.13.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.13.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.13.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.13.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.13.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.13.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.13.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.13.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.13.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.13.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.13.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.13.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.13.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.13.mlp.up_proj.weight": {
+      "packed": "transformer.layers.13.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.13.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.13.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.13.mlp.down_proj.weight": {
+      "packed": "transformer.layers.13.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.13.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.13.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.13.input_layernorm.weight": {
+      "fp32": "transformer.layers.13.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.13.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.13.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.14.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.14.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.14.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.14.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.14.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.14.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.14.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.14.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.14.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.14.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.14.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.14.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.14.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.14.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.14.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.14.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.14.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.14.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.14.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.14.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.14.mlp.up_proj.weight": {
+      "packed": "transformer.layers.14.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.14.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.14.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.14.mlp.down_proj.weight": {
+      "packed": "transformer.layers.14.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.14.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.14.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.14.input_layernorm.weight": {
+      "fp32": "transformer.layers.14.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.14.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.14.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.15.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.15.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.15.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.15.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.15.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.15.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.15.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.15.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.15.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.15.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.15.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.15.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.15.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.15.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.15.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.15.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.15.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.15.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.15.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.15.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.15.mlp.up_proj.weight": {
+      "packed": "transformer.layers.15.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.15.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.15.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.15.mlp.down_proj.weight": {
+      "packed": "transformer.layers.15.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.15.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.15.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.15.input_layernorm.weight": {
+      "fp32": "transformer.layers.15.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.15.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.15.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.16.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.16.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.16.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.16.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.16.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.16.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.16.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.16.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.16.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.16.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.16.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.16.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.16.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.16.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.16.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.16.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.16.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.16.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.16.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.16.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.16.mlp.up_proj.weight": {
+      "packed": "transformer.layers.16.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.16.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.16.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.16.mlp.down_proj.weight": {
+      "packed": "transformer.layers.16.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.16.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.16.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.16.input_layernorm.weight": {
+      "fp32": "transformer.layers.16.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.16.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.16.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.17.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.17.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.17.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.17.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.17.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.17.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.17.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.17.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.17.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.17.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.17.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.17.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.17.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.17.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.17.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.17.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.17.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.17.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.17.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.17.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.17.mlp.up_proj.weight": {
+      "packed": "transformer.layers.17.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.17.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.17.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.17.mlp.down_proj.weight": {
+      "packed": "transformer.layers.17.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.17.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.17.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.17.input_layernorm.weight": {
+      "fp32": "transformer.layers.17.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.17.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.17.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.18.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.18.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.18.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.18.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.18.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.18.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.18.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.18.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.18.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.18.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.18.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.18.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.18.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.18.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.18.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.18.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.18.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.18.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.18.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.18.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.18.mlp.up_proj.weight": {
+      "packed": "transformer.layers.18.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.18.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.18.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.18.mlp.down_proj.weight": {
+      "packed": "transformer.layers.18.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.18.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.18.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.18.input_layernorm.weight": {
+      "fp32": "transformer.layers.18.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.18.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.18.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.19.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.19.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.19.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.19.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.19.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.19.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.19.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.19.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.19.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.19.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.19.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.19.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.19.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.19.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.19.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.19.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.19.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.19.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.19.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.19.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.19.mlp.up_proj.weight": {
+      "packed": "transformer.layers.19.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.19.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.19.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.19.mlp.down_proj.weight": {
+      "packed": "transformer.layers.19.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.19.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.19.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.19.input_layernorm.weight": {
+      "fp32": "transformer.layers.19.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.19.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.19.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.20.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.20.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.20.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.20.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.20.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.20.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.20.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.20.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.20.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.20.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.20.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.20.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.20.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.20.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.20.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.20.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.20.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.20.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.20.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.20.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.20.mlp.up_proj.weight": {
+      "packed": "transformer.layers.20.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.20.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.20.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.20.mlp.down_proj.weight": {
+      "packed": "transformer.layers.20.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.20.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.20.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.20.input_layernorm.weight": {
+      "fp32": "transformer.layers.20.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.20.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.20.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.21.self_attn.q_proj.weight": {
+      "packed": "transformer.layers.21.self_attn.q_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.21.self_attn.q_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.21.self_attn.q_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.21.self_attn.k_proj.weight": {
+      "packed": "transformer.layers.21.self_attn.k_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.21.self_attn.k_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.21.self_attn.k_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.21.self_attn.v_proj.weight": {
+      "packed": "transformer.layers.21.self_attn.v_proj.weight_1bit.bin",
+      "shape": [
+        256,
+        2048
+      ],
+      "scales": "transformer.layers.21.self_attn.v_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.21.self_attn.v_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.21.self_attn.o_proj.weight": {
+      "packed": "transformer.layers.21.self_attn.o_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        2048
+      ],
+      "scales": "transformer.layers.21.self_attn.o_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.21.self_attn.o_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)",
+      "NHEADS": 32,
+      "num_attention_heads": 32
+    },
+    "transformer.layers.21.mlp.gate_proj.weight": {
+      "packed": "transformer.layers.21.mlp.gate_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.21.mlp.gate_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.21.mlp.gate_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.21.mlp.up_proj.weight": {
+      "packed": "transformer.layers.21.mlp.up_proj.weight_1bit.bin",
+      "shape": [
+        5632,
+        2048
+      ],
+      "scales": "transformer.layers.21.mlp.up_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.21.mlp.up_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.21.mlp.down_proj.weight": {
+      "packed": "transformer.layers.21.mlp.down_proj.weight_1bit.bin",
+      "shape": [
+        2048,
+        5632
+      ],
+      "scales": "transformer.layers.21.mlp.down_proj.weight_scales.npy",
+      "scales_txt": "transformer.layers.21.mlp.down_proj.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    },
+    "transformer.layers.21.input_layernorm.weight": {
+      "fp32": "transformer.layers.21.input_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "transformer.layers.21.post_attention_layernorm.weight": {
+      "fp32": "transformer.layers.21.post_attention_layernorm.weight_fp32.npy",
+      "dtype": "fp32"
+    },
+    "lm_head.weight": {
+      "packed": "lm_head.weight_1bit.bin",
+      "shape": [
+        32000,
+        2048
+      ],
+      "scales": "lm_head.weight_scales.npy",
+      "scales_txt": "lm_head.weight_scales.txt",
+      "bit_width": 1,
+      "scale_axis": {
+        "index": 0,
+        "name": "out_features"
+      },
+      "scale_dtype": "float32",
+      "packed_format": "numpy.packbits(msb_first,row-major)"
+    }
+  },
+  "embedding.weight": {
+    "packed": "embedding.weight_1bit.bin",
+    "shape": [
+      32000,
+      2048
+    ],
+    "scales": "embedding.weight_scales.npy",
+    "scales_txt": "embedding.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.0.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.0.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.0.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.0.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.0.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.0.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.0.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.0.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.0.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.0.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.0.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.0.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.0.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.0.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.0.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.0.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.0.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.0.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.0.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.0.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.0.mlp.up_proj.weight": {
+    "packed": "transformer.layers.0.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.0.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.0.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.0.mlp.down_proj.weight": {
+    "packed": "transformer.layers.0.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.0.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.0.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.0.input_layernorm.weight": {
+    "fp32": "transformer.layers.0.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.0.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.0.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.1.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.1.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.1.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.1.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.1.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.1.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.1.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.1.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.1.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.1.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.1.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.1.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.1.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.1.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.1.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.1.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.1.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.1.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.1.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.1.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.1.mlp.up_proj.weight": {
+    "packed": "transformer.layers.1.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.1.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.1.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.1.mlp.down_proj.weight": {
+    "packed": "transformer.layers.1.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.1.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.1.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.1.input_layernorm.weight": {
+    "fp32": "transformer.layers.1.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.1.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.1.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.2.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.2.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.2.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.2.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.2.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.2.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.2.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.2.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.2.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.2.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.2.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.2.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.2.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.2.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.2.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.2.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.2.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.2.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.2.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.2.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.2.mlp.up_proj.weight": {
+    "packed": "transformer.layers.2.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.2.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.2.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.2.mlp.down_proj.weight": {
+    "packed": "transformer.layers.2.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.2.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.2.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.2.input_layernorm.weight": {
+    "fp32": "transformer.layers.2.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.2.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.2.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.3.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.3.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.3.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.3.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.3.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.3.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.3.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.3.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.3.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.3.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.3.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.3.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.3.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.3.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.3.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.3.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.3.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.3.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.3.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.3.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.3.mlp.up_proj.weight": {
+    "packed": "transformer.layers.3.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.3.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.3.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.3.mlp.down_proj.weight": {
+    "packed": "transformer.layers.3.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.3.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.3.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.3.input_layernorm.weight": {
+    "fp32": "transformer.layers.3.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.3.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.3.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.4.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.4.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.4.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.4.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.4.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.4.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.4.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.4.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.4.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.4.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.4.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.4.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.4.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.4.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.4.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.4.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.4.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.4.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.4.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.4.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.4.mlp.up_proj.weight": {
+    "packed": "transformer.layers.4.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.4.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.4.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.4.mlp.down_proj.weight": {
+    "packed": "transformer.layers.4.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.4.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.4.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.4.input_layernorm.weight": {
+    "fp32": "transformer.layers.4.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.4.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.4.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.5.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.5.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.5.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.5.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.5.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.5.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.5.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.5.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.5.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.5.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.5.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.5.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.5.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.5.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.5.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.5.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.5.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.5.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.5.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.5.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.5.mlp.up_proj.weight": {
+    "packed": "transformer.layers.5.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.5.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.5.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.5.mlp.down_proj.weight": {
+    "packed": "transformer.layers.5.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.5.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.5.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.5.input_layernorm.weight": {
+    "fp32": "transformer.layers.5.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.5.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.5.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.6.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.6.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.6.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.6.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.6.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.6.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.6.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.6.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.6.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.6.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.6.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.6.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.6.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.6.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.6.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.6.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.6.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.6.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.6.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.6.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.6.mlp.up_proj.weight": {
+    "packed": "transformer.layers.6.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.6.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.6.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.6.mlp.down_proj.weight": {
+    "packed": "transformer.layers.6.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.6.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.6.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.6.input_layernorm.weight": {
+    "fp32": "transformer.layers.6.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.6.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.6.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.7.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.7.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.7.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.7.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.7.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.7.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.7.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.7.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.7.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.7.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.7.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.7.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.7.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.7.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.7.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.7.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.7.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.7.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.7.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.7.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.7.mlp.up_proj.weight": {
+    "packed": "transformer.layers.7.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.7.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.7.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.7.mlp.down_proj.weight": {
+    "packed": "transformer.layers.7.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.7.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.7.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.7.input_layernorm.weight": {
+    "fp32": "transformer.layers.7.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.7.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.7.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.8.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.8.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.8.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.8.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.8.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.8.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.8.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.8.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.8.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.8.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.8.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.8.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.8.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.8.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.8.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.8.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.8.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.8.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.8.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.8.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.8.mlp.up_proj.weight": {
+    "packed": "transformer.layers.8.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.8.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.8.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.8.mlp.down_proj.weight": {
+    "packed": "transformer.layers.8.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.8.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.8.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.8.input_layernorm.weight": {
+    "fp32": "transformer.layers.8.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.8.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.8.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.9.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.9.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.9.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.9.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.9.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.9.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.9.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.9.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.9.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.9.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.9.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.9.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.9.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.9.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.9.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.9.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.9.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.9.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.9.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.9.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.9.mlp.up_proj.weight": {
+    "packed": "transformer.layers.9.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.9.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.9.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.9.mlp.down_proj.weight": {
+    "packed": "transformer.layers.9.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.9.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.9.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.9.input_layernorm.weight": {
+    "fp32": "transformer.layers.9.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.9.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.9.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.10.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.10.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.10.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.10.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.10.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.10.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.10.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.10.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.10.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.10.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.10.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.10.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.10.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.10.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.10.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.10.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.10.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.10.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.10.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.10.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.10.mlp.up_proj.weight": {
+    "packed": "transformer.layers.10.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.10.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.10.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.10.mlp.down_proj.weight": {
+    "packed": "transformer.layers.10.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.10.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.10.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.10.input_layernorm.weight": {
+    "fp32": "transformer.layers.10.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.10.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.10.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.11.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.11.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.11.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.11.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.11.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.11.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.11.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.11.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.11.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.11.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.11.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.11.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.11.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.11.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.11.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.11.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.11.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.11.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.11.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.11.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.11.mlp.up_proj.weight": {
+    "packed": "transformer.layers.11.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.11.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.11.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.11.mlp.down_proj.weight": {
+    "packed": "transformer.layers.11.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.11.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.11.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.11.input_layernorm.weight": {
+    "fp32": "transformer.layers.11.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.11.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.11.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.12.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.12.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.12.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.12.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.12.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.12.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.12.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.12.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.12.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.12.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.12.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.12.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.12.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.12.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.12.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.12.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.12.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.12.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.12.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.12.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.12.mlp.up_proj.weight": {
+    "packed": "transformer.layers.12.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.12.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.12.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.12.mlp.down_proj.weight": {
+    "packed": "transformer.layers.12.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.12.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.12.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.12.input_layernorm.weight": {
+    "fp32": "transformer.layers.12.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.12.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.12.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.13.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.13.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.13.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.13.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.13.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.13.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.13.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.13.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.13.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.13.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.13.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.13.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.13.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.13.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.13.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.13.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.13.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.13.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.13.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.13.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.13.mlp.up_proj.weight": {
+    "packed": "transformer.layers.13.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.13.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.13.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.13.mlp.down_proj.weight": {
+    "packed": "transformer.layers.13.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.13.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.13.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.13.input_layernorm.weight": {
+    "fp32": "transformer.layers.13.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.13.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.13.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.14.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.14.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.14.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.14.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.14.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.14.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.14.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.14.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.14.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.14.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.14.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.14.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.14.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.14.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.14.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.14.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.14.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.14.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.14.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.14.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.14.mlp.up_proj.weight": {
+    "packed": "transformer.layers.14.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.14.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.14.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.14.mlp.down_proj.weight": {
+    "packed": "transformer.layers.14.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.14.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.14.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.14.input_layernorm.weight": {
+    "fp32": "transformer.layers.14.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.14.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.14.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.15.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.15.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.15.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.15.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.15.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.15.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.15.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.15.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.15.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.15.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.15.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.15.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.15.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.15.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.15.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.15.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.15.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.15.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.15.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.15.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.15.mlp.up_proj.weight": {
+    "packed": "transformer.layers.15.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.15.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.15.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.15.mlp.down_proj.weight": {
+    "packed": "transformer.layers.15.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.15.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.15.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.15.input_layernorm.weight": {
+    "fp32": "transformer.layers.15.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.15.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.15.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.16.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.16.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.16.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.16.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.16.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.16.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.16.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.16.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.16.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.16.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.16.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.16.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.16.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.16.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.16.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.16.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.16.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.16.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.16.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.16.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.16.mlp.up_proj.weight": {
+    "packed": "transformer.layers.16.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.16.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.16.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.16.mlp.down_proj.weight": {
+    "packed": "transformer.layers.16.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.16.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.16.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.16.input_layernorm.weight": {
+    "fp32": "transformer.layers.16.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.16.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.16.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.17.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.17.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.17.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.17.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.17.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.17.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.17.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.17.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.17.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.17.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.17.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.17.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.17.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.17.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.17.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.17.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.17.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.17.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.17.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.17.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.17.mlp.up_proj.weight": {
+    "packed": "transformer.layers.17.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.17.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.17.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.17.mlp.down_proj.weight": {
+    "packed": "transformer.layers.17.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.17.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.17.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.17.input_layernorm.weight": {
+    "fp32": "transformer.layers.17.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.17.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.17.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.18.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.18.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.18.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.18.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.18.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.18.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.18.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.18.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.18.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.18.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.18.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.18.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.18.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.18.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.18.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.18.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.18.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.18.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.18.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.18.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.18.mlp.up_proj.weight": {
+    "packed": "transformer.layers.18.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.18.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.18.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.18.mlp.down_proj.weight": {
+    "packed": "transformer.layers.18.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.18.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.18.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.18.input_layernorm.weight": {
+    "fp32": "transformer.layers.18.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.18.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.18.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.19.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.19.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.19.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.19.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.19.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.19.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.19.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.19.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.19.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.19.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.19.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.19.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.19.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.19.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.19.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.19.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.19.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.19.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.19.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.19.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.19.mlp.up_proj.weight": {
+    "packed": "transformer.layers.19.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.19.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.19.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.19.mlp.down_proj.weight": {
+    "packed": "transformer.layers.19.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.19.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.19.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.19.input_layernorm.weight": {
+    "fp32": "transformer.layers.19.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.19.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.19.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.20.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.20.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.20.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.20.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.20.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.20.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.20.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.20.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.20.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.20.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.20.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.20.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.20.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.20.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.20.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.20.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.20.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.20.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.20.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.20.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.20.mlp.up_proj.weight": {
+    "packed": "transformer.layers.20.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.20.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.20.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.20.mlp.down_proj.weight": {
+    "packed": "transformer.layers.20.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.20.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.20.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.20.input_layernorm.weight": {
+    "fp32": "transformer.layers.20.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.20.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.20.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.21.self_attn.q_proj.weight": {
+    "packed": "transformer.layers.21.self_attn.q_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.21.self_attn.q_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.21.self_attn.q_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.21.self_attn.k_proj.weight": {
+    "packed": "transformer.layers.21.self_attn.k_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.21.self_attn.k_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.21.self_attn.k_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.21.self_attn.v_proj.weight": {
+    "packed": "transformer.layers.21.self_attn.v_proj.weight_1bit.bin",
+    "shape": [
+      256,
+      2048
+    ],
+    "scales": "transformer.layers.21.self_attn.v_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.21.self_attn.v_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.21.self_attn.o_proj.weight": {
+    "packed": "transformer.layers.21.self_attn.o_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      2048
+    ],
+    "scales": "transformer.layers.21.self_attn.o_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.21.self_attn.o_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)",
+    "NHEADS": 32,
+    "num_attention_heads": 32
+  },
+  "transformer.layers.21.mlp.gate_proj.weight": {
+    "packed": "transformer.layers.21.mlp.gate_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.21.mlp.gate_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.21.mlp.gate_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.21.mlp.up_proj.weight": {
+    "packed": "transformer.layers.21.mlp.up_proj.weight_1bit.bin",
+    "shape": [
+      5632,
+      2048
+    ],
+    "scales": "transformer.layers.21.mlp.up_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.21.mlp.up_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.21.mlp.down_proj.weight": {
+    "packed": "transformer.layers.21.mlp.down_proj.weight_1bit.bin",
+    "shape": [
+      2048,
+      5632
+    ],
+    "scales": "transformer.layers.21.mlp.down_proj.weight_scales.npy",
+    "scales_txt": "transformer.layers.21.mlp.down_proj.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  },
+  "transformer.layers.21.input_layernorm.weight": {
+    "fp32": "transformer.layers.21.input_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "transformer.layers.21.post_attention_layernorm.weight": {
+    "fp32": "transformer.layers.21.post_attention_layernorm.weight_fp32.npy",
+    "dtype": "fp32"
+  },
+  "lm_head.weight": {
+    "packed": "lm_head.weight_1bit.bin",
+    "shape": [
+      32000,
+      2048
+    ],
+    "scales": "lm_head.weight_scales.npy",
+    "scales_txt": "lm_head.weight_scales.txt",
+    "bit_width": 1,
+    "scale_axis": {
+      "index": 0,
+      "name": "out_features"
+    },
+    "scale_dtype": "float32",
+    "packed_format": "numpy.packbits(msb_first,row-major)"
+  }
+}

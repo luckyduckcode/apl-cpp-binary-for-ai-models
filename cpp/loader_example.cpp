@@ -1,8 +1,21 @@
 // loader_example.cpp
 // Demonstrates loading the quantized manifest and calling backend_1bit.so via dlopen/dlsym
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include <cstring>
+#include <cstdlib>
+// Use platform-specific dynamic loader
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <dlfcn.h>
+#endif
 using namespace std;
 
 string read_file(const string &path) {
@@ -77,13 +90,20 @@ int main(int argc, char** argv){
         }
     }
 
-    // dlopen backend
+    // Load backend dynamically
+#ifdef _WIN32
+    HMODULE h = LoadLibraryA(libpath.c_str());
+    if(!h){ cerr << "LoadLibrary failed: " << GetLastError() << endl; return 3; }
+    matmul_fn fn = (matmul_fn) GetProcAddress(h, "matmul_1bit");
+    if(!fn){ cerr << "GetProcAddress failed: " << GetLastError() << endl; return 4; }
+#else
     void* handle = dlopen(libpath.c_str(), RTLD_LAZY);
     if(!handle){ cerr << "dlopen failed: " << dlerror() << endl; return 3; }
     dlerror();
     matmul_fn fn = (matmul_fn) dlsym(handle, "matmul_1bit");
     const char* err = dlerror();
     if(err){ cerr << "dlsym failed: " << err << endl; return 4; }
+#endif
 
     // Load scales to determine shape
     vector<float> sc;
@@ -104,6 +124,10 @@ int main(int argc, char** argv){
     if(ret != 0) cerr << "matmul_1bit failed: " << ret << endl;
     cout << "Output[0..7]: ";
     for(int i=0;i<8 && i<out;i++) cout << outv[i] << " "; cout << endl;
+#ifdef _WIN32
+    FreeLibrary(h);
+#else
     dlclose(handle);
+#endif
     return 0;
 }

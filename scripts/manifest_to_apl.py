@@ -44,7 +44,8 @@ def main():
     outp = []
     
     # Basic declarations
-    outp.append("MANIFEST_FILE ← '{}'".format(str(mp)))
+    # Use POSIX-style path separators for consistency (works well with WSL and many shells)
+    outp.append("MANIFEST_FILE ← '{}'".format(mp.as_posix()))
     model = j.get('model', {})
     primary_family = model.get('primary_family', '')
     outp.append("MODEL_FAMILY ← '{}'".format(primary_family))
@@ -112,9 +113,14 @@ def main():
         scales_txt = entry.get('scales_txt') or entry.get('scales') or None
         shape = entry.get('shape') or None
         if packed:
-            outp.append(f"{var}_packed ← '{packed}'")
+            # Normalize the path to POSIX so APL demos are more portable on Windows/WSL
+            outp.append(f"{var}_packed ← '{Path(packed).as_posix()}'")
         if scales_txt:
-            outp.append(f"{var}_scales_txt ← '{scales_txt}'")
+            outp.append(f"{var}_scales_txt ← '{Path(scales_txt).as_posix()}'")
+        # If an fp32 (dequantized) path exists, include it as well.
+        fp32 = entry.get('fp32') or entry.get('fp32_path') or entry.get('fp32_npy')
+        if fp32:
+            outp.append(f"{var}_fp32 ← '{Path(fp32).as_posix()}'")
         if shape:
             outp.append(f"{var}_shape ← {shape[0]} {shape[1]}")
 

@@ -1,4 +1,5 @@
 # APL Binary Llama
+![CI](https://github.com/luckyduckcode/apl-cpp-binary-for-ai-models/actions/workflows/ci.yml/badge.svg)
 
 This project implements a Llama-like model in APL with binary optimization and knowledge distillation.
 
@@ -41,12 +42,65 @@ python3 cpp/integration_test.py
 g++ -O3 -march=native -std=c++17 -fopenmp -o cpp/bitmatmul_xnor cpp/bitmatmul_xnor.cpp
 python3 cpp/run_bitmatmul_xnor_test.py
 ```
+You can also run the cross-platform build helper, which will choose the appropriate build script for your OS (Windows, macOS, Linux/WSL):
+
+```bash
+python3 scripts/build_backend.py
+```
 ## Quickstart & Priorities
 
 Short-term (days):
 - Run `./scripts/build_backend.sh` to build the backend
+ - Or run the cross-platform helper: `python3 scripts/build_backend.py` to let the script detect and choose the right build for your OS.
 - Run `./scripts/ci_runner.sh` to build and exercise the demo tests
 - Use `apl/loader_demo.apl` to verify the APL demo that calls the Python wrapper for the C++ backend
+ - **NEW: Easy Model Runner** - Run popular AI models easily:
+  ```bash
+  pip install -r requirements.txt
+  python easy_run.py --model tinyllama
+  ```
+
+## Easy Model Runner
+
+The `easy_run.py` script makes it simple to run popular AI models with binary quantization:
+
+### Supported Models
+- `tinyllama`: TinyLlama 1.1B - Small but capable
+- `mistral-7b`: Mistral 7B - Fast and capable  
+- `gemma-2b`: Gemma 2B - Google's lightweight model
+- `llama-7b`: Llama 2 7B (requires access token)
+
+### Usage
+```bash
+# Run TinyLlama
+python easy_run.py --model tinyllama
+
+# Run with limited layers for testing
+python easy_run.py --model mistral-7b --layers 4
+
+# Use a custom HuggingFace model
+python easy_run.py --custom-model microsoft/DialoGPT-small
+```
+
+The script will:
+1. Download the model from HuggingFace
+2. Quantize weights to 1-bit
+3. Export for APL runtime
+4. Run a demo inference
+
+Notes on model access and tokens (Windows & cross-platform):
+
+- Models like Llama 2 and Mistral on Hugging Face may require an access token; set HUGGINGFACE_HUB_TOKEN in your environment. For PowerShell:
+
+  ```powershell
+  $env:HUGGINGFACE_HUB_TOKEN = "<token>"
+  ```
+
+  For bash/WSL:
+
+  ```bash
+  export HUGGINGFACE_HUB_TOKEN="<token>"
+  ```
 
 Mid-term (weeks):
 - Finalize multi-head attention in `llama.apl` and add unit tests for end-to-end correctness
@@ -57,7 +111,46 @@ Long-term (months):
 - Implement AVX2/AVX512 & GPU kernels for larger scale models
 - Full release & CI to run reproducible benchmarks and QAT training runs
 
+Windows notes:
+
+- If you are running on Windows natively, you have three options to build the native backend:
+  - Use `scripts/build_backend_windows.ps1` (PowerShell). This will attempt to use MinGW (g++) or MSVC if available.
+  - Open a Visual Studio Developer Command Prompt and build manually (MSVC) producing a `backend_1bit.dll`.
+  - Use WSL (recommended) and run `bash scripts/build_backend.sh` which builds a `backend_1bit.so` inside WSL.
+
+Examples (PowerShell):
+
+```powershell
+# Install requirements
+pip install -r requirements.txt
+
+# Build on Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File scripts/build_backend_windows.ps1
+
+# Run the easy runner
+python easy_run.py --model tinyllama
+```
+
+Windows Convenience (PowerShell):
+
+```powershell
+# Quick setup and run wrapper
+.\scripts\run_easy_run_windows.ps1 -Model tinyllama
+```
+
+Examples (WSL / POSIX):
+
+```bash
+pip install -r requirements.txt
+bash scripts/build_backend.sh
+python easy_run.py --model tinyllama
+```
+
 If you are interested, I can start by finalizing `llama.apl` and adding comprehensive tests for the attention & ffn blocks — or set up CI to make the repo more robust.
+
+CI runs
+-------
+We run a cross-platform GitHub Actions workflow that tries to build the native backend and run a few smoke tests on Linux, macOS, and Windows. If you want a local reproduction, follow the steps above or run `python scripts/build_backend.py` and `pytest -q`.
 
 Notes:
 - The XNOR kernel demonstrates substantial speedups when activations are binarized (sign-only). For weight-only quantization (float activations), the dequantized fallback is still used. Integration into an APL runtime requires exporting the packed weight files and scales as was implemented in `export_quantized_for_apl.py`.
@@ -70,6 +163,7 @@ python3 cpp/call_backend.py
 
  - Example to integrate into the APL runtime:
 	 1. Compile `backend_1bit.so`.
+    1b. (Optional) Compile `cpp/loader_example` to test native loading with `dlopen`/`LoadLibrary`.
 	 2. Use `export_quantized_for_apl.py` to create packed files and the v2 `student_quantized_manifest.json`. Pass architecture flags when exporting other families:
 		```bash
 		python3 export_quantized_for_apl.py \
@@ -93,6 +187,23 @@ python3 cpp/call_backend.py
 	 4. For safety and performance, prefer calling native `binact` mode for binarized activations and to use multi-threaded kernels.
 
 The manifest now exposes `model`, `architecture`, `quantization`, and `weights` sections (while keeping backwards-compatible top-level entries). See `docs/apl_integration.md` for the full schema and guidance on targeting Mistral, DeepSeek-R1, Code Llama, Gemma, and Qwen while staying on the 1-bit pipeline.
+
+Native loader example
+---------------------
+The repo includes `cpp/loader_example` which demonstrates loading `backend_1bit.so` dynamically and calling `matmul_1bit`. Build it using the cross-platform build script and run it as a standalone test:
+
+```bash
+python scripts/build_backend.py
+./cpp/loader_example student_quantized_manifest.json cpp/backend_1bit.so
+```
+
+On Windows, run the EXE:
+
+```powershell
+python scripts/build_backend.py
+.\cpp\loader_example.exe student_quantized_manifest.json cpp/backend_1bit.dll
+```
+
 
 Tip: use `scripts/manifest_to_apl.py` to create `apl/generated_manifest.apl` — a small snippet that exposes manifest properties as simple APL variables to `)load` inside an APL session or include in demos.
 
@@ -157,6 +268,24 @@ python3 export_quantized_for_apl.py \
   --rope-base 1000000 \
   --context-length 32768
 ```
+
+Dequantization helper
+---------------------
+
+If you need to run `llama.apl` directly with FP32 arrays (e.g., for correctness testing inside an APL interpreter), dequantize 1-bit packed weights into YAML/Numpy arrays using:
+
+```bash
+python scripts/dequantize_manifest_weights.py --manifest student_quantized_manifest.json --out_dir models/fp32
+```
+
+You can optionally update the manifest in place so it includes `fp32` keys for each weight:
+
+```bash
+python scripts/dequantize_manifest_weights.py --manifest student_quantized_manifest.json --update-manifest
+```
+
+When `fp32` fields are present in the manifest, `scripts/manifest_to_apl.py` will expose `{weight}_fp32` APL variables that `llama.apl` can consume directly.
+
 
 ### Architecture Metadata in APL
 
