@@ -173,18 +173,19 @@ def call_matmul_from_manifest(manifest_path, weight_name, vec, mode=0, threads=0
     packed = cfg.get('packed') or cfg.get('packed_file')
     scales = cfg.get('scales_txt') or cfg.get('scales')
     shape = cfg.get('shape')
-    if not packed or not scales:
-        raise KeyError(f"Packed/scale file missing for {weight_name} in manifest {manifest_path}")
 
     # If not absolute, assume same directory as manifest
     qpath = None
     scales_path = None
+    zp_path = None
     # If qfile exists -> use integer kernel path
     if qfile:
         qpath = (mp.parent / qfile).as_posix() if not Path(qfile).is_absolute() else qfile
         scales_path = (mp.parent / q_scales).as_posix() if (q_scales and not Path(q_scales).is_absolute()) else q_scales
         zp_path = (mp.parent / q_zp).as_posix() if (q_zp and not Path(q_zp).is_absolute()) else q_zp
     else:
+        if not packed or not scales:
+            raise KeyError(f"Packed/scale file missing for {weight_name} in manifest {manifest_path}")
         packed_path = (mp.parent / packed).as_posix() if not Path(packed).is_absolute() else packed
         scales_path = (mp.parent / scales).as_posix() if not Path(scales).is_absolute() else scales
     # For 1-bit path: If scales_path is a numpy binary (.npy), convert it to .txt so the backend can parse text
