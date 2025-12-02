@@ -133,27 +133,23 @@ def load_model(model_name: str) -> dict:
             "trust_remote_code": True,
         }
         
+        quantization_used = None
+        
         if device == "cuda":
             # Use 4-bit quantization on GPU with accelerate
             load_kwargs["low_cpu_mem_usage"] = True
             quant_config = get_quantization_config("cuda")
             load_kwargs["quantization_config"] = quant_config
             load_kwargs["device_map"] = "auto"
+            quantization_used = "4-bit NF4"
             print("  Using: 4-bit NF4 quantization (GPU)")
         else:
-            # On CPU, try 4-bit quantization first, fall back to FP32 if it fails
-            try:
-                print("  Trying: 4-bit NF4 quantization (CPU)...")
-                quant_config = get_quantization_config("cpu")
-                load_kwargs["quantization_config"] = quant_config
-                # Note: device_map should NOT be used on CPU
-            except Exception as quant_err:
-                print(f"  ⚠️  4-bit quantization not available on CPU: {str(quant_err)[:100]}")
-                print("  Falling back to: FP32 (CPU)")
-                load_kwargs.pop("quantization_config", None)
-                load_kwargs["dtype"] = torch.float32  # Use FP32 on CPU for stability
+            # On CPU, BitsAndBytes doesn't work, so use FP32
+            load_kwargs["dtype"] = torch.float32
+            quantization_used = "FP32"
+            print("  Using: FP32 (CPU) - 4-bit quantization requires CUDA")
         
-        print("  Loading model (this may take a moment)...")
+        print(f"  Loading model (this may take a moment)...")
         current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
         
         if device == "cpu":
@@ -168,9 +164,9 @@ def load_model(model_name: str) -> dict:
             mem_gb = torch.cuda.memory_allocated() / 1e9
             print(f"  ✓ GPU Memory: {mem_gb:.2f}GB")
         else:
-            print(f"  ✓ Model ready for inference on CPU")
+            print(f"  ✓ Model ready for inference on CPU ({quantization_used})")
         
-        return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()}"}
+        return {"status": "ok", "message": f"[OK] {model_name} loaded on {device.upper()} ({quantization_used})"}
     except Exception as e:
         error_msg = str(e)
         print(f"[ERROR] Model load failed: {error_msg[:200]}")
