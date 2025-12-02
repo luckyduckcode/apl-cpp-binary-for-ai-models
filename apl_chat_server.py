@@ -374,11 +374,16 @@ def run_server():
     print(f"Quantization: 4-bit NF4 (BitsAndBytes)")
     print(f"Compute Precision: FP16 (GPU) / FP32 (CPU)")
     print("\n[NOTE] Models load on first request (lazy loading)")
+    print("[NOTE] Model loading may take 1-5 minutes depending on model size and device")
     
     print("\n[START] APL Chat Server")
     print("[INFO] Open http://localhost:5000 in your browser")
     print("[INFO] API Health: http://localhost:5000/api/health")
     print("=" * 60 + "\n")
+    
+    # Configure Flask with longer timeout for model loading
+    import werkzeug.serving
+    werkzeug.serving.WSGIRequestHandler.protocol_version = "HTTP/1.1"
     
     app.run(host='127.0.0.1', port=5000, debug=False, threaded=True)
 
