@@ -133,21 +133,11 @@ def load_model(model_name: str) -> dict:
             print("  Using: 4-bit NF4 quantization (GPU)")
             current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
         else:
-            # On CPU, use int8 quantization for speed + memory efficiency
-            try:
-                load_kwargs["load_in_8bit"] = True
-                load_kwargs["device_map"] = "cpu"
-                print("  Using: Int8 quantization (CPU)")
-                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
-            except Exception as e:
-                # Fallback: load without quantization
-                print(f"  Int8 failed: {str(e)[:50]}...")
-                print("  Using: FP32 (CPU, slower)")
-                load_kwargs.pop("load_in_8bit", None)
-                load_kwargs.pop("device_map", None)
-                load_kwargs["torch_dtype"] = torch.float32
-                current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
-                current_model = current_model.to(device)
+            # On CPU, use FP16 for memory efficiency (simpler than Int8)
+            print("  Using: FP16 (CPU, memory efficient)")
+            load_kwargs["torch_dtype"] = torch.float16
+            current_model = AutoModelForCausalLM.from_pretrained(repo, **load_kwargs)
+            current_model = current_model.to(device)
         
         current_model.eval()
         current_model_name = model_name
