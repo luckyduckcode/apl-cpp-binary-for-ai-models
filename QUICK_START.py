@@ -35,10 +35,11 @@ def main():
 ║  APL Quantized Inference - GPU Optimized, Fully Automated Pipeline      ║
 ║                                                                           ║
 ║  This quick start will guide you through:                               ║
-║  1. Building the optimized backend (CPU + optional GPU)                 ║
-║  2. Validating accuracy across quantization levels                       ║
-║  3. Downloading and converting popular LLMs                              ║
-║  4. Running inference                                                    ║
+║  1. Launching the Ollama-like chat GUI                                  ║
+║  2. Building the optimized backend (CPU + optional GPU)                 ║
+║  3. Validating accuracy across quantization levels                       ║
+║  4. Downloading and converting popular LLMs                              ║
+║  5. Running inference                                                    ║
 ║                                                                           ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
     """)
@@ -54,21 +55,23 @@ def main():
     print("="*80)
     
     options = {
-        '1': ("Build Backend (CPU-only)", 
+        '1': ("Launch APL Chat (Ollama-like GUI)", 
+              ["python", str(repo_root / "launch_chat.py")]),
+        '2': ("Build Backend (CPU-only)", 
               ["python", str(repo_root / "scripts" / "build_backend.py")]),
-        '2': ("Build Backend with GPU Support", 
+        '3': ("Build Backend with GPU Support", 
               ["python", str(repo_root / "scripts" / "build_backend.py"), "--gpu"]),
-        '3': ("Run Accuracy Validation Suite", 
+        '4': ("Run Accuracy Validation Suite", 
               ["python", str(repo_root / "tests" / "test_accuracy_validation.py")]),
-        '4': ("Download & Convert TinyLlama (1.1B, 4-bit)", 
+        '5': ("Download & Convert TinyLlama (1.1B, 4-bit)", 
               ["python", str(repo_root / "scripts" / "convert_models_automated.py"), "tinyllama", "--bits", "4"]),
-        '5': ("Download & Convert Gemma 2B (2B, 4-bit)", 
-              ["python", str(repo_root / "scripts" / "convert_models_automated.py"), "gemma-2b", "--bits", "4"]),
         '6': ("Download & Convert Mistral 7B (7B, 4-bit)", 
               ["python", str(repo_root / "scripts" / "convert_models_automated.py"), "mistral-7b", "--bits", "4"]),
-        '7': ("Run Inference with TinyLlama", 
+        '7': ("Download & Convert Mistral Instruct (7B, 4-bit)", 
+              ["python", str(repo_root / "scripts" / "convert_models_automated.py"), "mistral-7b-instruct", "--bits", "4"]),
+        '8': ("Run Inference with TinyLlama", 
               ["python", str(repo_root / "easy_run.py"), "--model", "tinyllama"]),
-        '8': ("Convert All Popular Models", 
+        '9': ("Convert All Popular Models", 
               ["python", str(repo_root / "scripts" / "convert_models_automated.py"), "--convert-all", "--bits", "4"]),
         'q': ("Quit", None),
     }
@@ -79,7 +82,7 @@ def main():
     print("\n" + "="*80)
     
     while True:
-        choice = input("\nSelect an option (1-8, q to quit): ").strip().lower()
+        choice = input("\nSelect an option (1-9, q to quit): ").strip().lower()
         
         if choice == 'q':
             print("\nGoodbye!")
