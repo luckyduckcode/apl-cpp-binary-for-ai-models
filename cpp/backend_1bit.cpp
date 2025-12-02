@@ -99,33 +99,136 @@ int matmul_q_in_mem(const void* q_ptr, int elem_bytes, const float* scales, cons
         #pragma omp parallel for
         for(int r=0; r<out; ++r){
             const uint8_t* row = qdata + (size_t)r * in;
+            float s = scales ? scales[r] : 1.0f;
+            int zp = zero_points ? zero_points[r] : 0;
             double acc = 0.0;
+            // Use AVX2 when available to compute dot product faster. We'll convert q values to float then perform vectorized dot.
+            #if defined(__AVX2__)
+            __m256 vsum = _mm256_setzero_ps();
+            __m256i v_zp = _mm256_set1_epi32(zp);
+            int c = 0;
+            for(; c + 7 < in; c += 8){
+                long long val64;
+                memcpy(&val64, row + c, 8);
+                __m128i v8 = _mm_cvtsi64_si128(val64);
+                __m256i v_int = _mm256_cvtepu8_epi32(v8);
+                __m256i v_q_minus_zp = _mm256_sub_epi32(v_int, v_zp);
+                __m256 v_q_float = _mm256_cvtepi32_ps(v_q_minus_zp);
+                __m256 v_in = _mm256_loadu_ps(in_vec + c);
+                vsum = _mm256_fmadd_ps(v_q_float, v_in, vsum);
+            }
+            float tmp[8];
+            _mm256_storeu_ps(tmp, vsum);
+            for(int i=0; i<8; ++i) acc += tmp[i];
+            for(; c<in; ++c){
+                acc += (double)((int)row[c] - zp) * (double)in_vec[c];
+            }
+            acc *= s;
+            #else
             for(int c=0; c<in; ++c){
                 int qv = (int)row[c];
-                int zp = zero_points ? zero_points[r] : 0;
-                float s = scales ? scales[r] : 1.0f;
-                acc += (double)(qv - zp) * (double)in_vec[c];
+                acc += (double)(qv - zp) * (double)in_vec[c] * (double)s;
             }
-            float s = scales ? scales[r] : 1.0f;
-            out_vec[r] = (float)(acc * (double)s);
+            #endif
+            out_vec[r] = (float)(acc);
         }
     } else if(elem_bytes == 2){
         const uint16_t* qdata = reinterpret_cast<const uint16_t*>(q_ptr);
         #pragma omp parallel for
         for(int r=0; r<out; ++r){
             const uint16_t* row = qdata + (size_t)r * in;
+            int zp = zero_points ? zero_points[r] : 0;
+            float s = scales ? scales[r] : 1.0f;
             double acc = 0.0;
             for(int c=0; c<in; ++c){
                 int qv = (int)row[c];
-                int zp = zero_points ? zero_points[r] : 0;
-                float s = scales ? scales[r] : 1.0f;
-                acc += (double)(qv - zp) * (double)in_vec[c];
+                acc += (double)(qv - zp) * (double)in_vec[c] * (double)s;
             }
-            float s = scales ? scales[r] : 1.0f;
-            out_vec[r] = (float)(acc * (double)s);
+            out_vec[r] = (float)(acc);
         }
     } else {
         return -10; // unsupported element size
+    }
+    return 0;
+}
+
+// Specialized q4 matmul with optional packing/unpacking
+// q4_ptr: pointer to q4 data, either packed (2 values per byte) or unpacked (1 value per byte)
+// packed: if true, q4_ptr contains packed nibbles (2 per byte); if false, unpacked uint8
+// scales, zero_points: per-row quantization parameters
+// in_vec, out_vec: input/output float vectors
+// out, in: matrix dimensions
+// threads: OpenMP thread count
+int matmul_q4_optimized(const void* q4_ptr, bool packed, const float* scales, const int* zero_points, const float* in_vec, float* out_vec, int out, int in, int threads){
+    if(threads > 0) omp_set_num_threads(threads);
+    
+    if(packed){
+        // Packed format: 2 q4 values per byte
+        const uint8_t* qdata = reinterpret_cast<const uint8_t*>(q4_ptr);
+        int bytes_per_row = (in + 1) / 2;
+        
+        #pragma omp parallel for
+        for(int r=0; r<out; ++r){
+            const uint8_t* row = qdata + (size_t)r * bytes_per_row;
+            float s = scales ? scales[r] : 1.0f;
+            int zp = zero_points ? zero_points[r] : 0;
+            double acc = 0.0;
+            
+            #if defined(__AVX2__)
+            __m256 vsum = _mm256_setzero_ps();
+            __m256i v_zp = _mm256_set1_epi32(zp);
+            __m256i mask_low = _mm256_set1_epi32(0x0F);
+            
+            int c = 0;
+            // Process 16 q4 values (8 bytes) at a time
+            for(; c + 15 < in; c += 16){
+                // Load 8 bytes = 16 nibbles
+                uint64_t val64;
+                memcpy(&val64, row + c/2, 8);
+                __m128i v8 = _mm_cvtsi64_si128(val64);
+                
+                // Unpack low nibbles (even indices)
+                __m256i v_low = _mm256_cvtepu8_epi32(v8);
+                v_low = _mm256_and_si256(v_low, mask_low);
+                __m256i v_low_minus_zp = _mm256_sub_epi32(v_low, v_zp);
+                __m256 v_low_float = _mm256_cvtepi32_ps(v_low_minus_zp);
+                __m256 v_in_low = _mm256_loadu_ps(in_vec + c);
+                vsum = _mm256_fmadd_ps(v_low_float, v_in_low, vsum);
+                
+                // Unpack high nibbles (odd indices) - shift right by 4
+                __m128i v8_shifted = _mm_srli_epi16(v8, 4);
+                __m256i v_high = _mm256_cvtepu8_epi32(v8_shifted);
+                v_high = _mm256_and_si256(v_high, mask_low);
+                __m256i v_high_minus_zp = _mm256_sub_epi32(v_high, v_zp);
+                __m256 v_high_float = _mm256_cvtepi32_ps(v_high_minus_zp);
+                __m256 v_in_high = _mm256_loadu_ps(in_vec + c + 8);
+                vsum = _mm256_fmadd_ps(v_high_float, v_in_high, vsum);
+            }
+            
+            float tmp[8];
+            _mm256_storeu_ps(tmp, vsum);
+            for(int i=0; i<8; ++i) acc += tmp[i];
+            
+            // Handle remaining elements
+            for(; c<in; ++c){
+                int byte_idx = c / 2;
+                int nibble = (c % 2 == 0) ? (row[byte_idx] & 0x0F) : (row[byte_idx] >> 4);
+                acc += (double)(nibble - zp) * (double)in_vec[c];
+            }
+            acc *= s;
+            #else
+            // Scalar fallback
+            for(int c=0; c<in; ++c){
+                int byte_idx = c / 2;
+                int nibble = (c % 2 == 0) ? (row[byte_idx] & 0x0F) : (row[byte_idx] >> 4);
+                acc += (double)(nibble - zp) * (double)in_vec[c] * (double)s;
+            }
+            #endif
+            out_vec[r] = (float)acc;
+        }
+    } else {
+        // Unpacked format: use existing matmul_q_in_mem
+        return matmul_q_in_mem(q4_ptr, 1, scales, zero_points, in_vec, out_vec, out, in, 4, 0, threads);
     }
     return 0;
 }

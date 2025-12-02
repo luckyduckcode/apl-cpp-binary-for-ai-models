@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, feature/* ]
   pull_request:
     branches: [ main ]
 
@@ -10,180 +10,44 @@ jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.9']
+    
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Cache pip & venv
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/pip
-            .venv
-          key: pip-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            pip-${{ runner.os }}-
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Build native backend
-        run: |
-          python scripts/build_backend.py
-
-      - name: Run Python unit tests (export/manifest/quantize)
-        run: |
-          python -m pytest tests/test_export_model_1bit.py -q
-          python -m pytest tests/test_export_quantized_for_apl_qbits.py -q
-          python -m pytest tests/test_easy_run_bits.py -q
-
-      - name: Run integer quant backend tests (q2/q4/q8/mixed)
-        run: |
-          python -m pytest tests/test_call_backend_q_int.py -q
-          python -m pytest tests/test_call_backend_q4.py -q
-          python -m pytest tests/test_call_backend_q8.py -q
-          python -m pytest tests/test_call_backend_mixed.py -q
-
-      - name: Run integration/loaders
-        run: |
-          # Only run loader example when built
-          if [ -f cpp/loader_example ] || [ -f cpp/loader_example.exe ]; then
-            if [ -f cpp/loader_example ]; then ./cpp/loader_example student_quantized_manifest.json cpp/backend_1bit.so || true; fi
-            if [ -f cpp/loader_example.exe ]; then ./cpp/loader_example.exe student_quantized_manifest.json cpp/backend_1bit.dll || true; fi
-          fi
-
-      - name: Run smoke dequantize
-        run: |
-          python scripts/dequantize_manifest_weights.py --manifest student_quantized_manifest.json --out_dir models/fp32 || true
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend
-          path: |
-            backend_1bit.so
-            backend_1bit.dylib
-            backend_1bit.dll
-            cpp/backend_1bit.so
-            cpp/backend_1bit.dylib
-            cpp/backend_1bit.dll
-            cpp/loader_example
-            cpp/loader_example.exe
-name: CI
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  build-and-test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Cache pip & venv
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/pip
-            .venv
-          key: pip-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            pip-${{ runner.os }}-
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Cache build artifacts (backend)
-        uses: actions/cache@v4
-        with:
-          path: |
-            build
-            backend_1bit.so
-            backend_1bit.dylib
-            backend_1bit.dll
-            cpp/backend_1bit.so
-            cpp/backend_1bit.dylib
-            cpp/backend_1bit.dll
-            cpp/loader_example
-            cpp/loader_example.exe
-          key: build-${{ runner.os }}-${{ hashFiles('**/cpp/*.cpp') }}
-          restore-keys: |
-            build-${{ runner.os }}-
-
-      - name: Build backend & loader
-        run: |
-          python scripts/build_backend.py
-
-      - name: Run integer quantized backend tests (q2)
-        run: |
-          python -m pytest tests/test_call_backend_q_int.py -q
-          python -m pytest tests/test_easy_run_bits.py -q
-
-      - name: Run loader example
-        shell: bash
-        run: |
-          if [ -f cpp/loader_example ]; then ./cpp/loader_example student_quantized_manifest.json backend_1bit.so || true; fi
-          if [ -f cpp/loader_example.exe ]; then ./cpp/loader_example.exe student_quantized_manifest.json backend_1bit.dll || true; fi
-
-      - name: Run Python tests (smoke)
-        run: |
-          python -m pytest tests/test_dequantize.py -q || true
-          python -m pytest tests/test_smoke_ci.py -q || true
-
-      - name: Run export_model_1bit CLI tests
-        run: |
-          python -m pytest tests/test_export_model_1bit.py -q
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-${{ matrix.os }}
-          path: |
-            backend_1bit.so
-            backend_1bit.dylib
-            backend_1bit.dll
-            cpp/backend_1bit.so
-            cpp/backend_1bit.dylib
-            cpp/backend_1bit.dll
-            cpp/loader_example
-            cpp/loader_example.exe
-
-  export-model-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Run export_model_1bit tests
-        run: |
-          python -m pytest tests/test_export_model_1bit.py -q
-      - name: Run export_quantized_for_apl q2 tests
-        run: |
-          python -m pytest tests/test_export_quantized_for_apl_qbits.py -q
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+    
+    - name: Build C++ backend (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: |
+        chmod +x scripts/build_backend.sh
+        ./scripts/build_backend.sh
+    
+    - name: Build C++ backend (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        powershell -ExecutionPolicy Bypass -File scripts/build_backend_windows.ps1
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v
+    
+    - name: Upload backend artifact
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: backend-${{ matrix.os }}
+        path: cpp/backend*
+        retention-days: 7
