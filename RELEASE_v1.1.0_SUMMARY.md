@@ -41,6 +41,7 @@ The application comes with support for the following AI models ("robots"):
         cat APL-Chat.exe.part* > APL-Chat.exe
         ```
 3.  **Run**: Double-click the resulting `APL-Chat.exe` to start the application.
+    *   **Note**: The application may take **1-3 minutes** to initialize on the first run. A splash screen will appear to indicate progress. Please be patient!
 4.  **GPU Setup (Optional)**: If you have an NVIDIA GPU but are stuck on CPU mode, run `setup_gpu_env.bat` to configure your environment correctly.
 
 ## 📋 Requirements

@@ -3,8 +3,16 @@ from PyInstaller.utils.hooks import collect_all
 
 datas = [('C:\\Users\\tenna\\Documents\\code\\apl-cpp-binary-for-ai-models\\apl_chat.html', '.')]
 binaries = []
-hiddenimports = ['flask', 'torch', 'transformers', 'numpy']
+hiddenimports = ['flask', 'werkzeug', 'jinja2', 'click', 'itsdangerous', 'flask_cors', 'torch', 'transformers', 'accelerate', 'bitsandbytes', 'numpy']
 tmp_ret = collect_all('flask')
+datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
+tmp_ret = collect_all('werkzeug')
+datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
+tmp_ret = collect_all('flask_cors')
+datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
+tmp_ret = collect_all('transformers')
+datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
+tmp_ret = collect_all('bitsandbytes')
 datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
 
@@ -17,7 +25,7 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    excludes=['torch.test', 'caffe2', 'matplotlib', 'scipy', 'pandas', 'nvidia.cublas.lib.cublasLt'],
     noarchive=False,
     optimize=0,
 )
@@ -26,20 +34,26 @@ pyz = PYZ(a.pure)
 exe = EXE(
     pyz,
     a.scripts,
-    a.binaries,
-    a.datas,
     [],
+    exclude_binaries=True,
     name='APL-Chat',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    upx_exclude=[],
-    runtime_tmpdir=None,
     console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+)
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name='APL-Chat',
 )

@@ -13,6 +13,13 @@ import threading
 import sys
 from datetime import datetime
 import warnings
+import datetime
+
+def log_startup(msg):
+    with open("server_startup.log", "a") as f:
+        f.write(f"{datetime.datetime.now()} - {msg}\n")
+
+log_startup("Starting import of apl_chat_server")
 
 # Suppress ALL warnings and errors from transformers model registry BEFORE importing
 warnings.filterwarnings('ignore')
@@ -21,14 +28,51 @@ logging.getLogger('transformers').setLevel(logging.CRITICAL)
 logging.getLogger('torch').setLevel(logging.CRITICAL)
 logging.getLogger('bitsandbytes').setLevel(logging.CRITICAL)
 
+log_startup("Warnings suppressed")
+
 # Prevent transformers from loading model configs that might fail
 import os
 os.environ['TRANSFORMERS_OFFLINE'] = '0'
+log_startup("Env vars set")
 
-from flask import Flask, render_template, request, jsonify, session
+try:
+    import werkzeug
+    log_startup("Werkzeug imported")
+    import jinja2
+    log_startup("Jinja2 imported")
+    import click
+    log_startup("Click imported")
+    import itsdangerous
+    log_startup("ItsDangerous imported")
+    from flask import Flask, render_template, request, jsonify, session
+    log_startup("Flask core imported")
+except Exception as e:
+    log_startup(f"Import Error: {e}")
+
 from flask_cors import CORS
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+log_startup("Flask CORS imported")
+
+# Lazy imports for heavy libraries
+torch = None
+AutoTokenizer = None
+AutoModelForCausalLM = None
+BitsAndBytesConfig = None
+
+def ensure_torch():
+    global torch, AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+    if torch is None:
+        log_startup("Lazy importing Torch...")
+        import torch as t
+        torch = t
+        log_startup("Torch imported")
+        
+        log_startup("Lazy importing Transformers...")
+        from transformers import AutoTokenizer as AT, AutoModelForCausalLM as AM, BitsAndBytesConfig as BNB
+        AutoTokenizer = AT
+        AutoModelForCausalLM = AM
+        BitsAndBytesConfig = BNB
+        log_startup("Transformers imported")
+
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
 import subprocess
@@ -38,21 +82,37 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 app = Flask(__name__, template_folder='.', static_folder='.')
 CORS(app)
 
+# Global state
+device = "cpu" # Default until init
+max_workers = 4
+executor = None
+current_model = None
+current_tokenizer = None
+current_model_name = "TinyLlama 1.1B"
+
 # GPU/Device Configuration
 def init_gpu():
     """Initialize GPU settings for optimal performance."""
+    global device, max_workers, executor
+    ensure_torch()
+    
+    log_startup("Checking CUDA availability...")
     if torch.cuda.is_available():
+        log_startup("CUDA is available")
         # Enable TF32 for speedup (maintains precision for LLMs)
         torch.backends.cuda.matmul.allow_tf32 = True
         torch.backends.cudnn.allow_tf32 = True
         # Enable cuDNN benchmarking for optimization
         torch.backends.cudnn.benchmark = True
-        return "cuda"
-    return "cpu"
-
-device = init_gpu()
-max_workers = 4 if device == "cuda" else multiprocessing.cpu_count()
-executor = ThreadPoolExecutor(max_workers=max_workers)
+        device = "cuda"
+    else:
+        log_startup("CUDA not available, using CPU")
+        device = "cpu"
+        
+    log_startup(f"Device initialized: {device}")
+    max_workers = 4 if device == "cuda" else multiprocessing.cpu_count()
+    executor = ThreadPoolExecutor(max_workers=max_workers)
+    return device
 
 # Model configurations
 MODELS = {
@@ -90,6 +150,7 @@ current_model_name = "TinyLlama 1.1B"
 # 4-bit quantization config for GPU (BitsAndBytes)
 def get_quantization_config(device_type="cuda"):
     """Get 4-bit quantization config for efficient inference."""
+    ensure_torch()
     return BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_compute_dtype=torch.float16,
@@ -99,6 +160,7 @@ def get_quantization_config(device_type="cuda"):
 
 def get_gpu_info():
     """Get GPU information."""
+    ensure_torch()
     if torch.cuda.is_available():
         props = torch.cuda.get_device_properties(0)
         return {
@@ -114,6 +176,8 @@ def load_model(model_name: str) -> dict:
     """Load a model with GPU acceleration and 4-bit quantization."""
     global current_model, current_tokenizer, current_model_name
     
+    ensure_torch()
+    
     try:
         if current_model_name == model_name and current_model is not None:
             return {"status": "ok", "message": f"{model_name} already loaded"}
@@ -127,6 +191,12 @@ def load_model(model_name: str) -> dict:
             # Load tokenizer
             print("  Loading tokenizer...")
             current_tokenizer = AutoTokenizer.from_pretrained(repo, trust_remote_code=True)
+            
+            # Fix for models where pad_token is missing
+            if current_tokenizer.pad_token is None:
+                current_tokenizer.pad_token = current_tokenizer.eos_token
+                current_tokenizer.pad_token_id = current_tokenizer.eos_token_id
+                
         except Exception as tok_err:
             print(f"  ⚠️  Tokenizer error (will try to continue): {str(tok_err)[:100]}")
             raise
@@ -211,6 +281,7 @@ def generate_response(
         with torch.no_grad():
             output_ids = current_model.generate(
                 inputs['input_ids'],
+                attention_mask=inputs['attention_mask'],
                 max_new_tokens=max_tokens,
                 temperature=temperature,
                 top_p=top_p,
@@ -362,8 +433,28 @@ def health():
     return jsonify(health_data)
 
 
+def warmup():
+    """Warmup the server by initializing GPU and libraries."""
+    log_startup("Warming up...")
+    device = init_gpu()
+    
+    if device == "cuda":
+        try:
+            log_startup("Initializing CUDA context...")
+            # Force CUDA initialization by creating a small tensor
+            # This moves the initialization delay to the splash screen phase
+            torch.zeros(1).cuda()
+            log_startup("CUDA context initialized")
+        except Exception as e:
+            log_startup(f"CUDA init failed: {e}")
+            
+    log_startup("Warmup complete")
+
 def run_server():
     """Run the Flask server (called from launcher)."""
+    # Initialize GPU/Torch lazily
+    init_gpu()
+
     # Display startup info
     print("\n" + "=" * 60)
     print("[INIT] APL Chat Server - GPU Optimized")

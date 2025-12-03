@@ -36,10 +36,13 @@ The executable contains:
 ## First Run
 
 When you first launch the executable:
-1. It will extract and start the Flask server
-2. Your browser will open to `http://localhost:5000`
-3. Models will auto-download on first use (~30 seconds)
-4. Start chatting!
+1. **Wait for Initialization**: The application may take **1-3 minutes** to initialize the AI engine and load necessary libraries. A splash screen will show the progress.
+2. It will extract and start the Flask server
+3. Your browser will open to `http://localhost:5000`
+4. Models will auto-download on first use (~30 seconds)
+5. Start chatting!
+
+> **Note**: The executable is large (~2.7 GB) because it contains the entire AI engine. Please be patient while it loads!
 
 ## Features
 
