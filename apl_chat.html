@@ -274,6 +274,55 @@
             letter-spacing: 0.5px;
         }
 
+        .gpu-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+
+        .gpu-metric {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .gpu-metric-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .gpu-metric-value {
+            color: var(--primary);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .device-info {
+            padding: 10px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--success);
+            margin-bottom: 10px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .device-info-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .device-info-value {
+            color: var(--success);
+            font-weight: bold;
+        }
+
         .model-list {
             display: flex;
             flex-direction: column;
@@ -310,7 +359,7 @@
             font-size: 11px;
             color: var(--text-secondary);
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 4px;
         }
 
@@ -551,6 +600,16 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
+            <!-- Device & GPU Info -->
+            <div class="sidebar-section">
+                <div class="sidebar-title">💻 Device</div>
+                <div class="device-info" id="device-info">
+                    <div><span class="device-info-label">Device:</span> <span class="device-info-value" id="device-name">CPU</span></div>
+                </div>
+                <div class="gpu-metrics" id="gpu-metrics" style="display: none;">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
             <!-- Model Selection -->
             <div class="sidebar-section">
                 <div class="sidebar-title">📦 Models</div>
@@ -654,13 +713,17 @@
                 const data = await response.json();
                 models = data.models;
 
+                // Update device info
+                updateDeviceInfo(data);
+
                 // Render model list
                 modelList.innerHTML = models.map(model => `
                     <div class="model-item ${model.name === currentModel ? 'active' : ''}" data-model="${model.name}">
                         <div class="model-item-name">${model.name}</div>
                         <div class="model-item-stats">
                             <div><span class="stat-label">${model.bits}-bit</span></div>
-                            <div><span class="stat-label">${model.compression}</span></div>
+                            <div><span class="stat-label">${model.size}</span></div>
+                            <div><span class="stat-label">${model.speed}</span></div>
                         </div>
                     </div>
                 `).join('');
@@ -742,6 +805,49 @@
             }
         }
 
+        // Update device and GPU information
+        function updateDeviceInfo(data) {
+            const deviceName = document.getElementById('device-name');
+            const gpuMetrics = document.getElementById('gpu-metrics');
+            
+            deviceName.textContent = data.device;
+            
+            // Show GPU metrics if available
+            if (data.gpu_info && data.gpu_info.name) {
+                gpuMetrics.style.display = 'grid';
+                
+                let gpuMemoryHtml = '';
+                if (data.gpu_memory) {
+                    const allocated = data.gpu_memory.allocated_gb.toFixed(2);
+                    const total = data.gpu_memory.total_gb.toFixed(1);
+                    gpuMemoryHtml = `
+                        <div class="gpu-metric">
+                            <span class="gpu-metric-label">VRAM Used</span>
+                            <span class="gpu-metric-value">${allocated}/${total} GB</span>
+                        </div>
+                    `;
+                }
+                
+                gpuMetrics.innerHTML = `
+                    <div class="gpu-metric">
+                        <span class="gpu-metric-label">GPU</span>
+                        <span class="gpu-metric-value">${data.gpu_info.name}</span>
+                    </div>
+                    <div class="gpu-metric">
+                        <span class="gpu-metric-label">Memory</span>
+                        <span class="gpu-metric-value">${data.gpu_info.memory_gb.toFixed(1)} GB</span>
+                    </div>
+                    ${gpuMemoryHtml}
+                    <div class="gpu-metric">
+                        <span class="gpu-metric-label">CUDA</span>
+                        <span class="gpu-metric-value">${data.gpu_info.cuda_version || 'N/A'}</span>
+                    </div>
+                `;
+            } else {
+                gpuMetrics.style.display = 'none';
+            }
+        }
+
         // Send message
         async function sendMessage() {
             const message = messageInput.value.trim();
@@ -808,7 +914,11 @@
                 } else {
                     const loadingEl = document.getElementById('response-loading');
                     if (loadingEl) {
-                        loadingEl.querySelector('.message-content').innerHTML = `Error: ${data.message}`;
+                        if (data.message.includes('not loaded')) {
+                            loadingEl.querySelector('.message-content').innerHTML = `❌ Error: ${data.message}<br/><small>Please select a model from the sidebar first.</small>`;
+                        } else {
+                            loadingEl.querySelector('.message-content').innerHTML = `❌ Error: ${data.message}`;
+                        }
                     }
                 }
             } catch (error) {
@@ -816,7 +926,7 @@
                 console.error('Failed to get response:', error);
                 const loadingEl = document.getElementById('response-loading');
                 if (loadingEl) {
-                    loadingEl.querySelector('.message-content').innerHTML = `Error: ${error.message}`;
+                    loadingEl.querySelector('.message-content').innerHTML = `❌ Error: ${error.message}`;
                 }
             } finally {
                 isLoading = false;
