@@ -90,12 +90,13 @@
 | **Avg** | - | - | **10x** |
 
 ### Quantization Quality
-| Bits | Relative Error | Status |
-|------|----------------|--------|
-| 8 | 0.65% | ✅ EXCELLENT |
-| 4 | 10-15% | ✅ GOOD |
-| 2 | 20-50% | ⚠️ ACCEPTABLE |
-| 1 | 50-150% | ⚠️ EXTREME |
+| Bits | Format | Relative Error | Status |
+|------|--------|----------------|--------|
+| 8 | Integer | 0.65% | ✅ EXCELLENT |
+| 4 | Integer | 10-15% | ✅ GOOD |
+| 1.58 | Ternary {-1,0,+1} | 15-25% | ✅ VERY GOOD |
+| 2 | Integer | 20-50% | ⚠️ ACCEPTABLE |
+| 1 | Binary {-1,+1} | 50-150% | ⚠️ EXTREME |
 
 ### Build Compatibility
 | Platform | Status | Notes |
@@ -169,6 +170,8 @@ Ready for Inference ✅
 - [x] Compressed NPZ storage
 - [x] Manifest metadata caching
 - [x] Batch inference support
+- [x] Ternary (1.58-bit) quantization
+- [x] Quantization-aware training (QAT)
 - [ ] Per-channel quantization (future)
 - [ ] Dynamic quantization calibration (future)
 

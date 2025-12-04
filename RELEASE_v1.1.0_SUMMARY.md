@@ -5,11 +5,15 @@
 - **Performance Benchmarks**: The model list now displays estimated tokens per second (t/s) based on your detected hardware (CPU vs GPU).
 - **Improved UI**: The model selection sidebar has been updated to show more detailed information including model size, quantization bits, and speed estimates.
 - **Python 3.12 Support**: Added a setup script (`setup_gpu_env.bat`) to easily configure a Python 3.12 environment with CUDA support, addressing issues with newer Python versions (3.14) that lack GPU support.
+- **1.58-bit Ternary Quantization**: New training and inference support for ternary quantization using {-1, 0, +1} weights, achieving ~16x compression with minimal accuracy loss.
+- **Runtime Stability**: Fixed Tkinter/multiprocessing threading issues and model generation errors for seamless startup and inference.
 
 ## 🛠️ Fixes & Improvements
 - **Robust Model Loading**: Improved error handling during model loading to prevent crashes when specific configurations are missing.
 - **Startup Diagnostics**: The server console now provides clear information about the active device, quantization mode (4-bit NF4 vs FP32), and potential environment issues.
 - **Build Process**: Updated build scripts to ensure smoother executable generation.
+- **Attention Mask Fix**: Properly pass attention_mask to model generation, fixing 500 errors during chat inference.
+- **Pad Token Fix**: Automatically set pad_token_id when missing, preventing Tcl_AsyncDelete warnings.
 
 ## 🤖 Supported Models
 The application comes with support for the following AI models ("robots"):
