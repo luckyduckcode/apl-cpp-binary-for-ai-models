@@ -319,7 +319,7 @@ class ConstrainedOptimizer:
         
         Args:
             parameters: Current model parameters
-            gradients: Computed gradients
+            gradients: Computed gradients (norm or single value)
             learning_rate: Base learning rate
             constraint_radius: Trust region radius
             
@@ -327,6 +327,22 @@ class ConstrainedOptimizer:
             Update information
         """
         self.step_count += 1
+        
+        # Handle gradient norms (for hybrid optimization tracking)
+        if gradients.numel() == 1:
+            # This is just a norm value for tracking, skip update
+            return ConstrainedUpdateInfo(
+                update_magnitude=float(gradients.item()),
+                constraint_active=False,
+                constraint_radius=constraint_radius,
+                quantization_error=0.0,
+                efficiency=1.0
+            )
+        
+        # Ensure gradients match parameter shape
+        if gradients.shape != parameters.shape:
+            # Reshape gradients to match parameters if needed
+            gradients = gradients.reshape(parameters.shape)
         
         # Scaled gradient
         scaled_grad = learning_rate * gradients
@@ -340,7 +356,11 @@ class ConstrainedOptimizer:
         if self.velocity is None:
             self.velocity = constrained_update.clone()
         else:
-            self.velocity = self.momentum * self.velocity + (1 - self.momentum) * constrained_update
+            # Ensure velocity has correct shape
+            if self.velocity.shape != constrained_update.shape:
+                self.velocity = constrained_update.clone()
+            else:
+                self.velocity = self.momentum * self.velocity + (1 - self.momentum) * constrained_update
         
         # Update parameters
         with torch.no_grad():
