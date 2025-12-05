@@ -124,6 +124,65 @@ def binarize_weights(weights, per_channel_axis=0):
     return packed, scales, metadata
 
 
+def ternary_quantize_weights(weights, per_channel_axis=0, threshold_factor=0.5):
+    """
+    Ternary quantization (1.58-bit): quantize weights to {-1, 0, +1}.
+    Uses a threshold-based approach: values near zero are set to 0.
+    
+    Returns: ternary_array (int8 with -1,0,+1), scales (float32), shape metadata.
+    If weights shape is (out, in), per_channel_axis=0 computes scales per row.
+    """
+    W = np.array(weights, copy=True, dtype=np.float32)
+    if W.ndim != 2:
+        raise ValueError("ternary_quantize_weights expects a 2D weight matrix")
+    
+    # Compute scales per-channel
+    if per_channel_axis == 0:
+        scales = np.mean(np.abs(W), axis=1)
+    else:
+        scales = np.mean(np.abs(W), axis=0)
+    scales = np.where(scales == 0, 1.0, scales).astype(np.float32)
+    
+    # Compute threshold for zeroing (based on scale)
+    if per_channel_axis == 0:
+        thresholds = threshold_factor * scales[:, np.newaxis]
+    else:
+        thresholds = threshold_factor * scales[np.newaxis, :]
+    
+    # Ternary quantization: {-1, 0, +1}
+    ternary = np.sign(W)  # gives {-1, 0, +1}
+    # Zero out small values
+    ternary[np.abs(W) < thresholds] = 0
+    
+    # Convert to int8 for storage
+    ternary = ternary.astype(np.int8)
+    
+    metadata = {"shape": W.shape, "per_channel_axis": int(per_channel_axis), "quantization": "ternary_1.58bit"}
+    return ternary, scales, metadata
+
+
+def unpack_ternary(ternary_array, scales, shape, per_channel_axis=0):
+    """
+    Dequantize ternary (1.58-bit) weights back to float32.
+    
+    ternary_array: int8 array with values {-1, 0, +1}
+    scales: float32 per-channel scales
+    shape: (out, in) tuple
+    per_channel_axis: which axis the scales were computed over
+    """
+    out, _in = shape
+    ternary = np.array(ternary_array, dtype=np.float32)
+    
+    if per_channel_axis == 0:
+        # scales per output row
+        dequant = ternary * scales[:, np.newaxis]
+    else:
+        # scales per input column
+        dequant = ternary * scales[np.newaxis, :]
+    
+    return dequant
+
+
 def unpack_binarized(packed, scales, shape, per_channel_axis=0):
     """Unpack packed bits and dequantize to float matrix using scales.
        packed: 2D array where each row is packbits of the original bit row
