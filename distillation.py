@@ -5,6 +5,9 @@ import torch.optim as optim
 from torch.nn import functional as F
 import numpy as np
 from quantization import quantize_weights, binarize_weights, unpack_binarized, ternary_quantize_weights, unpack_ternary, replace_linears_with_qat
+from hybrid_optimization import (
+    HybridOptimizationManager, HybridTrainingConfig, create_hybrid_optimizer
+)
 
 # Assume a simple transformer model as student (placeholder for APL)
 class StudentModel(nn.Module):
@@ -30,6 +33,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--qat', action='store_true', help='Enable quantization-aware training (1-bit weight-only).')
     parser.add_argument('--ternary', action='store_true', help='Enable ternary (1.58-bit) quantization during training.')
+    parser.add_argument('--hybrid', action='store_true', help='Enable hybrid optimization (clustering + auxiliary NN + trust region).')
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--metrics_out', type=str, default='student_metrics.csv', help='CSV file to write per-epoch metrics')
     parser.add_argument('--save_metrics', action='store_true', help='Save per-epoch metrics to CSV')
@@ -38,6 +42,8 @@ def main():
     parser.add_argument('--batch_size', type=int, default=10)
     parser.add_argument('--learnable_scale', action='store_true', help='Enable learnable per-channel scales in QATLinear')
     parser.add_argument('--eval_every', type=int, default=1, help='Evaluate quantized metrics every N epochs')
+    parser.add_argument('--data_clusters', type=int, default=8, help='Number of data clusters for hybrid optimization')
+    parser.add_argument('--param_clusters', type=int, default=4, help='Number of parameter clusters for hybrid optimization')
     args = parser.parse_args()
 
     student = StudentModel(1000, 64, 4, 1)  # Smaller
@@ -63,6 +69,23 @@ def main():
     dummy_data = torch.randint(0, 1000, (args.batch_size, 20))  # batch x seq
     labels = torch.randint(0, 1000, (args.batch_size, 20))
 
+    # Initialize hybrid optimization if requested
+    hybrid_opt_manager = None
+    if args.hybrid:
+        hybrid_config = HybridTrainingConfig(
+            use_quantization=True,
+            target_bits=1.58 if args.ternary else 1.0,
+            use_clustering=True,
+            data_clusters=args.data_clusters,
+            parameter_clusters=args.param_clusters,
+            use_auxiliary_nn=True,
+            use_trust_region=True,
+            base_learning_rate=args.lr,
+        )
+        hybrid_opt_manager = create_hybrid_optimizer(hybrid_config)
+        hybrid_opt_manager.setup_data_clustering(dummy_data)
+        print(f"Initialized hybrid optimization with {args.data_clusters} data clusters and auxiliary NN guidance")
+    
     # small eval batch for metric computation
     eval_batch = torch.randint(0, 1000, (2, 10))
 
@@ -123,14 +146,38 @@ def main():
 
     metrics = []
     for epoch in range(args.epochs):
+        # Use hybrid clustered batch or standard batch
+        if hybrid_opt_manager:
+            cluster_id = epoch % args.data_clusters
+            batch_data = hybrid_opt_manager.get_cluster_batch(dummy_data, args.batch_size, cluster_id)
+        else:
+            batch_data = dummy_data
+            cluster_id = 0
+        
         optimizer.zero_grad()
         with torch.no_grad():
-            teacher_logits = teacher(dummy_data)
-        student_logits = student(dummy_data)
+            teacher_logits = teacher(batch_data)
+        student_logits = student(batch_data)
         loss = distillation_loss(student_logits, teacher_logits, labels)
         loss.backward()
-        optimizer.step()
-        print(f"Epoch {epoch}, Loss: {loss.item()}")
+        
+        # Hybrid optimization step
+        if hybrid_opt_manager and student_logits.grad is not None:
+            grads = torch.cat([p.grad.flatten() for p in student.parameters() if p.grad is not None])
+            hybrid_metrics = hybrid_opt_manager.optimization_step(
+                model=student,
+                loss=loss,
+                gradients=grads,
+                cluster_id=cluster_id,
+                step=epoch,
+                base_lr=args.lr
+            )
+            optimizer.zero_grad()  # Clear for next step
+            print(f"Epoch {epoch}, Loss: {loss.item():.6f}, LR: {hybrid_metrics['learning_rate']:.6f}, Trust Radius: {hybrid_metrics['trust_radius']:.6f}")
+        else:
+            optimizer.step()
+            print(f"Epoch {epoch}, Loss: {loss.item():.6f}")
+        
         if args.qat and (epoch % args.eval_every == 0):
             maxd, meand = evaluate_quantized_state(student)
             print(f"QAT Eval after epoch {epoch}: max diff={maxd:.4f}, mean diff={meand:.4f}")
@@ -175,6 +222,19 @@ def main():
             for r in metrics:
                 w.writerow(r)
         print('Wrote per-epoch metrics to', args.metrics_out)
+    
+    # Print hybrid optimization summary
+    if hybrid_opt_manager:
+        summary = hybrid_opt_manager.get_summary()
+        print("\n" + "="*60)
+        print("HYBRID OPTIMIZATION SUMMARY")
+        print("="*60)
+        print(f"Total Steps: {summary['total_steps']}")
+        print(f"Final Loss: {summary['final_loss']:.6f}")
+        print(f"Avg Learning Rate Multiplier: {summary['avg_lr_multiplier']:.4f}x")
+        print(f"Constraint Activation Rate: {summary['constraint_activation_rate']:.1%}")
+        print(f"Final Trust Radius: {summary['trust_radius']:.6f}")
+        print("="*60 + "\n")
 
 
 if __name__ == '__main__':
